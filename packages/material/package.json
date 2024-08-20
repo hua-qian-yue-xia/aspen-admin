@@ -1,0 +1,17 @@
+{
+  "name": "@aspen/material",
+  "version": "1.0.0",
+  "description": "",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./src/*"
+      ]
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
