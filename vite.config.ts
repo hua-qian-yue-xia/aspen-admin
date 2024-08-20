@@ -9,7 +9,7 @@ export default defineConfig({
     alias: {
       "~": pathTool.getPublicPath(),
       "@": pathTool.getSrcPath(),
-      "@@": pathTool.getComponentPath(),
+      "@@": pathTool.getModulePath(),
     },
   },
 })

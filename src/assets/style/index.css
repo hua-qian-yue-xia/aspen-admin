@@ -1,1 +1,13 @@
 @import "./module/tailwind.css";
+@import "./module/reset.css";
+
+html,
+body,
+#root,
+#app {
+    height: 100%;
+}
+
+html {
+    overflow-x: hidden;
+}

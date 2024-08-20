@@ -9,7 +9,7 @@ const getPublicPath = () => {
 }
 
 const getModulePath = () => {
-  return ""
+  return path.join(getSrcPath(), "module")
 }
 
-export default { getSrcPath, getPublicPath, getComponentPath: getModulePath }
+export default { getSrcPath, getPublicPath, getModulePath }

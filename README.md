@@ -1,8 +1,9 @@
 ### 运行核心依赖
 
 1. react
-2. ant-design
-3. zustand
+2. react-router-dom
+3. ant-design
+4. zustand
 
 ### 开发核心依赖
 
