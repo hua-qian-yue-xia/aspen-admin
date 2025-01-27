@@ -1,0 +1,6 @@
+{
+  "name": "@aspen/crud",
+  "version": "1.0.0",
+  "main": "./src/main.ts",
+  "scripts": {}
+}

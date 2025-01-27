@@ -1,0 +1,11 @@
+{
+  "name": "@aspen/common",
+  "version": "1.0.0",
+  "main": "./src/main.ts",
+  "scripts": {},
+  "dependencies": {
+    "classnames": "^2.5.1",
+    "nanoid": "^5.0.9",
+    "radash": "^12.1.0"
+  }
+}

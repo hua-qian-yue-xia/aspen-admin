@@ -1,0 +1,20 @@
+.layout-header {
+    height: var(--aspen-layout-header-height);
+}
+.layout-aside {
+    width: var(--aspen-layout-aside-width);
+}
+.layout-aside_collapse {
+    width: var(--aspen-layout-aside-collapse-width);
+}
+.layout-aside-gap {
+    margin-left: var(--aspen-layout-aside-width);
+}
+.layout-aside-gap_collapse {
+    margin-left: var(--aspen-layout-aside-collapse-width);
+}
+.layout-main {
+}
+.layout-footer {
+    height: var(--aspen-layout-header-height);
+}
