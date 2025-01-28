@@ -43,16 +43,13 @@ const Layout: React.FC<Props> = (props) => {
 	)
 
 	const headerClass = useMemo(
-		() => mergeClass(styles["layout-header"], asideGapClass, "absolute left-0 right-0 top-0 flex-shrink-0 bg-red"),
+		() => mergeClass(styles["layout-header"], asideGapClass, "absolute left-0 right-0 top-0 flex-shrink-0"),
 		[asideGapClass],
 	)
-	const asideClass = useMemo(
-		() => mergeClass(asideWidthClass, "absolute left-0 top-0 bottom-0 bg-amber"),
-		[asideWidthClass],
-	)
-	const mainClass = useMemo(() => mergeClass(styles["layout-main"], "full bg-blue"), [])
+	const asideClass = useMemo(() => mergeClass(asideWidthClass, "absolute left-0 top-0 bottom-0"), [asideWidthClass])
+	const mainClass = useMemo(() => mergeClass(styles["layout-main"], "full"), [])
 	const footerClass = useMemo(
-		() => mergeClass(styles["layout-footer"], asideGapClass, "absolute bottom-0 flex-shrink-0 full bg-red"),
+		() => mergeClass(styles["layout-footer"], asideGapClass, "absolute bottom-0 flex-shrink-0 full"),
 		[asideGapClass],
 	)
 

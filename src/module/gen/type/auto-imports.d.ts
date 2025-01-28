@@ -6,12 +6,14 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const buttonIcon: typeof import('../../components/custom/button-icon')['default']
   const createRef: typeof import('react')['createRef']
   const darkModeContainer: typeof import('../../components/common/dark-mode-container')['default']
   const forwardRef: typeof import('react')['forwardRef']
   const lazy: typeof import('react')['lazy']
   const memo: typeof import('react')['memo']
   const startTransition: typeof import('react')['startTransition']
+  const svgIcon: typeof import('../../components/custom/svg-icon')['default']
   const useCallback: typeof import('react')['useCallback']
   const useContext: typeof import('react')['useContext']
   const useDebugValue: typeof import('react')['useDebugValue']

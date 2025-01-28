@@ -15,7 +15,7 @@ const themeStore = create<ThemeStore>()(
 						themeMode: "",
 					}
 				},
-				{ name: "SYS-STORE" },
+				{ name: "SYS-THEME" },
 			),
 		),
 	),

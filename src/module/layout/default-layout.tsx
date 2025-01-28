@@ -1,7 +1,12 @@
 import material from "@aspen/material"
+import GlobalSearch from "./module/global/global-search"
 
 const TestHeader: React.FC = () => {
-	return <div></div>
+	return (
+		<div>
+			<GlobalSearch />
+		</div>
+	)
 }
 
 const TestMain: React.FC = () => {

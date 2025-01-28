@@ -1,9 +1,21 @@
 import unocss from "@unocss/vite"
+import presetIcons from "@unocss/preset-icons"
+
 import AutoImport from "unplugin-auto-import/vite"
 
 // unocss
 const registerUnocss = () => {
-	return unocss({ presets: [] })
+	return unocss({
+		presets: [
+			presetIcons({
+				scale: 1,
+				warn: true,
+				extraProperties: {
+					display: "inline-block",
+				},
+			}),
+		],
+	})
 }
 
 // auto import
