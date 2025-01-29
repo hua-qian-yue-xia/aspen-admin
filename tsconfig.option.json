@@ -12,6 +12,8 @@
 			"@@/*": ["./src/module/*"],
 			"~/*": ["./*"]
 		},
+		"types": ["vite/client", "node", "unplugin-icons/types/react", "vite-plugin-svg-icons/client"],
+		"resolveJsonModule": true,
 		"noEmit": true,
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
