@@ -6,6 +6,7 @@ import styles from "./css/index.module.css"
 
 const Layout: React.FC<Props> = (props) => {
 	const {
+		commonClass,
 		headerNode,
 		headerVisible,
 		headerHeight,
@@ -33,23 +34,43 @@ const Layout: React.FC<Props> = (props) => {
 	const footerShow = useMemo(() => !_.isEmpty(footerNode) && footerVisible, [footerNode, footerVisible])
 
 	// class
+	// aside间距
 	const asideGapClass = useMemo(
 		() => (asideCollapse ? styles["layout-aside-gap_collapse"] : styles["layout-aside-gap"]),
 		[asideCollapse],
 	)
+	// aside宽度
 	const asideWidthClass = useMemo(
 		() => (asideCollapse ? styles["layout-aside_collapse"] : styles["layout-aside"]),
 		[asideCollapse],
 	)
-
+	// header class
 	const headerClass = useMemo(
-		() => mergeClass(styles["layout-header"], asideGapClass, "absolute left-0 right-0 top-0 flex-shrink-0"),
+		() =>
+			mergeClass(styles["layout-header"], commonClass, asideGapClass, "flex-shrink-0 absolute left-0 right-0 top-0"),
+		[asideGapClass, commonClass],
+	)
+	const headerReplaceCalss = useMemo(
+		() => mergeClass(styles["layout-header"], asideGapClass, "flex-shrink-0"),
 		[asideGapClass],
 	)
-	const asideClass = useMemo(() => mergeClass(asideWidthClass, "absolute left-0 top-0 bottom-0"), [asideWidthClass])
-	const mainClass = useMemo(() => mergeClass(styles["layout-main"], "full"), [])
+	// aside class
+	const asideClass = useMemo(
+		() => mergeClass(commonClass, asideWidthClass, "absolute left-0 top-0 bottom-0"),
+		[asideWidthClass, commonClass],
+	)
+	// main class
+	const mainClass = useMemo(
+		() => mergeClass(styles["layout-main"], commonClass, asideGapClass, "flex-col flex-grow"),
+		[asideGapClass, commonClass],
+	)
+	// footer class
 	const footerClass = useMemo(
-		() => mergeClass(styles["layout-footer"], asideGapClass, "absolute bottom-0 flex-shrink-0 full"),
+		() => mergeClass(styles["layout-footer"], commonClass, asideGapClass, "flex-shrink-0 absolute bottom-0 full"),
+		[asideGapClass, commonClass],
+	)
+	const fotterReplaceCalss = useMemo(
+		() => mergeClass(styles["layout-footer"], asideGapClass, "flex-shrink-0 full"),
 		[asideGapClass],
 	)
 
@@ -60,11 +81,14 @@ const Layout: React.FC<Props> = (props) => {
 	const footerStyle = useMemo(() => ({}), [])
 
 	return (
-		<section style={varCss} className="full relative">
+		<section style={varCss} className={mergeClass("relative full flex-col", commonClass)}>
 			{headerShow && (
-				<header style={headerStyle} className={headerClass}>
-					{headerNode}
-				</header>
+				<>
+					<header style={headerStyle} className={headerClass}>
+						{headerNode}
+					</header>
+					<div className={headerReplaceCalss} />
+				</>
 			)}
 			{asideShow && (
 				<aside style={asideStyle} className={asideClass}>
@@ -75,9 +99,12 @@ const Layout: React.FC<Props> = (props) => {
 				{mainNode}
 			</main>
 			{footerShow && (
-				<footer style={footerStyle} className={footerClass}>
-					{footerNode}
-				</footer>
+				<span>
+					<footer style={footerStyle} className={footerClass}>
+						{footerNode}
+					</footer>
+					<div className={fotterReplaceCalss} />
+				</span>
 			)}
 		</section>
 	)

@@ -1,13 +1,11 @@
 import ButtonIcon from "@/module/components/custom/button-icon"
 
-const GlobalSearch: React.FC = () => {
+const GlobalSearch: React.FC = memo(() => {
 	return (
-		<div>
-			<ButtonIcon tooltipContent="搜索">
-				<IconMdiRefresh />
-			</ButtonIcon>
-		</div>
+		<ButtonIcon tooltipContent="搜索">
+			<IconUilSearch />
+		</ButtonIcon>
 	)
-}
+})
 
 export default GlobalSearch

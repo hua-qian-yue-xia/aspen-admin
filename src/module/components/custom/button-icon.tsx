@@ -10,7 +10,7 @@ type Props = {
 	readonly className?: string
 	readonly style?: CSSProperties
 	/**
-	 * Iconify 网络图标
+	 * Iconify 图标
 	 * @see https://icones.js.org
 	 */
 	readonly icon?: string
@@ -22,7 +22,12 @@ type Props = {
 	 * 提示位置
 	 */
 	readonly tooltipPlacement?: TooltipProps["placement"]
-} & Omit<ButtonProps, "icon" | "iconPosition">
+	/**
+	 * 按钮类型
+	 * @default "text"
+	 */
+	readonly buttonType?: Extract<ButtonProps["type"], "link" | "text">
+} & Omit<ButtonProps, "icon" | "iconPosition" | "type">
 
 const ButtonIcon: React.FC<Props> = (props) => {
 	const {
@@ -32,6 +37,7 @@ const ButtonIcon: React.FC<Props> = (props) => {
 		icon,
 		tooltipContent,
 		tooltipPlacement = "bottom",
+		buttonType = "text",
 		...rest
 	} = props
 	const computeClass = useMemo(() => {
@@ -42,7 +48,7 @@ const ButtonIcon: React.FC<Props> = (props) => {
 	}, [className])
 	return (
 		<Tooltip title={tooltipContent} placement={tooltipPlacement}>
-			<Button type="text" className={computeClass} {...rest}>
+			<Button type={buttonType} className={computeClass} {...rest}>
 				<div className="flex-row-center gap-8px">{children || <SvgIcon icon={icon} style={style} />}</div>
 			</Button>
 		</Tooltip>

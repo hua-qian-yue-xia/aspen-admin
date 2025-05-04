@@ -21,6 +21,10 @@ export default defineConfig<Theme>({
 	theme: {
 		fontSize: {
 			icon: "1.125rem",
+			"icon-large": "1.5rem",
+			"icon-small": "1rem",
+			"icon-xl": "2rem",
+			"icon-xs": "0.875rem",
 		},
 	},
 	transformers: [transformerDirectives(), transformerVariantGroup()],

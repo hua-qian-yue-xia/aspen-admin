@@ -1,34 +1,71 @@
 import material from "@aspen/material"
-import GlobalSearch from "./module/global/global-search"
 
-const TestHeader: React.FC = () => {
+import GlobalLogo from "./module/global/global-logo"
+import GlobalSearch from "./module/global/global-search"
+import GlobalThemeSwitch from "./module/global/global-theme-switch"
+import GlobalThemeBtn from "./module/global/global-theme-btn"
+import GlobalUser from "./module/global/global-user"
+import ThemeDrawer from "./module/theme-setting/index"
+
+import GlobalMenu from "./module/menu"
+import MenuToggler from "./module/menu/components/menu-toggler"
+
+import { store } from "@@/index"
+
+const LayoutHeader: React.FC = () => {
 	return (
-		<div>
-			<GlobalSearch />
-		</div>
+		<ul className="full flex-row items-center justify-between">
+			<li className="flex-row-center"></li>
+			<li className="flex-row-center">
+				<GlobalSearch />
+				<GlobalThemeSwitch />
+				<GlobalThemeBtn />
+				<GlobalUser />
+			</li>
+		</ul>
 	)
 }
 
-const TestMain: React.FC = () => {
-	return <div></div>
+const LayoutMain: React.FC = () => {
+	return <div className="full bg-blue">内容区域</div>
 }
 
-const TestAside: React.FC = () => {
-	return <div></div>
+const LayoutAside: React.FC<{ height: number }> = ({ height }) => {
+	return (
+		<ul className="full flex-col-center">
+			<li className="w-full flex-row-center">
+				<GlobalLogo style={{ height: `${height}px` }} />
+				<MenuToggler />
+			</li>
+			<li className="full flex-grow">
+				<GlobalMenu mode="vertical" />
+			</li>
+		</ul>
+	)
 }
 
-const TestFooter: React.FC = () => {
-	return <div></div>
+const LayoutFooter: React.FC = () => {
+	return <div>底部区域</div>
 }
 
 const DefaultLayout = () => {
+	const { themeStore } = store
+	const { header, footer, aside } = themeStore.store((store) => store)
 	return (
-		<material.Layout
-			headerNode={<TestHeader />}
-			mainNode={<TestMain />}
-			asideNode={<TestAside />}
-			footerNode={<TestFooter />}
-		/>
+		<>
+			<material.Layout
+				headerNode={<LayoutHeader />}
+				headerHeight={header.height}
+				mainNode={<LayoutMain />}
+				asideNode={<LayoutAside height={header.height} />}
+				asideCollapse={aside.collapsed}
+				asideWidth={aside.width}
+				asideCollapseWidth={aside.collapsedWidth}
+				footerNode={<LayoutFooter />}
+				footerHeight={footer.height}
+			/>
+			<ThemeDrawer />
+		</>
 	)
 }
 

@@ -1,11 +1,11 @@
-import DefaultLayout from "@@/layout/default-layout"
-
 import { ConfigProvider } from "antd"
+
+import { router } from "@@/index"
 
 const App = () => {
 	return (
 		<ConfigProvider>
-			<DefaultLayout />
+			<router.RouterProvider />
 		</ConfigProvider>
 	)
 }

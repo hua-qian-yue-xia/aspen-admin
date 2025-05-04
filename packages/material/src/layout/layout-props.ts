@@ -24,7 +24,12 @@ export type Footer = {
 	footerHeight?: number
 }
 
-export type Props = Header & Aside & Main & Footer
+export type Props = Header &
+	Aside &
+	Main &
+	Footer & {
+		commonClass?: string
+	}
 
 export const defaultProps: Props = {
 	headerVisible: true,
@@ -35,4 +40,5 @@ export const defaultProps: Props = {
 	asideCollapseWidth: 220,
 	footerVisible: true,
 	footerHeight: 46,
+	commonClass: "transition-all-300",
 }
