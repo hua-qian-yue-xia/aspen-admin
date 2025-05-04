@@ -2,11 +2,11 @@ import { create } from "zustand"
 import { devtools, persist } from "zustand/middleware"
 import { immer } from "zustand/middleware/immer"
 
-type SysStore = {
+type UserStore = {
 	asideCollapse: boolean
 }
 
-const sysStore = create<SysStore>()(
+const sysStore = create<UserStore>()(
 	immer(
 		devtools(
 			persist(
@@ -15,7 +15,7 @@ const sysStore = create<SysStore>()(
 						asideCollapse: false,
 					}
 				},
-				{ name: "SYS-STORE" },
+				{ name: "USER-STORE" },
 			),
 		),
 	),

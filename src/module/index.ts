@@ -1,6 +1,6 @@
 /*start *********************************** router ***********************************start*/
 
-import { RouterProvider } from "./router/router-provider"
+import { RouterProvider, useRouter } from "./router/router-provider"
 
 /*end************************************** router *************************************end*/
 
@@ -10,7 +10,7 @@ import * as themeStore from "./store/module/theme/theme-store"
 
 /*end************************************** store *************************************end*/
 
-export const router = { RouterProvider }
+export const router = { RouterProvider, useRouter }
 export const store = {
 	themeStore: themeStore,
 }

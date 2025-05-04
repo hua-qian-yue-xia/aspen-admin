@@ -4,7 +4,12 @@ import type { MenuProps } from "antd"
 import ButtonIcon from "@/module/components/custom/button-icon"
 import SvgIcon from "@/module/components/custom/svg-icon"
 
+import { router } from "@@/index"
+
 const GlobalUser: React.FC = memo(() => {
+	const { useRouter } = router
+	const { navigate } = useRouter()
+
 	const items: MenuProps["items"] = [
 		{
 			key: "0",
@@ -29,7 +34,14 @@ const GlobalUser: React.FC = memo(() => {
 		},
 	]
 
-	const onClick = () => {}
+	const onClick: MenuProps["onClick"] = (info) => {
+		if (info.key === "0") {
+			navigate("/user-center")
+		}
+		if (info.key === "1") {
+			navigate("/login")
+		}
+	}
 
 	return (
 		<Dropdown menu={{ items, onClick }} placement="bottomRight" trigger={["click"]}>
