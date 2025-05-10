@@ -1,4 +1,5 @@
 import { URL, fileURLToPath } from "node:url"
+
 import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 
@@ -13,6 +14,13 @@ export default defineConfig((configEnv) => {
 				"@": fileURLToPath(new URL("src", import.meta.url)),
 				"@@": fileURLToPath(new URL("src/module", import.meta.url)),
 				"~": fileURLToPath(new URL("./", import.meta.url)),
+			},
+		},
+		css: {
+			preprocessorOptions: {
+				scss: {
+					javascriptEnabled: true,
+				},
 			},
 		},
 		server: {

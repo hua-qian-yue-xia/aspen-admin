@@ -6,23 +6,16 @@ type UserStore = {
 	asideCollapse: boolean
 }
 
-const sysStore = create<UserStore>()(
-	immer(
-		devtools(
-			persist(
-				() => {
-					return {
-						asideCollapse: false,
-					}
-				},
-				{ name: "USER-STORE" },
-			),
-		),
-	),
-)
+const defaultUserStore = (): UserStore => {
+	return {
+		asideCollapse: false,
+	}
+}
+
+const store = create<UserStore>()(immer(devtools(persist(() => defaultUserStore(), { name: "USER-STORE" }))))
 
 export const asideCollapse = () => {
-	sysStore.setState((state) => {
+	store.setState((state) => {
 		state.asideCollapse = !state.asideCollapse
 	})
 }

@@ -32,39 +32,32 @@ type ThemeStore = {
 	}
 }
 
-export const store = create<ThemeStore>()(
-	immer(
-		devtools(
-			persist(
-				() => {
-					return {
-						theme: {
-							drawerVisible: false,
-							modeIcons: {
-								dark: "material-symbols:nightlight-rounded",
-								light: "material-symbols:sunny",
-								system: "material-symbols:hdr-auto",
-							},
-							mode: "system",
-						},
-						header: {
-							height: 50,
-						},
-						footer: {
-							height: 40,
-						},
-						aside: {
-							width: 200,
-							collapsedWidth: 65,
-							collapsed: true,
-						},
-					}
-				},
-				{ name: "SYS-THEME" },
-			),
-		),
-	),
-)
+const defaultThemeStore = (): ThemeStore => {
+	return {
+		theme: {
+			drawerVisible: false,
+			modeIcons: {
+				dark: "material-symbols:nightlight-rounded",
+				light: "material-symbols:sunny",
+				system: "material-symbols:hdr-auto",
+			},
+			mode: "system",
+		},
+		header: {
+			height: 50,
+		},
+		footer: {
+			height: 40,
+		},
+		aside: {
+			width: 200,
+			collapsedWidth: 65,
+			collapsed: true,
+		},
+	}
+}
+
+export const store = create<ThemeStore>()(immer(devtools(persist(() => defaultThemeStore(), { name: "SYS-THEME" }))))
 
 // 改变header高度
 export const changeHeaderHeight = (height: number) => {
@@ -73,6 +66,7 @@ export const changeHeaderHeight = (height: number) => {
 	})
 }
 
+// 改变主题模式
 export const changeThemeMode = () => {
 	store.setState((state) => {
 		state.theme.mode = state.theme.mode === "dark" ? "light" : "dark"

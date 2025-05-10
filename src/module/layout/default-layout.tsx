@@ -1,6 +1,5 @@
 import material from "@aspen/material"
 
-import GlobalLogo from "./module/global/global-logo"
 import GlobalSearch from "./module/global/global-search"
 import GlobalThemeSwitch from "./module/global/global-theme-switch"
 import GlobalThemeBtn from "./module/global/global-theme-btn"
@@ -10,7 +9,7 @@ import ThemeDrawer from "./module/theme-setting/index"
 import GlobalMenu from "./module/menu"
 import MenuToggler from "./module/menu/components/menu-toggler"
 
-import { store } from "@@/index"
+import { store, components } from "@@/index"
 
 const LayoutHeader: React.FC = () => {
 	return (
@@ -31,10 +30,11 @@ const LayoutMain: React.FC = () => {
 }
 
 const LayoutAside: React.FC<{ height: number }> = ({ height }) => {
+	const { global } = components
 	return (
 		<ul className="full flex-col-center">
 			<li className="w-full flex-row-center">
-				<GlobalLogo style={{ height: `${height}px` }} />
+				<global.GlobalLogo style={{ height: `${height}px` }} />
 				<MenuToggler />
 			</li>
 			<li className="full flex-grow">
