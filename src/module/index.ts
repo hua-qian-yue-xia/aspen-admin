@@ -1,8 +1,9 @@
 /*start *********************************** router ***********************************start*/
 
 import { RouterProvider, useRouter } from "./router/router-provider"
+import * as routerShared from "./router/shared/router-dispose"
 
-export const router = { RouterProvider, useRouter }
+export const router = { RouterProvider, useRouter, routerShared }
 
 /*end************************************** router *************************************end*/
 

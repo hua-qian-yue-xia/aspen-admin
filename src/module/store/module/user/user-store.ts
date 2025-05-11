@@ -3,19 +3,24 @@ import { devtools, persist } from "zustand/middleware"
 import { immer } from "zustand/middleware/immer"
 
 type UserStore = {
-	asideCollapse: boolean
+	menu: {
+		menuList: Array<any>
+	}
 }
 
 const defaultUserStore = (): UserStore => {
 	return {
-		asideCollapse: false,
+		menu: {
+			menuList: [],
+		},
 	}
 }
 
-const store = create<UserStore>()(immer(devtools(persist(() => defaultUserStore(), { name: "USER-STORE" }))))
+export const store = create<UserStore>()(immer(devtools(persist(() => defaultUserStore(), { name: "USER-STORE" }))))
 
-export const asideCollapse = () => {
+// 设置菜单列表
+export const chnageMenuList = (menuList: Array<any>) => {
 	store.setState((state) => {
-		state.asideCollapse = !state.asideCollapse
+		state.menu.menuList = menuList
 	})
 }

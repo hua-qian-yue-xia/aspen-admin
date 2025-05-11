@@ -1,3 +1,5 @@
+import { Outlet } from "react-router-dom"
+
 import material from "@aspen/material"
 
 import GlobalSearch from "./module/global/global-search"
@@ -26,7 +28,11 @@ const LayoutHeader: React.FC = () => {
 }
 
 const LayoutMain: React.FC = () => {
-	return <div className="full bg-blue">内容区域</div>
+	return (
+		<div className="full">
+			<Outlet />
+		</div>
+	)
 }
 
 const LayoutAside: React.FC<{ height: number }> = ({ height }) => {

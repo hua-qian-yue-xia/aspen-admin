@@ -1,48 +1,84 @@
 import { RouteObject } from "react-router-dom"
 
-import DefaultLayout from "@@/layout/default-layout"
-import LoginPage from "@/view/sys/login"
-import UserCenterPage from "@/view/sys/user-center"
-import PasswordLoginPage from "@/view/sys/login/router/password-login"
+const disposePathComponent = (pathComponent: any) => {
+	const { default: Component } = pathComponent
+	if (!Component) console.error(`路由配置错误:${pathComponent}组件不存在`)
+	return { Component }
+}
 
 // 错误页面路由
-const errorRoute: Array<RouteObject> = []
+const errorRoute: Array<SysKey.Route.RouteItem> = []
 
 // 其他路由
-const otherRoute: Array<RouteObject> = [
+const otherRoute: Array<SysKey.Route.RouteItem> = [
 	{
 		path: "/login",
-		element: <LoginPage />,
+		lazy: () => import("@/view/sys/login").then(disposePathComponent),
+		handle: {
+			icon: "fluent:book-information-24-regular",
+			title: "登录",
+			order: 1,
+		},
 		children: [
 			{
 				path: "",
-				element: <PasswordLoginPage />,
+				lazy: () => import("@/view/sys/login/router/password-login").then(disposePathComponent),
 			},
 		],
 	},
 	{
 		path: "/user-center",
+		lazy: () => import("@/view/sys/user-center").then(disposePathComponent),
+		handle: {
+			icon: "fluent:book-information-24-regular",
+			title: "个人中心",
+			order: 1,
+		},
 		children: [],
-		element: <UserCenterPage />,
 	},
 ]
 
 // 示例路由
-const exampleRoute: Array<RouteObject> = [
+export const exampleRoute: Array<SysKey.Route.RouteItem> = [
 	{
-		path: "/form",
-		children: [],
-		element: <div>示例</div>,
-	},
-	{
-		path: "/table",
-		children: [],
-		element: <div>示例</div>,
-	},
-	{
-		path: "/dialog",
-		children: [],
-		element: <div>示例</div>,
+		path: "/example",
+		handle: {
+			icon: "fluent:book-information-24-regular",
+			title: "示例",
+			order: 5,
+		},
+		children: [
+			{
+				path: "/example/form",
+				lazy: () => import("@/view/example/form/index").then(disposePathComponent),
+				handle: {
+					icon: "fluent:book-information-24-regular",
+					title: "表单示例",
+					order: 100,
+				},
+				children: [],
+			},
+			{
+				path: "/example/table",
+				lazy: () => import("@/view/example/table/index").then(disposePathComponent),
+				handle: {
+					icon: "fluent:book-information-24-regular",
+					title: "表格示例",
+					order: 90,
+				},
+				children: [],
+			},
+			{
+				path: "/example/dialog",
+				lazy: () => import("@/view/example/dialog/index").then(disposePathComponent),
+				handle: {
+					icon: "fluent:book-information-24-regular",
+					title: "弹框示例",
+					order: 80,
+				},
+				children: [],
+			},
+		],
 	},
 ]
 
@@ -50,8 +86,8 @@ const exampleRoute: Array<RouteObject> = [
 const rootRoute: Array<RouteObject> = [
 	{
 		path: "/",
+		lazy: () => import("@@/layout/default-layout").then(disposePathComponent),
 		children: [...exampleRoute],
-		element: <DefaultLayout />,
 	},
 ]
 
