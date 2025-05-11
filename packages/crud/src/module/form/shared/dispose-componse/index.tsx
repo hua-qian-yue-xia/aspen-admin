@@ -1,7 +1,9 @@
-import { CurdInput } from "./dispose-input"
+import { CrudInput } from "./dispose-input"
+import { CrudPassword } from "./dispose-password"
 
 export type ComponentPropsObj = {
-	Input: CurdInput
+	Input: CrudInput
+	Password: CrudPassword
 }
 
 export type ComponentType = keyof ComponentPropsObj

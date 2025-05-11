@@ -2,12 +2,13 @@ import type { InputProps } from "antd"
 
 import { CurdCompose } from "./base"
 
-export interface CurdInput extends InputProps {
+export interface CrudInput extends InputProps {
 	key: "Input"
 }
 
-export class CurdInputComponents extends CurdCompose<CurdInput> {
-	override transform(props: CurdInput) {
+export class CrudInputComponents extends CurdCompose<CrudInput> {
+	static override key = "Input"
+	override transform(props: CrudInput) {
 		return props
 	}
 }

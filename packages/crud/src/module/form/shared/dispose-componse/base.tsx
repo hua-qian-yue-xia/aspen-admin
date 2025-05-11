@@ -1,5 +1,6 @@
 export class CurdCompose<T> {
-	transform(props: T) {
+	protected static key = ""
+	transform(props: T): T {
 		return props
 	}
 }

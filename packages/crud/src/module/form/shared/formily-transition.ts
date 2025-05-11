@@ -1,11 +1,14 @@
 import type { ISchema } from "@formily/react"
+import type { FormProps } from "@formily/antd-v5"
 
 import type { ComponentType, ComponentPropsObj } from "./dispose-componse/index"
 
 export type FormSchema = Array<FormItemProps<ComponentType>>
 
-export type FormProps = {
+export type CrudFormProps = {
 	schema: FormSchema
+	formConfig?: FormConfig
+	viewConfig?: any
 }
 
 export type FormItemProps<T extends ComponentType = ComponentType> = {
@@ -37,7 +40,9 @@ export type FormItemProps<T extends ComponentType = ComponentType> = {
 	props?: ComponentPropsObj[T]
 }
 
-export const getFormilySchema = (props: FormProps): ISchema => {
+export type FormConfig = FormProps
+
+export const getFormilySchema = (props: CrudFormProps): ISchema => {
 	const { schema } = props
 	let properties = {}
 	if (schema.length) properties = disposeSchema(schema)
@@ -56,7 +61,9 @@ const disposeSchema = (schema: Array<FormItemProps>): ISchema["properties"] => {
 			title: v.title,
 			required: v.required ?? false,
 			"x-decorator": "FormItem",
+			"x-decorator-props": {},
 			"x-component": v.component,
+			"x-component-props": v.props,
 		}
 	}
 	return properties
