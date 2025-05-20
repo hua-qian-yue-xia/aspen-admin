@@ -3,20 +3,18 @@ import React from "react"
 import { CurdForm } from "@aspen/crud"
 import type { FormSchema } from "@aspen/crud"
 
-const schema: FormSchema = [
-	{
-		key: "username",
+const schema: FormSchema = {
+	username: {
 		title: "用户名",
 		required: true,
-		component: "Input",
+		component: "input-default",
 	},
-	{
-		key: "password",
+	password: {
 		title: "密码",
 		required: true,
-		component: "Password",
+		component: "input-password",
 	},
-]
+}
 
 const FormExamplePage: React.FC = () => {
 	return (
