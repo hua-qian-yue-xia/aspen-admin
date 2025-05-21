@@ -1,12 +1,10 @@
-import { ConfigProvider } from "antd"
-
-import { router } from "@@/index"
+import { router, context } from "@@/index"
 
 const App = () => {
 	return (
-		<ConfigProvider>
+		<context.antd.GlobalAntdProvider>
 			<router.RouterProvider />
-		</ConfigProvider>
+		</context.antd.GlobalAntdProvider>
 	)
 }
 

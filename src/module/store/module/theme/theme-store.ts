@@ -12,6 +12,8 @@ type ThemeStore = {
 		mode: ThemeModeType
 		// 主题模式图标
 		modeIcons: Record<ThemeModeType, string>
+		// 只展开当前父级菜单
+		onlyExpandParentMenu: boolean
 	}
 	// header配置
 	header: {
@@ -30,6 +32,12 @@ type ThemeStore = {
 		// 折叠状态
 		collapsed: boolean
 	}
+	watermark: {
+		// 是否开启
+		enable: boolean
+		// 水印内容
+		content: string
+	}
 }
 
 const defaultThemeStore = (): ThemeStore => {
@@ -42,6 +50,7 @@ const defaultThemeStore = (): ThemeStore => {
 				system: "material-symbols:hdr-auto",
 			},
 			mode: "system",
+			onlyExpandParentMenu: true,
 		},
 		header: {
 			height: 50,
@@ -53,6 +62,10 @@ const defaultThemeStore = (): ThemeStore => {
 			width: 200,
 			collapsedWidth: 65,
 			collapsed: true,
+		},
+		watermark: {
+			enable: false,
+			content: "aspen",
 		},
 	}
 }
@@ -105,5 +118,38 @@ export const togglerThemeDrawerVisible = () => {
 export const changeFooterHeight = (height: number) => {
 	store.setState((state) => {
 		state.footer.height = height
+	})
+}
+
+// 全屏水印开关
+export const togglerWatermarkEnable = () => {
+	store.setState((state) => {
+		state.watermark.enable = !state.watermark.enable
+	})
+}
+
+// 改变水印内容
+export const changeWatermarkContent = (value: string) => {
+	store.setState((state) => {
+		state.watermark.content = value
+	})
+}
+
+// 只展开当前父级菜单开关
+export const togglerOnlyExpandParentMenu = () => {
+	store.setState((state) => {
+		state.theme.onlyExpandParentMenu = !state.theme.onlyExpandParentMenu
+	})
+}
+
+// 重置主题
+export const resetThemeStore = () => {
+	store.setState((state) => {
+		const defaultTheme = defaultThemeStore()
+		const cancelTheme = Object.assign(defaultTheme, {
+			theme: { ...defaultTheme.theme, drawerVisible: state.theme.drawerVisible, modeIcons: state.theme.modeIcons },
+			aside: { ...defaultTheme.aside, collapsed: state.aside.collapsed },
+		})
+		return cancelTheme
 	})
 }

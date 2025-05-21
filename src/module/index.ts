@@ -33,3 +33,10 @@ import GlobalLogo from "./components/global/global-logo"
 export const components = { common: { DarkModeContainer }, custom: { ButtonIcon, SvgIcon }, global: { GlobalLogo } }
 
 /*end************************************** components *************************************end*/
+
+/*start *********************************** context ***********************************start*/
+
+import GlobalAntdProvider from "./context/antd/antd-context"
+export const context = { antd: { GlobalAntdProvider } }
+
+/*end************************************** context *************************************end*/

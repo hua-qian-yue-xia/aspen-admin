@@ -1,4 +1,4 @@
-import type { FormRule } from "antd"
+import type { FormRule, FormInstance } from "antd"
 
 import type { ComponentType, ComponentPropsObj } from "./slot-componse/index"
 
@@ -95,3 +95,8 @@ export type FormConfig = {
 
 // 表单导航项
 export type FormNavItem = Omit<FormGroup, "children"> & { key: string | "default" }
+
+export type FormInstanceItem = {
+	key: string
+	formInstance: FormInstance<any>
+}

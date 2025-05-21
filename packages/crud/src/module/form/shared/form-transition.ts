@@ -46,6 +46,7 @@ const disposeFormItem = (key: string, item: FormItem): FormArrayItem => {
 		span: item.span ?? 24,
 		required: item.required ?? false,
 	}
+	// 如果required为true且rules为undefined或者null，会自动添加校验方式msg为`请(输入|选择)${title}
 	if (disposeItem.required && disposeItem.rules == undefined) {
 		disposeItem.rules = [
 			{
@@ -57,6 +58,7 @@ const disposeFormItem = (key: string, item: FormItem): FormArrayItem => {
 	return disposeItem
 }
 
+// 获取导航list
 export const getNavList = (schema: FormSchema, isFormGroup: boolean): Array<FormNavItem> => {
 	const list: Array<FormNavItem> = []
 	if (!isFormGroup) {
