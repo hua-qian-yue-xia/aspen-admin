@@ -1,0 +1,83 @@
+import { memo } from "react"
+
+import { ColorPicker, Space, Flex, Tooltip } from "antd"
+import type { ColorPickerProps } from "antd"
+
+const swatches: Array<{ color: string; name: string }> = [
+	{ color: "#3b82f6", name: "海洋蓝" },
+	{ color: "#6366f1", name: "紫罗兰" },
+	{ color: "#8b5cf6", name: "梦幻紫" },
+	{ color: "#a855f7", name: "迷人紫" },
+	{ color: "#0ea5e9", name: "清澈海洋" },
+	{ color: "#06b6d4", name: "天空蓝" },
+	{ color: "#f43f5e", name: "樱桃红" },
+	{ color: "#ef4444", name: "火焰红" },
+	{ color: "#ec4899", name: "玫瑰粉" },
+	{ color: "#d946ef", name: "紫色魅影" },
+	{ color: "#f97316", name: "橙色阳光" },
+	{ color: "#f59e0b", name: "金色晨曦" },
+	{ color: "#eab308", name: "柠檬黄" },
+	{ color: "#84cc16", name: "草地绿" },
+	{ color: "#22c55e", name: "清新绿" },
+	{ color: "#10b981", name: "热带绿" },
+]
+
+type Props = {
+	/**
+	 * 选中的颜色
+	 */
+	value: string
+	/**
+	 * 是否禁用
+	 * @default false
+	 */
+	disabled?: boolean
+	/**
+	 * 颜色选择器的触发模式
+	 * @default click
+	 */
+	trigger?: ColorPickerProps["trigger"]
+	/**
+	 * 颜色变化时的回调函数
+	 */
+	onChange?: (color: string) => void
+}
+
+const CustomColorPicker: React.FC<Props> = memo(({ value, disabled = false, trigger = "click", onChange }) => {
+	const [getColorStr, setColorStr] = useState<string>(value)
+
+	const updateColor = (color: string) => {
+		setColorStr(color)
+		onChange?.call(color)
+	}
+
+	const customPanelRender: ColorPickerProps["panelRender"] = (_, { components: { Picker } }) => {
+		return (
+			<Space className="w-250px" direction="vertical">
+				<Picker />
+				<Flex wrap gap="small">
+					{swatches.map((v) => {
+						return (
+							<Tooltip key={v.name} title={v.name}>
+								<span onClick={() => updateColor(v.color)}>
+									<ColorPicker defaultValue={v.color} open={false} size="small" />
+								</span>
+							</Tooltip>
+						)
+					})}
+				</Flex>
+			</Space>
+		)
+	}
+	return (
+		<ColorPicker
+			trigger={trigger}
+			disabled={disabled}
+			value={getColorStr}
+			panelRender={customPanelRender}
+			onChange={(_, color) => updateColor(color)}
+		/>
+	)
+})
+
+export default CustomColorPicker

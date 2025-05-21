@@ -8,6 +8,7 @@ import { store } from "@@/index"
 
 import ThemeModeSetting from "./components/theme-mode-setting"
 import ThemeColorSetting from "./components/theme-color-setting"
+import ThemeLayoutSetting from "./components/theme-layout-setting"
 import PageSetting from "./components/page-setting"
 import WatermarkSetting from "./components/watermark-setting"
 import ThemeDrawerOperation from "./components/theme-drawer-operation"
@@ -34,6 +35,8 @@ const ThemeDrawer: React.FC = memo(() => {
 				<div className="overflow-x-hidden px-24px pb-24px pt-8px">
 					<Divider>主题模式</Divider>
 					<ThemeModeSetting />
+					<Divider>布局模式</Divider>
+					<ThemeLayoutSetting />
 					<Divider>主题颜色</Divider>
 					<ThemeColorSetting />
 					<Divider>页面配置</Divider>
