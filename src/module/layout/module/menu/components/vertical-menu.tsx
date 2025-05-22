@@ -1,11 +1,22 @@
 import { Menu } from "antd"
 import type { MenuProps } from "antd"
 
-import { useMenuContext } from "../context/menu-context"
-
 import material from "@aspen/material"
 
 import { store, router } from "@@/index"
+
+import { useMenuContext } from "../context/menu-context"
+
+const getSelectedMenuKeyPath = (matches: Router.Route["matches"]): Array<string> => {
+	if (!matches.length) return []
+	const result = matches.reduce((acc: Array<string>, match, index) => {
+		if (index < matches.length - 1 && match.pathname) {
+			acc.push(match.pathname)
+		}
+		return acc
+	}, [])
+	return result
+}
 
 const VerticalMenu: React.FC = memo(() => {
 	const { themeStore } = store
@@ -13,11 +24,13 @@ const VerticalMenu: React.FC = memo(() => {
 
 	const { aside } = themeStore.store((store) => store)
 
-	const { menuList } = useMenuContext()
+	const { menuList, selectKeys } = useMenuContext()
 	const { navigate } = useRouter()
-	const { currentMatch } = useRoute()
+	const { matched } = useRoute()
 
-	const [getOpenMenuKeys, setOpenMenuKeys] = useState<Array<string>>([])
+	const [getOpenMenuKeys, setOpenMenuKeys] = useState<Array<string>>(
+		aside.collapsed ? [] : getSelectedMenuKeyPath(matched),
+	)
 
 	// 被选中时调用
 	const doSelect: MenuProps["onSelect"] = (info) => {
@@ -26,16 +39,7 @@ const VerticalMenu: React.FC = memo(() => {
 
 	// 当open被改变时的回调
 	const doOpenChange: MenuProps["onOpenChange"] = (keys) => {
-		console.log("keys:", keys)
-		console.log("currentMatch:", currentMatch)
-
-		// 当前打开的菜单key
-		const currentOpenKey = keys.find((key) => !getOpenMenuKeys.includes(key))
-		console.log("currentOpenKey:", currentOpenKey)
-		if (currentOpenKey) {
-			setOpenMenuKeys([currentOpenKey])
-		}
-		// setOpenMenuKeys(keys)
+		setOpenMenuKeys(keys)
 	}
 
 	return (
@@ -47,6 +51,7 @@ const VerticalMenu: React.FC = memo(() => {
 				mode="inline"
 				inlineIndent={18}
 				openKeys={getOpenMenuKeys}
+				selectedKeys={selectKeys}
 				onSelect={doSelect}
 				onOpenChange={doOpenChange}
 			/>

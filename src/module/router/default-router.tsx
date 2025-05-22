@@ -7,10 +7,10 @@ const disposePathComponent = (pathComponent: any) => {
 }
 
 // 错误页面路由
-const errorRoute: Array<SysKey.Route.RouteObj> = []
+const errorRoute: Array<Router.RouteObj> = []
 
 // 其他路由
-const otherRoute: Array<SysKey.Route.RouteObj> = [
+const otherRoute: Array<Router.RouteObj> = [
 	{
 		path: "/login",
 		lazy: () => import("@/view/sys/login").then(disposePathComponent),
@@ -39,7 +39,7 @@ const otherRoute: Array<SysKey.Route.RouteObj> = [
 ]
 
 // 示例路由
-export const exampleRoute: Array<SysKey.Route.RouteObj> = [
+export const exampleRoute: Array<Router.RouteObj> = [
 	{
 		path: "/example",
 		handle: {

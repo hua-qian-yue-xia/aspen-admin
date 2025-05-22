@@ -10,6 +10,10 @@ type ThemeStore = {
 		drawerVisible: boolean
 		// 主题模式
 		mode: ThemeModeType
+		// 主题颜色
+		color: Theme.ThemeColor
+		// 信息色是否跟随主色
+		isInfoFollowPrimary: boolean
 		// 主题模式图标
 		modeIcons: Record<ThemeModeType, string>
 		// 只展开当前父级菜单
@@ -49,6 +53,14 @@ const defaultThemeStore = (): ThemeStore => {
 				light: "material-symbols:sunny",
 				system: "material-symbols:hdr-auto",
 			},
+			color: {
+				primary: "#3b82f6",
+				error: "#ef4444",
+				info: "#3b82f6",
+				success: "#10b981",
+				warning: "#f97316",
+			},
+			isInfoFollowPrimary: false,
 			mode: "system",
 			onlyExpandParentMenu: true,
 		},
@@ -83,6 +95,26 @@ export const changeHeaderHeight = (height: number) => {
 export const changeThemeMode = () => {
 	store.setState((state) => {
 		state.theme.mode = state.theme.mode === "dark" ? "light" : "dark"
+	})
+}
+
+// 信息色是否跟随主色开关
+export const togglerInfoFollowPrimary = () => {
+	store.setState((state) => {
+		state.theme.isInfoFollowPrimary = !state.theme.isInfoFollowPrimary
+		state.theme.color.info = state.theme.isInfoFollowPrimary
+			? state.theme.color.primary
+			: defaultThemeStore().theme.color.info
+	})
+}
+
+// 根据颜色key改变颜色
+export const changeThemeColor = (key: Theme.ThemeColorKey, value: string) => {
+	store.setState((state) => {
+		if (state.theme.color[key] === value) {
+			return
+		}
+		state.theme.color[key] = value
 	})
 }
 

@@ -13,7 +13,7 @@ const SettingItem: React.FC<Props> = ({ className, label, show = true, suffix, c
 	if (!show) return null
 	return (
 		<div className={mergeClass(className, "full flex-row items-center justify-between")}>
-			<div>
+			<div className="flex-row-center">
 				<span className="pr-8px text-base-text">{label}</span>
 				{suffix}
 			</div>

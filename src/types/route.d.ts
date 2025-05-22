@@ -41,6 +41,7 @@ declare namespace Router {
 		error: Error | null
 		fullPath: string
 		matches: Array<UIMatch<T, Router.RouteObj["handle"]>>
+		matched: Array<UIMatch<T, Router.RouteObj["handle"]>>
 		currentMatch: UIMatch<T, Router.RouteObj["handle"]>
 		query: Q
 		params: P

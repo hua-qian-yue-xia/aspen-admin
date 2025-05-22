@@ -46,9 +46,15 @@ type Props = {
 const CustomColorPicker: React.FC<Props> = memo(({ value, disabled = false, trigger = "click", onChange }) => {
 	const [getColorStr, setColorStr] = useState<string>(value)
 
+	useEffect(() => {
+		setColorStr(value)
+	}, [value])
+
 	const updateColor = (color: string) => {
 		setColorStr(color)
-		onChange?.call(color)
+		if (onChange) {
+			onChange(color)
+		}
 	}
 
 	const customPanelRender: ColorPickerProps["panelRender"] = (_, { components: { Picker } }) => {
@@ -75,7 +81,7 @@ const CustomColorPicker: React.FC<Props> = memo(({ value, disabled = false, trig
 			disabled={disabled}
 			value={getColorStr}
 			panelRender={customPanelRender}
-			onChange={(_, color) => updateColor(color)}
+			onChange={(color) => updateColor(color.toHexString())}
 		/>
 	)
 })

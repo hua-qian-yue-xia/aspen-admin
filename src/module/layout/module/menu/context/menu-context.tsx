@@ -5,12 +5,12 @@ import { router } from "@@/index"
 
 type MenuContextProps = {
 	menuList: Array<Required<MenuProps>["items"][number]>
-	selectKey: Array<string>
+	selectKeys: Array<string>
 }
 
 const MenuContext = createContext<MenuContextProps>({
 	menuList: [],
-	selectKey: [],
+	selectKeys: [],
 })
 
 export const useMenuContext = () => {
@@ -29,7 +29,7 @@ export const MenuProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
 	const menuContext: MenuContextProps = {
 		menuList: menuList,
-		selectKey: selectKey,
+		selectKeys: selectKey,
 	}
 	return <MenuContext.Provider value={menuContext}>{children}</MenuContext.Provider>
 }

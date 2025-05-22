@@ -9,7 +9,8 @@ export const useRoute = <
 	const matches = useMatches() as unknown as Array<Router.Route<T>>
 	// 获取当前路由
 	const currentMatch = matches.at(-1) as unknown as Router.Route<T>
-
+	// 获取除了根路由之外的所有路由
+	const matched = matches.slice(1) as unknown as Router.Route<T>
 	const { hash, pathname, search } = useLocation()
 	// 获取当前路由的完整路径
 	const fullPath = pathname + search + hash
@@ -18,6 +19,7 @@ export const useRoute = <
 	return useMemo(() => {
 		return {
 			matches,
+			matched,
 			currentMatch,
 			fullPath,
 			error,
