@@ -4,6 +4,9 @@ import material from "@aspen/material"
 
 import SettingItem from "./setting-item"
 
+/**
+ * 主题颜色设置
+ */
 const ThemeColorSetting: React.FC = memo(() => {
 	return (
 		<div className="flex-col items-stretch gap-12px">

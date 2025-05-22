@@ -5,6 +5,9 @@ import { store } from "@@/index"
 
 import SettingItem from "./setting-item"
 
+/**
+ * 主题模式设置
+ */
 const ThemeModeSetting: React.FC = memo(() => {
 	const { themeStore } = store
 	const { theme } = themeStore.store((store) => store)

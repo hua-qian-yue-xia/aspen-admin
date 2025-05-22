@@ -16,9 +16,23 @@ const VerticalMenu: React.FC = memo(() => {
 	const { menuList } = useMenuContext()
 	const { navigate } = useRouter()
 
+	const [getOpenMenuKeys, setOpenMenuKeys] = useState<Array<string>>([])
+
 	// 被选中时调用
 	const doSelect: MenuProps["onSelect"] = (info) => {
 		navigate(info.key)
+	}
+
+	// 当open被改变时的回调
+	const doOpenChange: MenuProps["onOpenChange"] = (keys) => {
+		console.log("keys:", keys)
+		// 当前打开的菜单key
+		const currentOpenKey = keys.find((key) => !getOpenMenuKeys.includes(key))
+		console.log("currentOpenKey:", currentOpenKey)
+		if (currentOpenKey) {
+			setOpenMenuKeys([currentOpenKey])
+		}
+		// setOpenMenuKeys(keys)
 	}
 
 	return (
@@ -29,7 +43,9 @@ const VerticalMenu: React.FC = memo(() => {
 				inlineCollapsed={aside.collapsed}
 				mode="inline"
 				inlineIndent={18}
+				openKeys={getOpenMenuKeys}
 				onSelect={doSelect}
+				onOpenChange={doOpenChange}
 			/>
 		</material.SimpleScrollbar>
 	)

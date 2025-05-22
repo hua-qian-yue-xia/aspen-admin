@@ -5,6 +5,9 @@ import { store } from "@@/index"
 
 import SettingItem from "./setting-item"
 
+/**
+ * 水印配置设置
+ */
 const WatermarkSetting: React.FC = memo(() => {
 	const { themeStore } = store
 	const { watermark } = themeStore.store((store) => store)

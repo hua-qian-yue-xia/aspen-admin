@@ -5,6 +5,9 @@ import { store } from "@@/index"
 
 import SettingItem from "./setting-item"
 
+/**
+ * 页面配置设置
+ */
 const PageSetting: React.FC = memo(() => {
 	const { themeStore } = store
 	const { header, aside, footer } = themeStore.store((store) => store)

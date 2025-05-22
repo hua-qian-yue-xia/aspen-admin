@@ -16,22 +16,27 @@ const initRouter = () => {
 const navigator = () => {
 	const { reactRouter } = initRouter()
 
+	// 跳转页面
 	async function navigate(path: To | null, options?: RouterNavigateOptions) {
 		reactRouter.navigate(path, options)
 	}
 
+	// 返回上一页
 	function back() {
 		reactRouter.navigate(-1)
 	}
 
+	// 重新加载当前路由
 	function reload() {
 		reactRouter.navigate(0)
 	}
 
+	// 跳转到根目录
 	function goHome() {
 		reactRouter.navigate("/")
 	}
 
+	// 替换当前路由
 	function replace(path: To) {
 		reactRouter.navigate(path, { replace: true })
 	}
