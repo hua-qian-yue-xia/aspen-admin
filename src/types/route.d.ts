@@ -29,6 +29,7 @@ declare namespace Router {
 			 */
 			hideInMenu?: boolean
 		}
+		children?: Array<RouteObj>
 	}
 
 	type UIMatch<Data = unknown, Handle = unknown> = import("react-router-dom").UIMatch<Data, Handle>

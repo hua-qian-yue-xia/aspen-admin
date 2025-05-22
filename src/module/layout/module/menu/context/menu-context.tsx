@@ -35,6 +35,7 @@ export const MenuProvider: React.FC<PropsWithChildren> = ({ children }) => {
 }
 
 const getSelectKey = (route: Router.Route): Array<string> => {
+	if (!route.currentMatch.handle) return []
 	const { hideInMenu } = route.currentMatch.handle
 	const name = route.pathname
 	if (!hideInMenu) {
