@@ -9,14 +9,4 @@ declare namespace SysKey {
 
 		type MenuItem = Required<import("antd").MenuProps>["items"][number]
 	}
-
-	namespace Route {
-		type RouteItem = import("react-router-dom").RouteObject & {
-			handle: {
-				icon: string
-				title: string
-				order: number
-			}
-		}
-	}
 }

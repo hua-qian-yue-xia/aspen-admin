@@ -9,12 +9,13 @@ import { store, router } from "@@/index"
 
 const VerticalMenu: React.FC = memo(() => {
 	const { themeStore } = store
-	const { useRouter } = router
+	const { useRouter, useRoute } = router
 
 	const { aside } = themeStore.store((store) => store)
 
 	const { menuList } = useMenuContext()
 	const { navigate } = useRouter()
+	const { currentMatch } = useRoute()
 
 	const [getOpenMenuKeys, setOpenMenuKeys] = useState<Array<string>>([])
 
@@ -26,6 +27,8 @@ const VerticalMenu: React.FC = memo(() => {
 	// 当open被改变时的回调
 	const doOpenChange: MenuProps["onOpenChange"] = (keys) => {
 		console.log("keys:", keys)
+		console.log("currentMatch:", currentMatch)
+
 		// 当前打开的菜单key
 		const currentOpenKey = keys.find((key) => !getOpenMenuKeys.includes(key))
 		console.log("currentOpenKey:", currentOpenKey)

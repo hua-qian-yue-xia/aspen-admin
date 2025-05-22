@@ -12,7 +12,7 @@ export const RouterProvider: React.FC = () => {
 	)
 }
 
-export function useRouter(): RouterContextType {
+export const useRouter = (): RouterContextType => {
 	const navigator = useContext(RouterContext)
 	if (!navigator) throw new Error("未注入RouterContext")
 	return navigator

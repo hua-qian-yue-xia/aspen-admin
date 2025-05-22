@@ -1,9 +1,10 @@
 /*start *********************************** router ***********************************start*/
 
-import { RouterProvider, useRouter } from "./router/router-provider"
+import { RouterProvider, useRouter } from "./router/router-context"
+import { useRoute } from "./router/route-context"
 import * as routerShared from "./router/shared/router-dispose"
 
-export const router = { RouterProvider, useRouter, routerShared }
+export const router = { RouterProvider, useRouter, useRoute, routerShared }
 
 /*end************************************** router *************************************end*/
 
