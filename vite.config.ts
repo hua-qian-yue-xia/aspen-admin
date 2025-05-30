@@ -7,6 +7,7 @@ import { registerPlugins } from "./build"
 
 // https://vite.dev/config/
 export default defineConfig((configEnv) => {
+	console.log("configEnv:", configEnv)
 	return {
 		plugins: [react(), ...registerPlugins()],
 		resolve: {

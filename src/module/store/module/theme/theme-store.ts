@@ -8,6 +8,8 @@ type ThemeStore = {
 	theme: {
 		// 抽屉是否弹出
 		drawerVisible: boolean
+		// 是否为暗黑模式
+		isDark: boolean
 		// 主题模式
 		mode: ThemeModeType
 		// 主题颜色
@@ -18,6 +20,8 @@ type ThemeStore = {
 		modeIcons: Record<ThemeModeType, string>
 		// 只展开当前父级菜单
 		onlyExpandParentMenu: boolean
+		// 主题token
+		tokens: Theme.ThemeModeToken
 	}
 	// header配置
 	header: {
@@ -61,8 +65,31 @@ const defaultThemeStore = (): ThemeStore => {
 				warning: "#f97316",
 			},
 			isInfoFollowPrimary: false,
+			isDark: false,
 			mode: "system",
 			onlyExpandParentMenu: true,
+			tokens: {
+				light: {
+					boxShadow: {
+						header: "0 1px 2px rgb(0, 21, 41, 0.08)",
+						sider: "2px 0 8px 0 rgb(29, 35, 41, 0.05)",
+						tab: "0 1px 2px rgb(0, 21, 41, 0.08)",
+					},
+					colors: {
+						"base-text": "rgb(31, 31, 31)",
+						container: "rgb(255, 255, 255)",
+						inverted: "rgb(0, 20, 40)",
+						layout: "rgb(247, 250, 252)",
+					},
+				},
+				dark: {
+					colors: {
+						"base-text": "rgb(224, 224, 224)",
+						container: "rgb(28, 28, 28)",
+						layout: "rgb(18, 18, 18)",
+					},
+				},
+			},
 		},
 		header: {
 			height: 50,
@@ -94,13 +121,19 @@ export const changeHeaderHeight = (height: number) => {
 // 改变主题模式
 export const changeThemeMode = (mode?: ThemeModeType) => {
 	store.setState((state) => {
+		const { theme } = state
 		if (!mode) {
-			state.theme.mode = state.theme.mode === "dark" ? "light" : "dark"
-			return
+			const themeModes = Object.keys(theme.modeIcons) as Array<ThemeModeType>
+			const index = themeModes.findIndex((item) => item === theme.mode)
+			const nextIndex = index === themeModes.length - 1 ? 0 : index + 1
+			// 改变theme.mode
+			theme.mode = themeModes[nextIndex]
+		} else {
+			// 改变theme.mode
+			theme.mode = mode
 		}
-		if (state.theme.mode !== mode) {
-			state.theme.mode = mode
-		}
+		// 改变theme.isDark
+		theme.isDark = theme.mode === "dark"
 	})
 }
 

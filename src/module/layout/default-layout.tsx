@@ -14,9 +14,9 @@ import MenuToggler from "./module/menu/components/menu-toggler"
 
 import { store, components } from "@@/index"
 
-const LayoutHeader: React.FC = () => {
+const LayoutHeader: React.FC<{ isDark: boolean }> = ({ isDark }) => {
 	return (
-		<ul className="full flex-row items-center justify-between">
+		<components.common.DarkModeContainer className="full flex-row items-center justify-between" isDark={isDark}>
 			<li className="flex-row-center"></li>
 			<li className="flex-row-center">
 				<GlobalSearch />
@@ -24,51 +24,56 @@ const LayoutHeader: React.FC = () => {
 				<GlobalThemeBtn />
 				<GlobalUser />
 			</li>
-		</ul>
+		</components.common.DarkModeContainer>
 	)
 }
 
-const LayoutMain: React.FC = () => {
+const LayoutMain: React.FC<{ isDark: boolean }> = ({ isDark }) => {
 	return (
-		<div className="full">
+		<components.common.DarkModeContainer className="full" isDark={isDark}>
 			<Outlet />
-		</div>
+		</components.common.DarkModeContainer>
 	)
 }
 
-const LayoutAside: React.FC<{ height: number }> = ({ height }) => {
-	const { global } = components
+const LayoutAside: React.FC<{ height: number; isDark: boolean }> = ({ height, isDark }) => {
 	return (
-		<ul className="full flex-col-center">
+		<components.common.DarkModeContainer className="full flex-col-center" isDark={isDark}>
 			<li className="w-full flex-row-center">
-				<global.GlobalLogo style={{ height: `${height}px` }} />
+				<components.global.GlobalLogo style={{ height: `${height}px` }} />
 				<MenuToggler />
 			</li>
 			<li className="full flex-grow">
 				<GlobalMenu mode="vertical" />
 			</li>
-		</ul>
+		</components.common.DarkModeContainer>
 	)
 }
 
-const LayoutFooter: React.FC = () => {
-	return <GlobalFooter />
+const LayoutFooter: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+	return (
+		<components.common.DarkModeContainer className="full" isDark={isDark}>
+			<GlobalFooter />
+		</components.common.DarkModeContainer>
+	)
 }
 
 const DefaultLayout = () => {
 	const { themeStore } = store
-	const { header, footer, aside } = themeStore.store((store) => store)
+	const { theme, header, footer, aside } = themeStore.store((store) => store)
+
+	const isDark = theme.isDark && false
 	return (
 		<>
 			<material.Layout
-				headerNode={<LayoutHeader />}
+				headerNode={<LayoutHeader isDark={isDark} />}
 				headerHeight={header.height}
-				mainNode={<LayoutMain />}
-				asideNode={<LayoutAside height={header.height} />}
+				mainNode={<LayoutMain isDark={isDark} />}
+				asideNode={<LayoutAside height={header.height} isDark={isDark} />}
 				asideCollapse={aside.collapsed}
 				asideWidth={aside.width}
 				asideCollapseWidth={aside.collapsedWidth}
-				footerNode={<LayoutFooter />}
+				footerNode={<LayoutFooter isDark={isDark} />}
 				footerHeight={footer.height}
 			/>
 			<ThemeDrawer />

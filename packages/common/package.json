@@ -5,6 +5,7 @@
   "scripts": {},
   "dependencies": {
     "classnames": "^2.5.1",
+    "colord": "^2.9.3",
     "nanoid": "^5.0.9",
     "radash": "^12.1.0"
   }

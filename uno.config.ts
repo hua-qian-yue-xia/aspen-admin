@@ -4,6 +4,8 @@ import type { Theme } from "@unocss/preset-uno"
 import transformerDirectives from "@unocss/transformer-directives"
 import transformerVariantGroup from "@unocss/transformer-variant-group"
 
+import { getThemeColorVars } from "./src/module/store/module/theme/theme-shared"
+
 export default defineConfig<Theme>({
 	content: {
 		pipeline: {
@@ -21,6 +23,7 @@ export default defineConfig<Theme>({
 		"flex-col-center": "flex flex-col justify-center items-center",
 	},
 	theme: {
+		...getThemeColorVars(),
 		fontSize: {
 			icon: "1.125rem",
 			"icon-large": "1.5rem",

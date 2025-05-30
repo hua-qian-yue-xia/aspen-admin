@@ -1,6 +1,6 @@
 declare namespace Router {
 	type RouteObj = import("react-router-dom").RouteObject & {
-		handle: {
+		handle?: {
 			/**
 			 * icon图标
 			 */
