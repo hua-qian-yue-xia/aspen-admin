@@ -49,11 +49,12 @@ const GlobalAntdProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
 	// 监听用户主题模式切换
 	useMount(() => {
-		const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
 		const handler = (event: MediaQueryListEvent) => {
-			console.log("matches:", event.matches)
 			if (theme.mode !== "system") return
+			themeStore.changeThemeMode(event.matches ? "dark" : "light")
 		}
+		const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
+		mediaQuery.addEventListener("change", handler)
 		return () => {
 			mediaQuery.removeEventListener("change", handler)
 		}

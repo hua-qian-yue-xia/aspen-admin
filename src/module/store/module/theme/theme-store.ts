@@ -129,6 +129,9 @@ export const changeThemeMode = (mode?: ThemeModeType) => {
 			// 改变theme.mode
 			theme.mode = themeModes[nextIndex]
 		} else {
+			if (state.theme.mode == mode) {
+				return
+			}
 			// 改变theme.mode
 			theme.mode = mode
 		}
