@@ -20,9 +20,10 @@ type Props = {
 
 const SvgIcon: React.FC<Props> = (props) => {
 	const { icon, localIcon, ...rest } = props
-	return _.isEmpty(localIcon) ? (
-		<Icon icon={icon} {...rest} />
-	) : (
+	if (_.isEmpty(localIcon)) {
+		return <Icon icon={icon} {...rest} />
+	}
+	return (
 		<svg height="1em" width="1em" {...rest} aria-hidden="true">
 			<use fill="currentColor" href={localIcon} />
 		</svg>

@@ -45,10 +45,12 @@ const GlobalUser: React.FC = memo(() => {
 
 	return (
 		<Dropdown menu={{ items, onClick }} placement="bottomRight" trigger={["click"]}>
-			<ButtonIcon className="px-12px">
-				<SvgIcon className="text-icon-large" icon="ph:user-circle" />
-				<span className="text-16px font-medium">测试用户</span>
-			</ButtonIcon>
+			<div className="full">
+				<ButtonIcon className="px-12px">
+					<SvgIcon className="text-icon-large" icon="ph:user-circle" />
+					<span className="text-16px font-medium">测试用户</span>
+				</ButtonIcon>
+			</div>
 		</Dropdown>
 	)
 })
