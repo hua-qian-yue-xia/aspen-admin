@@ -10,15 +10,19 @@ export const router = { RouterProvider, useRouter, useRoute, routerShared }
 
 /*start *********************************** store ***********************************start*/
 
+import * as langStore from "./store/module/lang/lang-store"
 import * as settingStore from "./store/module/setting/setting-store"
 import * as tabStore from "./store/module/tab/tab-store"
 import * as themeStore from "./store/module/theme/theme-store"
+import * as themeShared from "./store/module/theme/theme-shared"
 import * as userStore from "./store/module/user/user-store"
 
 export const store = {
+	langStore,
 	settingStore,
 	tabStore,
 	themeStore,
+	themeShared,
 	userStore,
 }
 

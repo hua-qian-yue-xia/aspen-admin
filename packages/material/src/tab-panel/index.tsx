@@ -14,14 +14,10 @@ const modes: Record<TabPanelModeKey, { component: React.FC<ComponentsProps> }> =
 	},
 }
 
-const TabPanel: React.FC<TabPanelProps> = ({ children, mode = "button", uniqueCode }) => {
+const TabPanel: React.FC<TabPanelProps> = ({ children, mode = "button", ...rest }) => {
 	const CurrentComponent = modes[mode].component
 
-	return (
-		<div>
-			<CurrentComponent uniqueCode={uniqueCode}>{children}</CurrentComponent>
-		</div>
-	)
+	return <CurrentComponent {...rest}>{children}</CurrentComponent>
 }
 
 export default TabPanel

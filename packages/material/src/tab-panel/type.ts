@@ -8,6 +8,19 @@ export type ComponentsProps = PropsWithChildren & {
 	 * tab唯一标识
 	 */
 	uniqueCode: string
+	/**
+	 * 是否激活
+	 * @default false
+	 */
+	active?: boolean
+	/**
+	 * 关闭tab
+	 */
+	onClose?: (uniqueCode: string) => void
+	/**
+	 * 激活tab
+	 */
+	onActive?: (uniqueCode: string) => void
 }
 
 /**

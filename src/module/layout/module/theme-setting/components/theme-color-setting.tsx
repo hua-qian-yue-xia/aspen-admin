@@ -55,7 +55,7 @@ const ThemeColorSetting: React.FC = memo(() => {
 					<SettingItem key={v.key} label={v.title} suffix={renderer(v.key)}>
 						<material.CustomColorPicker
 							trigger="hover"
-							value={theme.color[v.key]}
+							value={theme.colors[v.key]}
 							onChange={(color) => themeStore.changeThemeColor(v.key, color)}
 						/>
 					</SettingItem>

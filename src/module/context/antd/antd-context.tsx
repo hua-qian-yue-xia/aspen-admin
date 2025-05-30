@@ -26,12 +26,15 @@ const watermarkConfig: WatermarkProps = {
 }
 
 const GlobalAntdProvider: React.FC<PropsWithChildren> = ({ children }) => {
-	const { themeStore } = store
-	const { watermark } = themeStore.store((state) => state)
+	const { langStore, themeStore, themeShared } = store
+	const { antdLocaleList, locale } = langStore.store((state) => state)
+	const { watermark, theme } = themeStore.store((state) => state)
 	return (
 		<ConfigProvider
 			button={{ classNames: { icon: "align-1px  text-icon" } }}
 			card={{ styles: { body: { flex: 1, overflow: "hidden", padding: "12px 16px " } } }}
+			locale={antdLocaleList[locale]}
+			theme={themeShared.getAntdTheme(theme.colors, false)}
 		>
 			<Watermark className="full" content={watermark.enable ? watermark.content : ""} {...watermarkConfig}>
 				<App className="full">

@@ -11,7 +11,7 @@ type ThemeStore = {
 		// 主题模式
 		mode: ThemeModeType
 		// 主题颜色
-		color: Theme.ThemeColor
+		colors: Theme.ThemeColor
 		// 信息色是否跟随主色
 		isInfoFollowPrimary: boolean
 		// 主题模式图标
@@ -53,7 +53,7 @@ const defaultThemeStore = (): ThemeStore => {
 				light: "material-symbols:sunny",
 				system: "material-symbols:hdr-auto",
 			},
-			color: {
+			colors: {
 				primary: "#3b82f6",
 				error: "#ef4444",
 				info: "#3b82f6",
@@ -108,19 +108,19 @@ export const changeThemeMode = (mode?: ThemeModeType) => {
 export const togglerInfoFollowPrimary = () => {
 	store.setState((state) => {
 		state.theme.isInfoFollowPrimary = !state.theme.isInfoFollowPrimary
-		state.theme.color.info = state.theme.isInfoFollowPrimary
-			? state.theme.color.primary
-			: defaultThemeStore().theme.color.info
+		state.theme.colors.info = state.theme.isInfoFollowPrimary
+			? state.theme.colors.primary
+			: defaultThemeStore().theme.colors.info
 	})
 }
 
 // 根据颜色key改变颜色
 export const changeThemeColor = (key: Theme.ThemeColorKey, value: string) => {
 	store.setState((state) => {
-		if (state.theme.color[key] === value) {
+		if (state.theme.colors[key] === value) {
 			return
 		}
-		state.theme.color[key] = value
+		state.theme.colors[key] = value
 	})
 }
 
