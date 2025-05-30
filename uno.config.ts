@@ -15,6 +15,8 @@ export default defineConfig<Theme>({
 		full: "w-full h-full",
 		"flex-row": "flex flex-row",
 		"flex-col": "flex flex-col",
+		"flex-row-inline": "flex-inline flex-row",
+		"flex-col-inline": "flex-inline flex-col",
 		"flex-row-center": "flex flex-row justify-center items-center",
 		"flex-col-center": "flex flex-col justify-center items-center",
 	},

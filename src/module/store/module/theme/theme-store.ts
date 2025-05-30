@@ -92,9 +92,15 @@ export const changeHeaderHeight = (height: number) => {
 }
 
 // 改变主题模式
-export const changeThemeMode = () => {
+export const changeThemeMode = (mode?: ThemeModeType) => {
 	store.setState((state) => {
-		state.theme.mode = state.theme.mode === "dark" ? "light" : "dark"
+		if (!mode) {
+			state.theme.mode = state.theme.mode === "dark" ? "light" : "dark"
+			return
+		}
+		if (state.theme.mode !== mode) {
+			state.theme.mode = mode
+		}
 	})
 }
 

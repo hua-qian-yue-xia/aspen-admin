@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom"
 
 import material from "@aspen/material"
 
+import GlobalFooter from "./module/footer/index"
 import GlobalSearch from "./module/global/global-search"
 import GlobalThemeSwitch from "./module/global/global-theme-switch"
 import GlobalThemeBtn from "./module/global/global-theme-btn"
@@ -51,7 +52,7 @@ const LayoutAside: React.FC<{ height: number }> = ({ height }) => {
 }
 
 const LayoutFooter: React.FC = () => {
-	return <div>底部区域</div>
+	return <GlobalFooter />
 }
 
 const DefaultLayout = () => {

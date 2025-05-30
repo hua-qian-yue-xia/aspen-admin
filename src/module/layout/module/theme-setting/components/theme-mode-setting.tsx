@@ -1,7 +1,7 @@
 import { memo } from "react"
 import { Switch } from "antd"
 
-import { store } from "@@/index"
+import { store, components } from "@@/index"
 
 import SettingItem from "./setting-item"
 
@@ -10,9 +10,11 @@ import SettingItem from "./setting-item"
  */
 const ThemeModeSetting: React.FC = memo(() => {
 	const { themeStore } = store
+	const { theme: themeComponents } = components
 	const { theme } = themeStore.store((store) => store)
 	return (
 		<div className="flex-col items-stretch gap-12px">
+			<themeComponents.ThemeSegmented />
 			<SettingItem label="仅展开当前父级菜单">
 				<Switch defaultChecked value={theme.onlyExpandParentMenu} onChange={themeStore.togglerOnlyExpandParentMenu} />
 			</SettingItem>

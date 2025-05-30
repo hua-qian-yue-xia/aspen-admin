@@ -11,11 +11,13 @@ export const router = { RouterProvider, useRouter, useRoute, routerShared }
 /*start *********************************** store ***********************************start*/
 
 import * as settingStore from "./store/module/setting/setting-store"
+import * as tabStore from "./store/module/tab/tab-store"
 import * as themeStore from "./store/module/theme/theme-store"
 import * as userStore from "./store/module/user/user-store"
 
 export const store = {
 	settingStore,
+	tabStore,
 	themeStore,
 	userStore,
 }
@@ -31,7 +33,14 @@ import SvgIcon from "./components/custom/svg-icon"
 
 import GlobalLogo from "./components/global/global-logo"
 
-export const components = { common: { DarkModeContainer }, custom: { ButtonIcon, SvgIcon }, global: { GlobalLogo } }
+import ThemeSegmented from "./components/theme/theme-segmented"
+
+export const components = {
+	common: { DarkModeContainer },
+	custom: { ButtonIcon, SvgIcon },
+	global: { GlobalLogo },
+	theme: { ThemeSegmented },
+}
 
 /*end************************************** components *************************************end*/
 

@@ -17,6 +17,7 @@ declare global {
   const memo: typeof import('react')['memo']
   const startTransition: typeof import('react')['startTransition']
   const svgIcon: typeof import('../../components/custom/svg-icon')['default']
+  const themeSegmented: typeof import('../../components/theme/theme-segmented')['default']
   const useAntdTable: (typeof import("ahooks"))["useAntdTable"]
   const useAsyncEffect: (typeof import("ahooks"))["useAsyncEffect"]
   const useBoolean: (typeof import("ahooks"))["useBoolean"]

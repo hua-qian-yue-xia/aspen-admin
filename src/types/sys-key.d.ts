@@ -9,4 +9,21 @@ declare namespace SysKey {
 
 		type MenuItem = Required<import("antd").MenuProps>["items"][number]
 	}
+	namespace Tab {
+		type TabObj = {
+			/**
+			 * 菜单id
+			 */
+			uniqueCode: string
+			/**
+			 * 菜单标题
+			 */
+			title: string
+			/**
+			 * Iconify 网络图标
+			 * @see https://icones.js.org
+			 */
+			icon?: string
+		}
+	}
 }
