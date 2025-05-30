@@ -29,6 +29,7 @@ const GlobalAntdProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const { langStore, themeStore, themeShared } = store
 	const { antdLocaleList, locale } = langStore.store((state) => state)
 	const { watermark, theme } = themeStore.store((state) => state)
+
 	return (
 		<ConfigProvider
 			button={{ classNames: { icon: "align-1px  text-icon" } }}
