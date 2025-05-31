@@ -2,6 +2,8 @@ import React, { useMemo } from "react"
 
 import { mergeClass } from "@aspen/common"
 
+import "../../index.scss"
+
 import SvgClose from "../svg-close"
 
 import type { ComponentsProps } from "../../type"
@@ -9,18 +11,36 @@ import type { ComponentsProps } from "../../type"
 /**
  * button 按钮风格
  */
-const ButtonTab: React.FC<ComponentsProps> = ({ children, uniqueCode, active = false, onClose, onActive }) => {
+const ButtonTab: React.FC<ComponentsProps> = ({
+	children,
+	uniqueCode,
+	active = false,
+	isDark = false,
+	onClose,
+	onActive,
+}) => {
 	const defaultClass = useMemo(() => {
-		return mergeClass("flex-row-center cursor-pointer px-12px py-4p border-(1px solid) rounded-4px gap-12px")
-	}, [])
+		const style = [
+			"button-tab",
+			{ "button-tab_dark": isDark },
+			{ "button-tab_active": active },
+			{ "button-tab_active_dark": isDark },
+		]
+		return mergeClass("flex-row-center cursor-pointer px-12px py-4px border-(1px solid) rounded-4px gap-12px", style)
+	}, [active, isDark])
 	return (
-		<div className={defaultClass} onClick={onActive?.call(uniqueCode)}>
+		<div
+			className={defaultClass}
+			onClick={() => {
+				onActive?.call(null, uniqueCode)
+			}}
+		>
 			<span></span>
 			<span>{children}</span>
 			<SvgClose
 				onClick={(e) => {
-					e.stopPropagation() // 阻止事件冒泡
-					onClose?.call(uniqueCode)
+					e.stopPropagation()
+					onClose?.call(null, uniqueCode)
 				}}
 			/>
 		</div>

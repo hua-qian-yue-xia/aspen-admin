@@ -19,7 +19,7 @@ const getSelectedMenuKeyPath = (matches: Router.Route["matches"]): Array<string>
 }
 
 const VerticalMenu: React.FC = memo(() => {
-	const { themeStore } = store
+	const { themeStore, tabStore } = store
 	const { useRouter, useRoute } = router
 
 	const { aside } = themeStore.store((store) => store)
@@ -35,6 +35,8 @@ const VerticalMenu: React.FC = memo(() => {
 	// 被选中时调用
 	const doSelect: MenuProps["onSelect"] = (info) => {
 		navigate(info.key)
+		// 设置activeTab
+		tabStore.activeTab(info.key)
 	}
 
 	// 当open被改变时的回调

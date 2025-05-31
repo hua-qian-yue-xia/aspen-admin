@@ -4,11 +4,13 @@ import { immer } from "zustand/middleware/immer"
 
 type TabStore = {
 	tabs: Array<SysKey.Tab.TabObj>
+	activeTabUniqueCode: string
 }
 
 const defaultTabStore = (): TabStore => {
 	return {
 		tabs: [],
+		activeTabUniqueCode: "",
 	}
 }
 
@@ -24,5 +26,23 @@ export const addTab = (tab: SysKey.Tab.TabObj) => {
 			return
 		}
 		state.tabs = [...state.tabs, tab]
+	})
+}
+
+// 关闭tab
+export const closeTab = (uniqueCode: string) => {
+	store.setState((state) => {
+		const index = state.tabs.findIndex((v) => v.uniqueCode === uniqueCode)
+		if (index === -1) return
+		state.tabs.splice(index, 1)
+	})
+}
+
+// 激活tab
+export const activeTab = (uniqueCode: string) => {
+	store.setState((state) => {
+		const isExist = state.tabs.some((v) => v.uniqueCode === uniqueCode)
+		if (!isExist) return
+		state.activeTabUniqueCode = uniqueCode
 	})
 }

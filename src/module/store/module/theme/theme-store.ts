@@ -157,6 +157,10 @@ export const changeThemeColor = (key: Theme.ThemeColorKey, value: string) => {
 			return
 		}
 		state.theme.colors[key] = value
+		// 主色跟随信息色
+		if (key === "primary" && state.theme.isInfoFollowPrimary) {
+			state.theme.colors.info = value
+		}
 	})
 }
 

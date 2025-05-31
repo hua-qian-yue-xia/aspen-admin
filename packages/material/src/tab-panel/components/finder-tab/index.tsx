@@ -9,7 +9,8 @@ import type { ComponentsProps } from "../../type"
  */
 const FinderTab: React.FC<ComponentsProps> = ({ children }) => {
 	const defaultClass = useMemo(() => {
-		return mergeClass("flex-row-center cursor-pointer px-12px py-4p border-(1px solid) rounded-4px gap-12px")
+		const style = []
+		return mergeClass("flex-row-center cursor-pointer px-12px py-4p border-(1px solid) rounded-4px gap-12px", style)
 	}, [])
 	return (
 		<div className={defaultClass}>

@@ -1,9 +1,9 @@
-import type { PropsWithChildren } from "react"
+import type { AnyColor } from "@aspen/common"
 
 /**
  * tab项props
  */
-export type ComponentsProps = PropsWithChildren & {
+export type ComponentsProps = React.ComponentProps<"div"> & {
 	/**
 	 * tab唯一标识
 	 */
@@ -13,6 +13,11 @@ export type ComponentsProps = PropsWithChildren & {
 	 * @default false
 	 */
 	active?: boolean
+	/**
+	 * 是否为黑暗模式
+	 * @default false
+	 */
+	isDark?: boolean
 	/**
 	 * 关闭tab
 	 */
@@ -39,4 +44,18 @@ export type TabPanelProps = ComponentsProps & {
 	 * @default button
 	 */
 	mode?: TabPanelModeKey
+	/**
+	 * 主题颜色
+	 */
+	primaryColor: AnyColor
+}
+
+// tab-panel 主题颜色
+export type TabPanelCssVarsProps = {
+	primaryColor: AnyColor
+	primaryColor1: AnyColor
+	primaryColor2: AnyColor
+	primaryColorOpacity1: AnyColor
+	primaryColorOpacity2: AnyColor
+	primaryColorOpacity3: AnyColor
 }

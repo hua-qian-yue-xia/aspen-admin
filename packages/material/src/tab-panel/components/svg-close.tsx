@@ -5,7 +5,12 @@ import { mergeClass } from "@aspen/common"
 
 const SvgClose: React.FC<React.ComponentProps<"div">> = ({ className, onClick, ...props }) => {
 	const defaultClass = useMemo(() => {
-		return mergeClass("relative h-16px w-16px inline-flex items-center justify-center rd-50% text-14px", className)
+		const style = ["svg-close"]
+		return mergeClass(
+			"relative h-16px w-16px inline-flex items-center justify-center rd-50% text-14px",
+			className,
+			style,
+		)
 	}, [className])
 
 	// 是否touch
