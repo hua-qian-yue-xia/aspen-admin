@@ -1,25 +1,39 @@
 import React from "react"
 
 import { CurdForm } from "@aspen/crud"
-import type { FormSchema } from "@aspen/crud"
+import type { FormSchema, FormConfig } from "@aspen/crud"
 
 const schema: FormSchema = {
-	username: {
-		title: "用户名",
-		required: true,
-		component: "input-default",
+	user: {
+		type: "group",
+		title: "用户信息",
+		children: {
+			username: {
+				title: "用户名",
+				required: true,
+				span: 12,
+				component: "input-default",
+			},
+			password: {
+				title: "密码",
+				required: true,
+				span: 12,
+				component: "input-password",
+			},
+		},
 	},
-	password: {
-		title: "密码",
-		required: true,
-		component: "input-password",
-	},
+}
+
+const formConfig: FormConfig = {
+	labelWidth: 120,
 }
 
 const FormExamplePage: React.FC = () => {
 	return (
-		<div>
-			<CurdForm formConfig={{ labelWidth: 120 }} schema={schema} />
+		<div className="full flex-row justify-center">
+			<div className="w-80%">
+				<CurdForm formConfig={formConfig} schema={schema} />
+			</div>
 		</div>
 	)
 }

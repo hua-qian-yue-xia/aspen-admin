@@ -90,12 +90,17 @@ export type FormConfig = {
 	 * 表单唯一code,常量
 	 */
 	uniqueCode?: string
+	/**
+	 * 表单项label宽度(单位px)
+	 * @default 100
+	 */
 	labelWidth?: number
 }
 
 // 表单导航项
 export type FormNavItem = Omit<FormGroup, "children"> & { key: string | "default" }
 
+// 表单校验
 export type FormInstanceItem = {
 	key: string
 	formInstance: FormInstance<any>

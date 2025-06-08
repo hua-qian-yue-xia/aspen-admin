@@ -45,9 +45,8 @@ const autoImportAntd = (componentName: string) => {
 
 const registerAutoImport = () => {
 	return AutoImport({
-		dirs: ["src/module/components/**"],
 		dts: "src/module/gen/type/auto-imports.d.ts",
-		imports: ["react"],
+		imports: ["react", { from: "react", imports: ["FC"], type: true }],
 		include: [/\.[tj]sx?$/],
 		resolvers: [
 			IconsResolver({

@@ -23,17 +23,22 @@ export const getFormSchemaByKey = (schema: FormSchema, groupKey: string | "defau
 	if (!schema) {
 		return properties
 	}
+	// 处理默认表单
 	if (groupKey === "default") {
 		for (const key in schema) {
 			const v = schema[key]
 			if (isFormGroupProps(v)) continue
 			properties.push(disposeFormItem(key, v))
 		}
-	} else {
-		for (const key in schema) {
-			const v = schema[key]
-			if (!isFormGroupProps(v) || key !== groupKey) continue
-			return getFormSchemaByKey(v.children, groupKey)
+		return properties
+	}
+	for (const key in schema) {
+		const v = schema[key]
+		if (!isFormGroupProps(v) || key !== groupKey) continue
+		if (v.children) {
+			for (const itemKey in v.children) {
+				properties.push(disposeFormItem(itemKey, v.children[itemKey]))
+			}
 		}
 	}
 	return properties

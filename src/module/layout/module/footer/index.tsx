@@ -39,7 +39,7 @@ const GlobalFooter: React.FC = memo(() => {
 	}
 
 	return (
-		<div className="flex-row gap-12px">
+		<div className="flex-1 overflow-hidden flex-row gap-12px">
 			{tabs.map((v) => {
 				return (
 					<material.TabPanel

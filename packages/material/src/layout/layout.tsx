@@ -66,11 +66,17 @@ const Layout: React.FC<Props> = (props) => {
 	)
 	// footer class
 	const footerClass = useMemo(
-		() => mergeClass(styles["layout-footer"], commonClass, asideGapClass, "flex-shrink-0 absolute bottom-0 full"),
+		() =>
+			mergeClass(
+				styles["layout-footer"],
+				commonClass,
+				asideGapClass,
+				"flex-shrink-0 absolute bottom-0 left-0 right-0 h-full",
+			),
 		[asideGapClass, commonClass],
 	)
 	const fotterReplaceCalss = useMemo(
-		() => mergeClass(styles["layout-footer"], asideGapClass, "flex-shrink-0 full"),
+		() => mergeClass(styles["layout-footer"], asideGapClass, "flex-shrink-0 h-full"),
 		[asideGapClass],
 	)
 
@@ -99,12 +105,12 @@ const Layout: React.FC<Props> = (props) => {
 				{mainNode}
 			</main>
 			{footerShow && (
-				<span>
+				<>
 					<footer style={footerStyle} className={footerClass}>
 						{footerNode}
 					</footer>
 					<div className={fotterReplaceCalss} />
-				</span>
+				</>
 			)}
 		</section>
 	)

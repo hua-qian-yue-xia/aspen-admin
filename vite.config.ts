@@ -27,5 +27,5 @@ export default defineConfig((configEnv) => {
 		server: {
 			open: true,
 		},
-	}
+	} as any
 })

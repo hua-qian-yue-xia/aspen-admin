@@ -1,6 +1,13 @@
 import React from "react"
-import { Form, Row, Col, Flex, Button } from "antd"
-import { ClearOutlined, SaveOutlined, CheckOutlined } from "@ant-design/icons"
+import { Form, Row, Col, Flex, Button, Tooltip } from "antd"
+import {
+	ClearOutlined,
+	SaveOutlined,
+	CheckOutlined,
+	CaretUpOutlined,
+	CaretDownOutlined,
+	DeleteOutlined,
+} from "@ant-design/icons"
 
 import "./index.scss"
 
@@ -13,6 +20,7 @@ import FormNav from "./components/form/form-nav"
 
 const CurdForm: React.FC<CrudFormProps> = memo((props) => {
 	const { schema } = props
+
 	// 判断schema是否为group模式
 	const isFormGroup = isFormGroupModel(schema)
 
@@ -63,13 +71,36 @@ const CurdForm: React.FC<CrudFormProps> = memo((props) => {
 						const { key } = item
 						const properties = getFormSchemaByKey(schema, key)
 						return (
-							<li key={index}>
-								<ul className="form-area-group">
-									<li></li>
-									<li></li>
+							<li className="form-group" key={index}>
+								<ul className="form-group-title">
+									<li>
+										<p>{item.title}</p>
+									</li>
+									<li>
+										<Flex gap="middle" justify="center">
+											{index !== 0 && (
+												<Tooltip placement="top" title={"上移"}>
+													<CaretUpOutlined />
+												</Tooltip>
+											)}
+											{navList.length - 1 !== index && (
+												<Tooltip placement="top" title={"下移"}>
+													<CaretDownOutlined />
+												</Tooltip>
+											)}
+											<Tooltip placement="top" title={"删除"}>
+												<DeleteOutlined />
+											</Tooltip>
+										</Flex>
+									</li>
 								</ul>
-								<Form form={validateList.find((i) => i.key === key).formInstance}>
-									<Row wrap gutter={{ xs: 8, sm: 16, md: 24, lg: 24, xl: 24, xxl: 24 }}>
+								<Form
+									className="form-group-container"
+									labelCol={{ span: 24 }}
+									layout="vertical"
+									form={validateList.find((i) => i.key === key).formInstance}
+								>
+									<Row wrap gutter={12}>
 										{properties.map((formItem) => {
 											const { component } = formItem
 											// 获取当前组件信息

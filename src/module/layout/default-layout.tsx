@@ -1,5 +1,9 @@
 import { Outlet } from "react-router-dom"
 
+import { Card } from "antd"
+
+import { useFullscreen } from "ahooks"
+
 import material from "@aspen/material"
 
 import GlobalFooter from "./module/footer/index"
@@ -15,11 +19,17 @@ import MenuToggler from "./module/menu/components/menu-toggler"
 import { store, components } from "@@/index"
 
 const LayoutHeader: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+	const [isFullscreen, { toggleFullscreen }] = useFullscreen(document.body)
 	return (
 		<components.common.DarkModeContainer className="full flex-row items-center justify-between" isDark={isDark}>
 			<li className="flex-row-center"></li>
 			<li className="flex-row-center">
 				<GlobalSearch />
+				<components.global.GlobalFullScreen
+					tooltipContent={isFullscreen ? "退出全屏" : "全屏"}
+					fullScreen={isFullscreen}
+					toggle={toggleFullscreen}
+				/>
 				<GlobalThemeSwitch />
 				<GlobalThemeBtn />
 				<GlobalUser />
@@ -28,10 +38,12 @@ const LayoutHeader: React.FC<{ isDark: boolean }> = ({ isDark }) => {
 	)
 }
 
-const LayoutMain: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+const LayoutMain: React.FC = () => {
 	return (
-		<components.common.DarkModeContainer className="full" isDark={isDark}>
-			<Outlet />
+		<components.common.DarkModeContainer className="full flex-grow p-12px bg-layout">
+			<Card className="full" styles={{ body: { height: "100%" } }}>
+				<Outlet />
+			</Card>
 		</components.common.DarkModeContainer>
 	)
 }
@@ -52,8 +64,13 @@ const LayoutAside: React.FC<{ height: number; isDark: boolean }> = ({ height, is
 
 const LayoutFooter: React.FC<{ isDark: boolean }> = ({ isDark }) => {
 	return (
-		<components.common.DarkModeContainer className="full" isDark={isDark}>
-			<GlobalFooter />
+		<components.common.DarkModeContainer className="full px-16px" isDark={isDark}>
+			<div className="flex-row items-center flex-nowrap">
+				<GlobalFooter />
+				<components.global.GlobalRefresh />
+				<components.global.GlobalFullScreen />
+			</div>
+			<div className="flex-row-center">Copyright MIT © 2021 Aspen</div>
 		</components.common.DarkModeContainer>
 	)
 }
@@ -68,7 +85,7 @@ const DefaultLayout = () => {
 			<material.Layout
 				headerNode={<LayoutHeader isDark={isDark} />}
 				headerHeight={header.height}
-				mainNode={<LayoutMain isDark={isDark} />}
+				mainNode={<LayoutMain />}
 				asideNode={<LayoutAside height={header.height} isDark={isDark} />}
 				asideCollapse={aside.collapsed}
 				asideWidth={aside.width}

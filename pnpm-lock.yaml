@@ -133,7 +133,7 @@ importers:
         specifier: ^0.19.0
         version: 0.19.0(rollup@4.40.1)
       unplugin-icons:
-        specifier: ^22.0.0
+        specifier: 22.1.0
         version: 22.1.0(@svgr/core@8.1.0(typescript@5.6.3))(@vue/compiler-sfc@3.5.13)
       vite:
         specifier: ^6.0.5

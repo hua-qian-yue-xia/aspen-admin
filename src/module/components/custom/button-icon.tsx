@@ -20,6 +20,7 @@ type Props = {
 	readonly tooltipContent?: string
 	/**
 	 * 提示位置
+	 * @default "bottom"
 	 */
 	readonly tooltipPlacement?: TooltipProps["placement"]
 	/**

@@ -41,14 +41,16 @@ import DarkModeContainer from "./components/common/dark-mode-container"
 import ButtonIcon from "./components/custom/button-icon"
 import SvgIcon from "./components/custom/svg-icon"
 
+import GlobalRefresh from "./components/global/global-refresh"
 import GlobalLogo from "./components/global/global-logo"
+import GlobalFullScreen from "./components/global/global-full-screen"
 
 import ThemeSegmented from "./components/theme/theme-segmented"
 
 export const components = {
 	common: { DarkModeContainer },
 	custom: { ButtonIcon, SvgIcon },
-	global: { GlobalLogo },
+	global: { GlobalRefresh, GlobalLogo, GlobalFullScreen },
 	theme: { ThemeSegmented },
 }
 
