@@ -95,7 +95,7 @@ const defaultThemeStore = (): ThemeStore => {
 			height: 50,
 		},
 		footer: {
-			height: 40,
+			height: 76,
 		},
 		aside: {
 			width: 200,

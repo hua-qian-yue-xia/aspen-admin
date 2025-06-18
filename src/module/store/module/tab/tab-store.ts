@@ -41,8 +41,7 @@ export const closeTab = (uniqueCode: string) => {
 // 激活tab
 export const activeTab = (uniqueCode: string) => {
 	store.setState((state) => {
-		const isExist = state.tabs.some((v) => v.uniqueCode === uniqueCode)
-		if (!isExist) return
+		if (uniqueCode === state.activeTabUniqueCode) return
 		state.activeTabUniqueCode = uniqueCode
 	})
 }

@@ -2,6 +2,7 @@ import ButtonIcon from "@/module/components/custom/button-icon"
 import SvgIcon from "@/module/components/custom/svg-icon"
 
 import { store } from "@@/index"
+import React from "react"
 
 type NumberBool = 0 | 1
 const icons: Record<NumberBool, Record<NumberBool, string>> = {
@@ -24,7 +25,7 @@ type Props = {
 	className?: string
 }
 
-const MenuToggler: React.FC<Props> = ({ isArrowIcon = false, className }) => {
+const MenuToggler: React.FC<Props> = React.memo(({ isArrowIcon = false, className }) => {
 	const { themeStore } = store
 	const { aside } = themeStore.store((store) => store)
 	const icon = icons[isArrowIcon ? 1 : 0][aside.collapsed ? 1 : 0]
@@ -38,6 +39,6 @@ const MenuToggler: React.FC<Props> = ({ isArrowIcon = false, className }) => {
 			<SvgIcon icon={icon} />
 		</ButtonIcon>
 	)
-}
+})
 
 export default MenuToggler

@@ -17,9 +17,8 @@ type Props = {
 	tooltipPlacement?: TooltipProps["placement"]
 	/**
 	 * 点击事件
-	 * @returns {boolean} 是否刷新成功
 	 */
-	change?: () => boolean | Promise<boolean>
+	change?: () => void | Promise<void>
 }
 
 const GlobalRefresh: React.FC<Props> = ({
@@ -33,8 +32,8 @@ const GlobalRefresh: React.FC<Props> = ({
 		if (isSpinning) return
 		setIsSpinning(true)
 		if (change) {
-			const isDone = await change()
-			if (isDone) setIsSpinning(false)
+			await change()
+			setIsSpinning(false)
 		} else {
 			setTimeout(() => setIsSpinning(false), 1000)
 		}

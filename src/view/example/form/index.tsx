@@ -22,6 +22,18 @@ const schema: FormSchema = {
 			},
 		},
 	},
+	address: {
+		type: "group",
+		title: "地址信息",
+		children: {
+			province: {
+				title: "省",
+				required: true,
+				span: 12,
+				component: "input-default",
+			},
+		},
+	},
 }
 
 const formConfig: FormConfig = {

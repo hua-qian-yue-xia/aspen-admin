@@ -16,7 +16,7 @@ import ThemeDrawer from "./module/theme-setting/index"
 import GlobalMenu from "./module/menu"
 import MenuToggler from "./module/menu/components/menu-toggler"
 
-import { store, components } from "@@/index"
+import { store, router, components } from "@@/index"
 
 const LayoutHeader: React.FC<{ isDark: boolean }> = ({ isDark }) => {
 	const [isFullscreen, { toggleFullscreen }] = useFullscreen(document.body)
@@ -63,12 +63,14 @@ const LayoutAside: React.FC<{ height: number; isDark: boolean }> = ({ height, is
 }
 
 const LayoutFooter: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+	const { useRouter } = router
+	const { reload } = useRouter()
 	return (
 		<components.common.DarkModeContainer className="full px-16px" isDark={isDark}>
-			<div className="flex-row items-center flex-nowrap">
+			<div className="flex-row items-center flex-nowrap py-8px">
 				<GlobalFooter />
-				<components.global.GlobalRefresh />
-				<components.global.GlobalFullScreen />
+				<components.global.GlobalRefresh change={reload} />
+				<components.global.GlobalFullScreen tooltipPlacement="top" />
 			</div>
 			<div className="flex-row-center">Copyright MIT © 2021 Aspen</div>
 		</components.common.DarkModeContainer>

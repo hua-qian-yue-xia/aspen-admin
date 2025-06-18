@@ -88,9 +88,11 @@ const CurdForm: React.FC<CrudFormProps> = memo((props) => {
 													<CaretDownOutlined />
 												</Tooltip>
 											)}
-											<Tooltip placement="top" title={"删除"}>
-												<DeleteOutlined />
-											</Tooltip>
+											{index !== 0 && (
+												<Tooltip placement="top" title={"删除"}>
+													<DeleteOutlined />
+												</Tooltip>
+											)}
 										</Flex>
 									</li>
 								</ul>
@@ -119,19 +121,19 @@ const CurdForm: React.FC<CrudFormProps> = memo((props) => {
 						)
 					})}
 				</ul>
-				<div className="bottom-area">
-					<Flex gap="large" justify="center">
-						<Button htmlType="reset" icon={<ClearOutlined />} onClick={doReset}>
-							重 置
-						</Button>
-						<Button icon={<SaveOutlined />} type="dashed" onClick={doUpdate}>
-							保 存
-						</Button>
-						<Button htmlType="submit" icon={<CheckOutlined />} type="primary" onClick={doSubmit}>
-							提 交
-						</Button>
-					</Flex>
-				</div>
+			</div>
+			<div className="bottom-area">
+				<Flex gap="large" justify="center">
+					<Button htmlType="reset" icon={<ClearOutlined />} onClick={doReset}>
+						重 置
+					</Button>
+					<Button icon={<SaveOutlined />} type="dashed" onClick={doUpdate}>
+						保 存
+					</Button>
+					<Button htmlType="submit" icon={<CheckOutlined />} type="primary" onClick={doSubmit}>
+						提 交
+					</Button>
+				</Flex>
 			</div>
 		</div>
 	)

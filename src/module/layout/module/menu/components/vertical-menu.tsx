@@ -34,6 +34,8 @@ const VerticalMenu: React.FC = memo(() => {
 
 	// 被选中时调用
 	const doSelect: MenuProps["onSelect"] = (info) => {
+		console.log(info.key)
+
 		navigate(info.key)
 		// 设置activeTab
 		tabStore.activeTab(info.key)

@@ -3,13 +3,17 @@ import { Tabs } from "antd"
 import type { FormNavItem } from "../../shared/form-props"
 
 type Props = {
+	className?: string
+	/**
+	 * 导航列表
+	 */
 	list: Array<FormNavItem>
 }
 
-const FormNav: React.FC<Props> = ({ list }) => {
+const FormNav: React.FC<Props> = ({ className, list }) => {
 	if (!list.length) return null
 	return (
-		<div>
+		<div className={className}>
 			<Tabs
 				tabPosition="left"
 				style={{ height: "100%" }}
