@@ -748,7 +748,9 @@ export class Api<
     sysUserControllerSelect: (params: RequestParams = {}) =>
       this.request<
         R & {
-          data?: SysUserEntity;
+          data?: BasePageVo & {
+            records?: SysUserEntity[];
+          };
         },
         any
       >({

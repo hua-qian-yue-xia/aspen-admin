@@ -1,7 +1,7 @@
 import { ProTable } from "@ant-design/pro-components"
 import type { ActionType, ProColumns } from "@ant-design/pro-components"
 
-import { Button, Switch } from "antd"
+import { Button, Input, Switch } from "antd"
 import { DeleteOutlined, FormOutlined } from "@ant-design/icons"
 
 import { API } from "@@/api/share/request-tool"
@@ -31,6 +31,15 @@ const UserPage: React.FC = () => {
 		{
 			title: "用户手机号",
 			dataIndex: "mobile",
+			render: (dom, entity, index, action, schema) => {
+				return <div onClick={() => action.startEditable(entity.userId, ["mobile"])}>{entity.mobile}</div>
+			},
+			editable: () => true,
+			renderFormItem: (dom, entity) => {
+				console.log("dom:", dom)
+
+				return <Input />
+			},
 		},
 		{
 			title: "是否启用",
