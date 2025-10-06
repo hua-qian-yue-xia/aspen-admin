@@ -4,7 +4,13 @@ import type { ComponentType, ComponentPropsObj } from "./slot-componse/index"
 
 // crud表单props
 export type CrudFormProps = {
+	/**
+	 * 表单json
+	 */
 	schema: FormSchema
+	/**
+	 * 表单配置
+	 */
 	formConfig?: FormConfig
 	viewConfig?: any
 }
@@ -27,11 +33,50 @@ export type FormGroup = {
 	/**
 	 * 分组配置
 	 */
-	config?: any
+	config?: FormGroupConfig
 	/**
 	 * 分组内容
 	 */
 	children: Record<string, FormItem>
+}
+
+// FormGroup type 为 `group` 时的配置
+export type FormGroupConfig = {
+	/**
+	 * 分组类型
+	 * - object 普通表单
+	 * - array 可删减表单
+	 * @default object
+	 */
+	type: "object" | "array"
+	/**
+	 * 是否显示当前项
+	 * @default true
+	 */
+	visibleItem?: boolean
+	/**
+	 * 是否展开当前项
+	 * @default true
+	 */
+	expandedItem?: boolean
+	/**
+	 * 是否显示`删除`按钮
+	 * type 为 `array` 时有效
+	 * @default false
+	 */
+	visibleDelete?: boolean
+	/**
+	 * 是否显示`上移`按钮
+	 * type 为 `array` 时有效
+	 * @default false
+	 */
+	visibleUp?: boolean
+	/**
+	 * 是否显示`下移`按钮
+	 * type 为 `array` 时有效
+	 * @default false
+	 */
+	visibleDown?: boolean
 }
 
 // 表单项

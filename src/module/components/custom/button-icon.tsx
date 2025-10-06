@@ -28,6 +28,11 @@ type Props = {
 	 * @default "text"
 	 */
 	readonly buttonType?: Extract<ButtonProps["type"], "link" | "text">
+	/**
+	 * 按钮大小
+	 * @default "small"
+	 */
+	readonly size?: ButtonProps["size"]
 } & Omit<ButtonProps, "icon" | "iconPosition" | "type">
 
 const ButtonIcon: React.FC<Props> = (props) => {
@@ -39,6 +44,7 @@ const ButtonIcon: React.FC<Props> = (props) => {
 		tooltipContent,
 		tooltipPlacement = "bottom",
 		buttonType = "text",
+		size = "small",
 		...rest
 	} = props
 	const computeClass = useMemo(() => {
@@ -49,7 +55,7 @@ const ButtonIcon: React.FC<Props> = (props) => {
 	}, [className])
 	return (
 		<Tooltip title={tooltipContent} placement={tooltipPlacement}>
-			<Button type={buttonType} className={computeClass} {...rest}>
+			<Button type={buttonType} className={computeClass} size={size} {...rest}>
 				<div className="flex-row-center gap-8px">{children || <SvgIcon icon={icon} style={style} />}</div>
 			</Button>
 		</Tooltip>

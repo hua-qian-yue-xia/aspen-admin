@@ -41,6 +41,25 @@ const otherRoute: Array<Router.RouteObj> = [
 // 示例路由
 export const exampleRoute: Array<Router.RouteObj> = [
 	{
+		path: "/sys",
+		handle: {
+			icon: "fluent:book-information-24-regular",
+			title: "权限管理",
+			order: 5,
+		},
+		children: [
+			{
+				path: "/sys/user",
+				lazy: () => import("@/view/sys/user/index").then(disposePathComponent),
+				handle: {
+					icon: "fluent:book-information-24-regular",
+					title: "用户管理",
+					order: 100,
+				},
+			},
+		],
+	},
+	{
 		path: "/example",
 		handle: {
 			icon: "fluent:book-information-24-regular",

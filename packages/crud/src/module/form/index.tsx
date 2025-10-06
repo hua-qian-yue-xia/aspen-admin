@@ -1,22 +1,16 @@
 import React from "react"
-import { Form, Row, Col, Flex, Button, Tooltip } from "antd"
-import {
-	ClearOutlined,
-	SaveOutlined,
-	CheckOutlined,
-	CaretUpOutlined,
-	CaretDownOutlined,
-	DeleteOutlined,
-} from "@ant-design/icons"
-
-import "./index.scss"
+import { Form, Row, Col, Flex, Button } from "antd"
+import { ClearOutlined, SaveOutlined, CheckOutlined } from "@ant-design/icons"
 
 import type { CrudFormProps, FormInstanceItem } from "./shared/form-props"
 import { getFormSchemaByKey, getNavList, isFormGroupModel } from "./shared/form-transition"
 
 import { switchSlot } from "./shared/slot-componse/index"
 
+import FormGroupOperation from "./components/form/form-group-operation"
 import FormNav from "./components/form/form-nav"
+
+import "./index.scss"
 
 const CurdForm: React.FC<CrudFormProps> = memo((props) => {
 	const { schema } = props
@@ -63,39 +57,26 @@ const CurdForm: React.FC<CrudFormProps> = memo((props) => {
 		}
 	}, [validateList])
 	return (
-		<div className="form">
-			{visibleNavList && <FormNav list={navList} />}
-			<div className="form-container">
-				<ul className="form-area">
+		<main className="form">
+			{visibleNavList && <FormNav className="form-nav" list={navList} />}
+			<section className="form-container">
+				<section className="form-area">
 					{navList.map((item, index) => {
 						const { key } = item
 						const properties = getFormSchemaByKey(schema, key)
+						console.log("key:", key)
+						console.log("schema:", schema)
 						return (
-							<li className="form-group" key={index}>
-								<ul className="form-group-title">
-									<li>
-										<p>{item.title}</p>
-									</li>
-									<li>
-										<Flex gap="middle" justify="center">
-											{index !== 0 && (
-												<Tooltip placement="top" title={"上移"}>
-													<CaretUpOutlined />
-												</Tooltip>
-											)}
-											{navList.length - 1 !== index && (
-												<Tooltip placement="top" title={"下移"}>
-													<CaretDownOutlined />
-												</Tooltip>
-											)}
-											{index !== 0 && (
-												<Tooltip placement="top" title={"删除"}>
-													<DeleteOutlined />
-												</Tooltip>
-											)}
-										</Flex>
-									</li>
-								</ul>
+							<article className="form-group" key={index}>
+								<header className="form-group-title">
+									<h3>{item.title}</h3>
+									<FormGroupOperation />
+									{/* <FormItemOperation
+										visibleDelete={index != 0}
+										visibleUp={index != 0}
+										visibleDown={index != navList.length - 1}
+									/> */}
+								</header>
 								<Form
 									className="form-group-container"
 									labelCol={{ span: 24 }}
@@ -117,25 +98,25 @@ const CurdForm: React.FC<CrudFormProps> = memo((props) => {
 										})}
 									</Row>
 								</Form>
-							</li>
+							</article>
 						)
 					})}
-				</ul>
-			</div>
-			<div className="bottom-area">
-				<Flex gap="large" justify="center">
-					<Button htmlType="reset" icon={<ClearOutlined />} onClick={doReset}>
-						重 置
-					</Button>
-					<Button icon={<SaveOutlined />} type="dashed" onClick={doUpdate}>
-						保 存
-					</Button>
-					<Button htmlType="submit" icon={<CheckOutlined />} type="primary" onClick={doSubmit}>
-						提 交
-					</Button>
-				</Flex>
-			</div>
-		</div>
+				</section>
+				<footer className="bottom-area">
+					<Flex gap="large" justify="center">
+						<Button htmlType="reset" icon={<ClearOutlined />} onClick={doReset}>
+							重 置
+						</Button>
+						<Button icon={<SaveOutlined />} type="dashed" onClick={doUpdate}>
+							保 存
+						</Button>
+						<Button htmlType="submit" icon={<CheckOutlined />} type="primary" onClick={doSubmit}>
+							提 交
+						</Button>
+					</Flex>
+				</footer>
+			</section>
+		</main>
 	)
 })
 

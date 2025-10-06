@@ -72,7 +72,7 @@ const LayoutFooter: React.FC<{ isDark: boolean }> = ({ isDark }) => {
 				<components.global.GlobalRefresh change={reload} />
 				<components.global.GlobalFullScreen tooltipPlacement="top" />
 			</div>
-			<div className="flex-row-center">Copyright MIT © 2021 Aspen</div>
+			<div className="flex-row-center">Copyright MIT © 2025 Aspen</div>
 		</components.common.DarkModeContainer>
 	)
 }
