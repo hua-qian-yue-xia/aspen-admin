@@ -893,7 +893,6 @@ export class Api<
      * @request PATCH:/frame/{dictId}
      */
     frameDictControllerGetByDictId: (
-      deptId: number,
       dictId: string,
       params: RequestParams = {},
     ) =>
@@ -985,7 +984,7 @@ export class Api<
      * @request PATCH:/frame/dict/id/{dictId}
      */
     frameDictItemControllerGetByDictItemId: (
-      deptId: number,
+      dictItemId: string,
       dictId: string,
       params: RequestParams = {},
     ) =>

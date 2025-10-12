@@ -9,6 +9,7 @@ declare global {
   const IconAntDesignReloadOutlined: typeof import('~icons/ant-design/reload-outlined.tsx')['default']
   const IconGridiconsFullscreen: typeof import('~icons/gridicons/fullscreen.tsx')['default']
   const IconGridiconsFullscreenExit: typeof import('~icons/gridicons/fullscreen-exit.tsx')['default']
+  const IconMdiDrag: typeof import('~icons/mdi/drag.tsx')['default']
   const IconUilSearch: typeof import('~icons/uil/search.tsx')['default']
   const createRef: typeof import('react')['createRef']
   const forwardRef: typeof import('react')['forwardRef']

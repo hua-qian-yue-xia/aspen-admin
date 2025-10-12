@@ -1,12 +1,11 @@
-import { type CSSProperties } from "react"
+import type { CSSProperties } from "react"
 
 import { Button, Tooltip } from "antd"
 import type { ButtonProps, TooltipProps } from "antd"
 
-import SvgIcon from "./base-svg-icon"
+import BaseSvgIcon from "./base-svg-icon"
 
 type Props = {
-	readonly children?: React.ReactNode
 	readonly className?: string
 	readonly style?: CSSProperties
 	/**
@@ -35,7 +34,7 @@ type Props = {
 	readonly size?: ButtonProps["size"]
 } & Omit<ButtonProps, "icon" | "iconPosition" | "type">
 
-const BaseButtonIcon: React.FC<Props> = (props) => {
+const BaseButtonIcon = forwardRef<HTMLButtonElement, Props>((props, ref) => {
 	const {
 		children,
 		className = "h-36px text-icon",
@@ -55,11 +54,11 @@ const BaseButtonIcon: React.FC<Props> = (props) => {
 	}, [className])
 	return (
 		<Tooltip title={tooltipContent} placement={tooltipPlacement}>
-			<Button type={buttonType} className={computeClass} size={size} {...rest}>
-				<div className="flex-row-center gap-8px">{children || <SvgIcon icon={icon} style={style} />}</div>
+			<Button ref={ref} type={buttonType} className={computeClass} size={size} {...rest}>
+				<div className="flex-row-center gap-8px">{children || <BaseSvgIcon icon={icon} style={style} />}</div>
 			</Button>
 		</Tooltip>
 	)
-}
+})
 
 export default BaseButtonIcon

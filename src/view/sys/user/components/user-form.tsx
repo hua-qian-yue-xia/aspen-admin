@@ -100,7 +100,7 @@ const UserForm = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 
 	return (
 		<BetaSchemaForm
-			key={form?.userId}
+			key={form?.userId ?? "create"}
 			initialValues={form}
 			formRef={formRef}
 			loading={loadingObj.form}

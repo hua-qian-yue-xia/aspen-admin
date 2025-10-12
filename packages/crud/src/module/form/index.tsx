@@ -12,7 +12,7 @@ import FormNav from "./components/form/form-nav"
 
 import "./index.scss"
 
-const CurdForm: React.FC<CrudFormProps> = memo((props) => {
+const CrudForm: React.FC<CrudFormProps> = memo((props) => {
 	const { schema } = props
 
 	// 判断schema是否为group模式
@@ -120,4 +120,4 @@ const CurdForm: React.FC<CrudFormProps> = memo((props) => {
 	)
 })
 
-export default CurdForm
+export default CrudForm

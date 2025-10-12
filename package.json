@@ -15,6 +15,7 @@
     "@aspen/common": "workspace:*",
     "@aspen/crud": "workspace:*",
     "@aspen/material": "workspace:*",
+    "@hello-pangea/dnd": "^18.0.1",
     "@iconify/react": "^5.2.0",
     "ahooks": "^3.8.4",
     "antd": "^5.27.4",

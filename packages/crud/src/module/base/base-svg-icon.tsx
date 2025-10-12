@@ -18,7 +18,7 @@ type Props = {
 	readonly localIcon?: string
 }
 
-const SvgIcon: React.FC<Props> = (props) => {
+const BaseSvgIcon: React.FC<Props> = (props) => {
 	const { icon, localIcon, ...rest } = props
 	if (_.isEmpty(localIcon)) {
 		return <Icon icon={icon} {...rest} />
@@ -30,4 +30,4 @@ const SvgIcon: React.FC<Props> = (props) => {
 	)
 }
 
-export default SvgIcon
+export default BaseSvgIcon

@@ -31,13 +31,11 @@ const UserPage: React.FC = () => {
 		{
 			title: "用户手机号",
 			dataIndex: "mobile",
-			render: (dom, entity, index, action, schema) => {
+			render: (dom, entity, index, action) => {
 				return <div onClick={() => action.startEditable(entity.userId, ["mobile"])}>{entity.mobile}</div>
 			},
 			editable: () => true,
-			renderFormItem: (dom, entity) => {
-				console.log("dom:", dom)
-
+			renderFormItem: () => {
 				return <Input />
 			},
 		},
@@ -121,6 +119,9 @@ const UserPage: React.FC = () => {
 	return (
 		<div>
 			<ProTable
+				options={{
+					fullScreen: true,
+				}}
 				actionRef={actionRef}
 				request={({ current, pageSize }) => {
 					return getList(current, pageSize)
@@ -140,6 +141,12 @@ const UserPage: React.FC = () => {
 					pageSize: 10,
 					onChange: (page) => console.log(page),
 				}}
+				toolBarRender={() => [<div key="custom-toolbar">1231231231231</div>]}
+				// optionsRender={() => [
+				// 	<Button type="primary" onClick={() => userFormRef.current?.open(null)}>
+				// 		新增
+				// 	</Button>,
+				// ]}
 			/>
 
 			<UserForm ref={userFormRef} onRefresh={() => actionRef.current?.reload()} />

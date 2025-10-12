@@ -1,6 +1,6 @@
 import React from "react"
 
-import { CurdForm } from "@aspen/crud"
+import { CrudForm } from "@aspen/crud"
 import type { FormSchema, FormConfig } from "@aspen/crud"
 
 const schema: FormSchema = {
@@ -44,7 +44,7 @@ const FormExamplePage: React.FC = () => {
 	return (
 		<div className="full flex-row justify-center">
 			<div className="w-80%">
-				<CurdForm formConfig={formConfig} schema={schema} />
+				<CrudForm formConfig={formConfig} schema={schema} />
 			</div>
 		</div>
 	)
