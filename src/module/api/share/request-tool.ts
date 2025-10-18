@@ -9,12 +9,13 @@ API_INSTANCE.defaults.timeout = 10_000
 
 // 请求拦截器
 API_INSTANCE.interceptors.request.use((config) => {
-	console.log("config:", config)
 	return config
 })
 
 // 响应拦截器
 API_INSTANCE.interceptors.response.use((response) => {
+	console.log(response, "response")
+
 	return response
 })
 

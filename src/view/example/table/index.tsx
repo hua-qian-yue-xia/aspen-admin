@@ -2,7 +2,7 @@ import { Button, Switch } from "antd"
 import { DeleteOutlined } from "@ant-design/icons"
 import { ActionType, ProColumns } from "@ant-design/pro-components"
 
-import { CrudTable } from "@aspen/crud"
+import { CrudTable, CrudTableOperation } from "@aspen/crud"
 
 import { SysUserEntity } from "@/module/api/gen/gen-api"
 import { API } from "@/module/api/share/request-tool"
@@ -100,6 +100,7 @@ const TablePage = () => {
 			request={({ current, pageSize }) => {
 				return getList(current, pageSize)
 			}}
+			toolBarRender={() => [<CrudTableOperation onAdd={() => console.log("新增")} />]}
 		/>
 	)
 }

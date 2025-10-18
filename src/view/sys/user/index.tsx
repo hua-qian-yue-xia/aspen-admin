@@ -1,8 +1,9 @@
-import { ProTable } from "@ant-design/pro-components"
 import type { ActionType, ProColumns } from "@ant-design/pro-components"
 
 import { Button, Input, Switch } from "antd"
 import { DeleteOutlined, FormOutlined } from "@ant-design/icons"
+
+import { CrudTable, CrudTableOperation } from "@aspen/crud"
 
 import { API } from "@@/api/share/request-tool"
 import type { SysUserEntity } from "@@/api/gen/gen-api"
@@ -14,6 +15,8 @@ const UserForm = lazy(() => import("./components/user-form"))
 const UserPage: React.FC = () => {
 	const userFormRef = useRef<UserFormRef>(null)
 	const actionRef = useRef<ActionType>(null)
+
+	const [loadingObj, setLoadingObj] = useState({ table: false })
 
 	const columns: Array<ProColumns<SysUserEntity>> = [
 		{
@@ -31,13 +34,6 @@ const UserPage: React.FC = () => {
 		{
 			title: "用户手机号",
 			dataIndex: "mobile",
-			render: (dom, entity, index, action) => {
-				return <div onClick={() => action.startEditable(entity.userId, ["mobile"])}>{entity.mobile}</div>
-			},
-			editable: () => true,
-			renderFormItem: () => {
-				return <Input />
-			},
 		},
 		{
 			title: "是否启用",
@@ -101,11 +97,12 @@ const UserPage: React.FC = () => {
 	// 获取系统用户列表
 	const getList = async (page: number = 1, pageSize: number = 10) => {
 		try {
-			const _params = {
+			setLoadingObj({ table: true })
+			const _params: any = {
 				page: page,
 				pageSize: pageSize,
 			}
-			const { data } = (await API.sys.sysUserControllerPage(_params)).data
+			const { data } = await API.sys.sysUserControllerPage(_params)
 			return {
 				data: data.records || [],
 				success: true,
@@ -113,44 +110,27 @@ const UserPage: React.FC = () => {
 			}
 		} catch (error) {
 			console.error("|获取系统用户列表|意外的错误,error:", error)
+		} finally {
+			setTimeout(() => setLoadingObj({ table: false }), 500)
 		}
 	}
 
 	return (
-		<div>
-			<ProTable
-				options={{
-					fullScreen: true,
-				}}
+		<>
+			<CrudTable
 				actionRef={actionRef}
+				rowKey="userId"
+				headerTitle="系统用户"
+				columns={columns}
+				search={false}
+				loading={loadingObj.table}
 				request={({ current, pageSize }) => {
 					return getList(current, pageSize)
 				}}
-				headerTitle={
-					<div>
-						<Button type="primary" onClick={() => userFormRef.current?.open(null)}>
-							新增
-						</Button>
-					</div>
-				}
-				columns={columns}
-				rowKey="userId"
-				cardBordered
-				search={false}
-				pagination={{
-					pageSize: 10,
-					onChange: (page) => console.log(page),
-				}}
-				toolBarRender={() => [<div key="custom-toolbar">1231231231231</div>]}
-				// optionsRender={() => [
-				// 	<Button type="primary" onClick={() => userFormRef.current?.open(null)}>
-				// 		新增
-				// 	</Button>,
-				// ]}
+				toolBarRender={() => [<CrudTableOperation onAdd={() => userFormRef.current?.open(null)} />]}
 			/>
-
 			<UserForm ref={userFormRef} onRefresh={() => actionRef.current?.reload()} />
-		</div>
+		</>
 	)
 }
 

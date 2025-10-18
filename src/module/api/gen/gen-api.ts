@@ -36,6 +36,7 @@ export interface SysDeptSaveDto {
   deptParentId: number;
   /** 部门名 */
   deptName: string;
+  [key: string]: any;
 }
 
 export interface SysDeptEditDto {
@@ -66,6 +67,7 @@ export interface SysDeptEditDto {
   deptParentId: number;
   /** 部门名 */
   deptName: string;
+  [key: string]: any;
 }
 
 export interface SysRolePaDto {
@@ -79,6 +81,7 @@ export interface SysRolePaDto {
    * @default null
    */
   "like-roleName"?: string;
+  [key: string]: any;
 }
 
 export interface SysRoleSaveDto {
@@ -109,6 +112,7 @@ export interface SysRoleSaveDto {
   roleName: string;
   /** 角色编码 */
   roleCode: string;
+  [key: string]: any;
 }
 
 export interface SysRoleEditDto {
@@ -141,6 +145,7 @@ export interface SysRoleEditDto {
   roleName: string;
   /** 角色编码 */
   roleCode: string;
+  [key: string]: any;
 }
 
 export interface SysUserEntity {
@@ -177,6 +182,7 @@ export interface SysUserEntity {
   mobile: string;
   /** 是否启用 */
   enable: boolean;
+  [key: string]: any;
 }
 
 export interface BasePageVo {
@@ -200,6 +206,7 @@ export interface BasePageVo {
    * @default 0
    */
   totalRecord: number;
+  [key: string]: any;
 }
 
 export interface R {
@@ -209,7 +216,10 @@ export interface R {
   msg: string;
   /** 数据 */
   data: object;
+  [key: string]: any;
 }
+
+export type SysUserQueryDto = object;
 
 export interface SysUserSaveDto {
   /** 登录名 */
@@ -218,6 +228,7 @@ export interface SysUserSaveDto {
   userNickname: string;
   /** 用户手机号 */
   mobile: string;
+  [key: string]: any;
 }
 
 export interface SysUserEditDto {
@@ -231,6 +242,7 @@ export interface SysUserEditDto {
   mobile: string;
   /** 是否启用 */
   enable: boolean;
+  [key: string]: any;
 }
 
 export interface SysUserAdminLoginDto {
@@ -238,6 +250,7 @@ export interface SysUserAdminLoginDto {
   username: string;
   /** 用户密码 */
   password: string;
+  [key: string]: any;
 }
 
 export interface FrameDictSaveDto {
@@ -245,6 +258,7 @@ export interface FrameDictSaveDto {
   code: string;
   /** 字典摘要 */
   summary: string;
+  [key: string]: any;
 }
 
 export interface FrameDictEditDto {
@@ -252,6 +266,7 @@ export interface FrameDictEditDto {
   code: string;
   /** 字典摘要 */
   summary: string;
+  [key: string]: any;
 }
 
 export type FrameDictItemSaveDto = object;
@@ -261,7 +276,6 @@ export type FrameDictItemEditDto = object;
 import type {
   AxiosInstance,
   AxiosRequestConfig,
-  AxiosResponse,
   HeadersDefaults,
   ResponseType,
 } from "axios";
@@ -392,7 +406,7 @@ export class HttpClient<SecurityDataType = unknown> {
     format,
     body,
     ...params
-  }: FullRequestParams): Promise<AxiosResponse<T>> => {
+  }: FullRequestParams): Promise<T> => {
     const secureParams =
       ((typeof secure === "boolean" ? secure : this.secure) &&
         this.securityWorker &&
@@ -419,17 +433,19 @@ export class HttpClient<SecurityDataType = unknown> {
       body = JSON.stringify(body);
     }
 
-    return this.instance.request({
-      ...requestParams,
-      headers: {
-        ...(requestParams.headers || {}),
-        ...(type ? { "Content-Type": type } : {}),
-      },
-      params: query,
-      responseType: responseFormat,
-      data: body,
-      url: path,
-    });
+    return this.instance
+      .request({
+        ...requestParams,
+        headers: {
+          ...(requestParams.headers || {}),
+          ...(type ? { "Content-Type": type } : {}),
+        },
+        params: query,
+        responseType: responseFormat,
+        data: body,
+        url: path,
+      })
+      .then((response) => response.data);
   };
 }
 
@@ -708,31 +724,23 @@ export class Api<
      * @request GET:/sys/user/page
      */
     sysUserControllerPage: (
-      query: {
-        /**
-         * 当前页码
-         * @default 1
-         */
-        page: number;
-        /**
-         * 分页大小
-         * @default 10
-         */
-        pageSize: number;
-      },
+      data: SysUserQueryDto,
       params: RequestParams = {},
     ) =>
       this.request<
         R & {
           data?: BasePageVo & {
             records?: SysUserEntity[];
+            [key: string]: any;
           };
+          [key: string]: any;
         },
         any
       >({
         path: `/sys/user/page`,
         method: "GET",
-        query: query,
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -745,17 +753,24 @@ export class Api<
      * @summary 下拉
      * @request GET:/sys/user/select
      */
-    sysUserControllerSelect: (params: RequestParams = {}) =>
+    sysUserControllerSelect: (
+      data: SysUserQueryDto,
+      params: RequestParams = {},
+    ) =>
       this.request<
         R & {
           data?: BasePageVo & {
             records?: SysUserEntity[];
+            [key: string]: any;
           };
+          [key: string]: any;
         },
         any
       >({
         path: `/sys/user/select`,
         method: "GET",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -775,6 +790,7 @@ export class Api<
       this.request<
         R & {
           data?: SysUserEntity;
+          [key: string]: any;
         },
         any
       >({

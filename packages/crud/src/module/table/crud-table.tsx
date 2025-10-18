@@ -12,6 +12,8 @@ import { CrudTableProvider, useCrudTableContext } from "./common/context"
 import type { CrudTableSortColum } from "./common/context"
 import { getTableUniqueKey } from "./common/table-tool"
 
+import "./style/crud-table.scss"
+
 const CrudTableBody = <T extends Record<string, any>, U, ValueType>(props: ProTableProps<T, U, ValueType>) => {
 	const { columns, ...rest } = props
 
