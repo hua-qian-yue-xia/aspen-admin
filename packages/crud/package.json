@@ -1,6 +1,15 @@
 {
   "name": "@aspen/crud",
   "version": "1.0.0",
+  "type": "module",
   "main": "./src/main.ts",
+  "module": "./src/main.ts",
+  "types": "./src/main.ts",
+  "exports": {
+    ".": {
+      "import": "./src/main.ts",
+      "types": "./src/main.ts"
+    }
+  },
   "scripts": {}
 }

@@ -57,6 +57,15 @@ export const exampleRoute: Array<Router.RouteObj> = [
 					order: 100,
 				},
 			},
+			{
+				path: "/sys/menu",
+				lazy: () => import("@/view/sys/menu/index").then(disposePathComponent),
+				handle: {
+					icon: "fluent:book-information-24-regular",
+					title: "菜单管理",
+					order: 200,
+				},
+			},
 		],
 	},
 	{

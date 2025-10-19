@@ -2,6 +2,8 @@ import { useEffect } from "react"
 
 import { store, router } from "@@/index"
 
+import tool from "@@/tool"
+
 const { tabStore } = store
 const { useRoute } = router
 
@@ -30,7 +32,10 @@ export const useTabListren = (): void => {
 		tabStore.addTab(currentTab)
 	}
 
-	useEffect(() => addTab(route), [route.fullPath])
+	useEffect(() => {
+		addTab(route)
+		tool.genHttp.getViewMenuPath()
+	}, [route.fullPath])
 }
 
 const _transformTabByRoute = (route: Router.Route): SysKey.Tab.TabObj | null => {

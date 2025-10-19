@@ -4,14 +4,16 @@ import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 
 import { registerPlugins } from "./build"
-import { generateOpenApi } from "./script/generate"
+import { generateOpenApi } from "./script/generate-open-api"
+import { generateViewMenuPathPlugin } from "./script/generate-view-menu"
 
 // https://vite.dev/config/
 export default defineConfig((configEnv) => {
 	console.log("configEnv:", configEnv)
 	generateOpenApi("http://127.0.0.1:7001/doc-json", fileURLToPath(new URL("src/module/api/gen", import.meta.url)))
+
 	return {
-		plugins: [react(), ...registerPlugins()],
+		plugins: [react(), generateViewMenuPathPlugin(), ...registerPlugins()],
 		resolve: {
 			alias: {
 				"@": fileURLToPath(new URL("src", import.meta.url)),

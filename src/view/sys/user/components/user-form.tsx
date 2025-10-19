@@ -3,6 +3,7 @@ import { BetaSchemaForm } from "@ant-design/pro-components"
 
 import { API } from "@@/api/share/request-tool"
 import type { SysUserEditDto } from "@@/api/gen/gen-api"
+
 import CONSTANT from "@@/constant"
 
 export type UserFormRef = {
@@ -80,7 +81,7 @@ const UserForm = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 	const getDetail = async (id: number | null) => {
 		if (id === null) return
 		try {
-			const { data } = (await API.sys.sysUserControllerGetByUserId(id)).data
+			const { data } = await API.sys.sysUserControllerGetByUserId(id)
 			setForm(data)
 		} catch (error) {
 			console.error("|查询用户详情|意外的错误,error:", error)

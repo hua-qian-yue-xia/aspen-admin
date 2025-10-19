@@ -1,6 +1,6 @@
 import type { ActionType, ProColumns } from "@ant-design/pro-components"
 
-import { Button, Input, Switch } from "antd"
+import { Button, Switch } from "antd"
 import { DeleteOutlined, FormOutlined } from "@ant-design/icons"
 
 import { CrudTable, CrudTableOperation } from "@aspen/crud"
@@ -13,7 +13,7 @@ import type { UserFormRef } from "./components/user-form"
 const UserForm = lazy(() => import("./components/user-form"))
 
 const UserPage: React.FC = () => {
-	const userFormRef = useRef<UserFormRef>(null)
+	const formRef = useRef<UserFormRef>(null)
 	const actionRef = useRef<ActionType>(null)
 
 	const [loadingObj, setLoadingObj] = useState({ table: false })
@@ -21,10 +21,12 @@ const UserPage: React.FC = () => {
 	const columns: Array<ProColumns<SysUserEntity>> = [
 		{
 			title: "排序",
+			key: "sort",
 			dataIndex: ["sort", "sort"],
 		},
 		{
 			title: "用户名",
+			key: "username",
 			dataIndex: "username",
 		},
 		{
@@ -61,7 +63,7 @@ const UserPage: React.FC = () => {
 							variant="text"
 							color="primary"
 							icon={<FormOutlined />}
-							onClick={() => userFormRef.current?.open(entity.userId)}
+							onClick={() => formRef.current?.open(entity.userId)}
 						>
 							编辑
 						</Button>
@@ -127,9 +129,9 @@ const UserPage: React.FC = () => {
 				request={({ current, pageSize }) => {
 					return getList(current, pageSize)
 				}}
-				toolBarRender={() => [<CrudTableOperation onAdd={() => userFormRef.current?.open(null)} />]}
+				toolBarRender={() => [<CrudTableOperation onAdd={() => formRef.current?.open(null)} />]}
 			/>
-			<UserForm ref={userFormRef} onRefresh={() => actionRef.current?.reload()} />
+			<UserForm ref={formRef} onRefresh={() => actionRef.current?.reload()} />
 		</>
 	)
 }

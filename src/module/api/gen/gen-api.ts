@@ -70,6 +70,71 @@ export interface SysDeptEditDto {
   [key: string]: any;
 }
 
+export interface SysMenuEntity {
+  /** 新增人 */
+  createBy: string;
+  /**
+   * 新增时间
+   * @format date-time
+   */
+  createAt: string;
+  /** 修改人 */
+  updateBy: string;
+  /**
+   * 修改时间
+   * @format date-time
+   */
+  updateAt: string;
+  /** 删除人 */
+  delBy: string;
+  /**
+   * 删除时间
+   * @format date-time
+   */
+  delAt: string;
+  [key: string]: any;
+}
+
+export interface BasePageVo {
+  /**
+   * 当前页码
+   * @default 1
+   */
+  page: number;
+  /**
+   * 分页大小
+   * @default 10
+   */
+  pageSize: number;
+  /**
+   * 总页数
+   * @default 0
+   */
+  totalPage: number;
+  /**
+   * 总记录数
+   * @default 0
+   */
+  totalRecord: number;
+  [key: string]: any;
+}
+
+export interface R {
+  /** 状态码 */
+  code: number;
+  /** 状态描述 */
+  msg: string;
+  /** 数据 */
+  data: object;
+  [key: string]: any;
+}
+
+export type SysMenuQueryDto = object;
+
+export type SysMenuSaveDto = object;
+
+export type SysMenuEditDto = object;
+
 export interface SysRolePaDto {
   /**
    * 相等查询-roleId角色id
@@ -182,40 +247,6 @@ export interface SysUserEntity {
   mobile: string;
   /** 是否启用 */
   enable: boolean;
-  [key: string]: any;
-}
-
-export interface BasePageVo {
-  /**
-   * 当前页码
-   * @default 1
-   */
-  page: number;
-  /**
-   * 分页大小
-   * @default 10
-   */
-  pageSize: number;
-  /**
-   * 总页数
-   * @default 0
-   */
-  totalPage: number;
-  /**
-   * 总记录数
-   * @default 0
-   */
-  totalRecord: number;
-  [key: string]: any;
-}
-
-export interface R {
-  /** 状态码 */
-  code: number;
-  /** 状态描述 */
-  msg: string;
-  /** 数据 */
-  data: object;
   [key: string]: any;
 }
 
@@ -550,10 +581,25 @@ export class Api<
      * @summary 分页
      * @request GET:/sys/menu/page
      */
-    sysMenuControllerPage: (params: RequestParams = {}) =>
-      this.request<void, any>({
+    sysMenuControllerPage: (
+      data: SysMenuQueryDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        R & {
+          data?: BasePageVo & {
+            records?: SysMenuEntity[];
+            [key: string]: any;
+          };
+          [key: string]: any;
+        },
+        any
+      >({
         path: `/sys/menu/page`,
         method: "GET",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -565,10 +611,50 @@ export class Api<
      * @summary 下拉(没有权限控制)
      * @request GET:/sys/menu/select
      */
-    sysMenuControllerSelect: (params: RequestParams = {}) =>
-      this.request<void, any>({
+    sysMenuControllerSelect: (
+      data: SysMenuQueryDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        R & {
+          data?: BasePageVo & {
+            records?: SysMenuEntity[];
+            [key: string]: any;
+          };
+          [key: string]: any;
+        },
+        any
+      >({
         path: `/sys/menu/select`,
         method: "GET",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description 有缓存
+     *
+     * @tags 菜单管理
+     * @name SysMenuControllerGetByMenuId
+     * @summary 根据菜单id查询用户
+     * @request GET:/sys/menu/id/{menuId}
+     */
+    sysMenuControllerGetByMenuId: (
+      menuId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        R & {
+          data?: SysMenuEntity;
+          [key: string]: any;
+        },
+        any
+      >({
+        path: `/sys/menu/id/${menuId}`,
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -587,6 +673,55 @@ export class Api<
       this.request<void, any>({
         path: `/sys/menu/id/${menuId}`,
         method: "PATCH",
+        ...params,
+      }),
+
+    /**
+     * @description 有缓存
+     *
+     * @tags 菜单管理
+     * @name SysMenuControllerSave
+     * @summary 新增菜单
+     * @request POST:/sys/menu
+     */
+    sysMenuControllerSave: (data: SysMenuSaveDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/sys/menu`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description 有缓存
+     *
+     * @tags 菜单管理
+     * @name SysMenuControllerEdit
+     * @summary 修改菜单
+     * @request PUT:/sys/menu
+     */
+    sysMenuControllerEdit: (data: SysMenuEditDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/sys/menu`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags 菜单管理
+     * @name SysMenuControllerDelete
+     * @summary 根据菜单ids删除菜单
+     * @request DELETE:/sys/menu/{menuIds}
+     */
+    sysMenuControllerDelete: (menuIds: string[], params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/sys/menu/${menuIds}`,
+        method: "DELETE",
         ...params,
       }),
 
