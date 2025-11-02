@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom"
 
 import { Card } from "antd"
 
-import LoginPageHeader from "./components/header"
+import LoginPageHeader from "./cmp/header"
 
 const LoginPage: React.FC = () => {
 	return (

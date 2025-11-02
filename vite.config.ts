@@ -6,12 +6,17 @@ import react from "@vitejs/plugin-react"
 import { registerPlugins } from "./build"
 import { generateOpenApi } from "./script/generate-open-api"
 import { generateViewMenuPathPlugin } from "./script/generate-view-menu"
+import { generateDictCode } from "./script/generate-dict"
 
 // https://vite.dev/config/
 export default defineConfig((configEnv) => {
 	console.log("configEnv:", configEnv)
-	generateOpenApi("http://127.0.0.1:7001/doc-json", fileURLToPath(new URL("src/module/api/gen", import.meta.url)))
 
+	generateOpenApi("http://127.0.0.1:7001/doc-json", fileURLToPath(new URL("src/module/api/gen", import.meta.url)))
+	generateDictCode(
+		"http://127.0.0.1:7001/frame/dict/all/dict-code",
+		fileURLToPath(new URL("src/module/gen/dict", import.meta.url)),
+	)
 	return {
 		plugins: [react(), generateViewMenuPathPlugin(), ...registerPlugins()],
 		resolve: {

@@ -20,7 +20,7 @@ const MenuTable: React.FC = () => {
 		{
 			title: "排序",
 			key: "sort",
-			dataIndex: ["sort", "sort"],
+			dataIndex: ["sort"],
 		},
 		{
 			title: "菜单名称",
@@ -28,7 +28,7 @@ const MenuTable: React.FC = () => {
 		},
 		{
 			title: "菜单类型",
-			dataIndex: "menuType",
+			dataIndex: ["type", "summary"],
 		},
 		{
 			title: "路由地址",
@@ -46,7 +46,7 @@ const MenuTable: React.FC = () => {
 							variant="text"
 							color="primary"
 							icon={<FormOutlined />}
-							onClick={() => formRef.current?.open(entity.userId)}
+							onClick={() => formRef.current?.open(entity.menuId)}
 						>
 							编辑
 						</Button>

@@ -92,6 +92,24 @@ export interface SysMenuEntity {
    * @format date-time
    */
   delAt: string;
+  /** 菜单id */
+  menuId: number;
+  /** 菜单父id */
+  parentId: number;
+  /** 菜单名 */
+  menuName: string;
+  /** 菜单类型 */
+  type: object;
+  /** 组件 */
+  icon: string;
+  /** 路由地址 */
+  path: string;
+  /** 是否显示 */
+  visible: boolean;
+  /** 是否缓存 */
+  keepAlive: boolean;
+  /** 排序 */
+  sort: number;
   [key: string]: any;
 }
 
@@ -131,9 +149,35 @@ export interface R {
 
 export type SysMenuQueryDto = object;
 
-export type SysMenuSaveDto = object;
+export interface SysMenuSaveDto {
+  /** 菜单父id */
+  parentId: number;
+  /** 菜单名 */
+  menuName: string;
+  /** 菜单类型 */
+  type: object;
+  /** 组件 */
+  icon: string;
+  /** 路由地址 */
+  path: string;
+  [key: string]: any;
+}
 
-export type SysMenuEditDto = object;
+export interface SysMenuEditDto {
+  /** 菜单id */
+  menuId: number;
+  /** 菜单父id */
+  parentId: number;
+  /** 菜单名 */
+  menuName: string;
+  /** 菜单类型 */
+  type: object;
+  /** 组件 */
+  icon: string;
+  /** 路由地址 */
+  path: string;
+  [key: string]: any;
+}
 
 export interface SysRolePaDto {
   /**
@@ -284,6 +328,66 @@ export interface SysUserAdminLoginDto {
   [key: string]: any;
 }
 
+export interface FrameDictEntity {
+  /** 新增人 */
+  createBy: string;
+  /**
+   * 新增时间
+   * @format date-time
+   */
+  createAt: string;
+  /** 修改人 */
+  updateBy: string;
+  /**
+   * 修改时间
+   * @format date-time
+   */
+  updateAt: string;
+  /** 删除人 */
+  delBy: string;
+  /**
+   * 删除时间
+   * @format date-time
+   */
+  delAt: string;
+  /** 字典code */
+  code: string;
+  /** 字典摘要 */
+  summary: string;
+  [key: string]: any;
+}
+
+export interface FrameDictQueryDto {
+  /** 新增人 */
+  createBy: string;
+  /**
+   * 新增时间
+   * @format date-time
+   */
+  createAt: string;
+  /** 修改人 */
+  updateBy: string;
+  /**
+   * 修改时间
+   * @format date-time
+   */
+  updateAt: string;
+  /** 删除人 */
+  delBy: string;
+  /**
+   * 删除时间
+   * @format date-time
+   */
+  delAt: string;
+  /** 字典code */
+  code: string;
+  /** 字典摘要 */
+  summary: string;
+  [key: string]: any;
+}
+
+export type String = object;
+
 export interface FrameDictSaveDto {
   /** 字典code */
   code: string;
@@ -300,9 +404,68 @@ export interface FrameDictEditDto {
   [key: string]: any;
 }
 
-export type FrameDictItemSaveDto = object;
+export interface FrameDictItemEntity {
+  /** 新增人 */
+  createBy: string;
+  /**
+   * 新增时间
+   * @format date-time
+   */
+  createAt: string;
+  /** 修改人 */
+  updateBy: string;
+  /**
+   * 修改时间
+   * @format date-time
+   */
+  updateAt: string;
+  /** 删除人 */
+  delBy: string;
+  /**
+   * 删除时间
+   * @format date-time
+   */
+  delAt: string;
+  /** 字典项id */
+  id: string;
+  /** 字典项code */
+  code: string;
+  /** 字典项摘要 */
+  summary: string;
+  /** 字典项颜色 */
+  hexColor: string;
+  /** 排序 */
+  sort: number;
+  [key: string]: any;
+}
 
-export type FrameDictItemEditDto = object;
+export interface FrameDictItemQueryDto {
+  /** 字典id */
+  dictId: string;
+  [key: string]: any;
+}
+
+export interface FrameDictItemSaveDto {
+  /** 字典项code */
+  code: string;
+  /** 字典项摘要 */
+  summary: string;
+  /** 排序 */
+  sort: number;
+  [key: string]: any;
+}
+
+export interface FrameDictItemEditDto {
+  /** 字典项id */
+  id: string;
+  /** 字典项code */
+  code: string;
+  /** 字典项摘要 */
+  summary: string;
+  /** 排序 */
+  sort: number;
+  [key: string]: any;
+}
 
 import type {
   AxiosInstance,
@@ -1026,12 +1189,49 @@ export class Api<
      * @tags 字典管理
      * @name FrameDictControllerPage
      * @summary 字典分页
-     * @request GET:/frame/page
+     * @request POST:/frame/dict/page
      */
-    frameDictControllerPage: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/frame/page`,
+    frameDictControllerPage: (
+      data: FrameDictQueryDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        R & {
+          data?: BasePageVo & {
+            records?: FrameDictEntity[];
+            [key: string]: any;
+          };
+          [key: string]: any;
+        },
+        any
+      >({
+        path: `/frame/dict/page`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags 字典管理
+     * @name FrameDictControllerAllDictCode
+     * @summary 查询所有字典code
+     * @request GET:/frame/dict/all/dict-code
+     */
+    frameDictControllerAllDictCode: (params: RequestParams = {}) =>
+      this.request<
+        R & {
+          data?: String[];
+          [key: string]: any;
+        },
+        any
+      >({
+        path: `/frame/dict/all/dict-code`,
         method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1041,14 +1241,14 @@ export class Api<
      * @tags 字典管理
      * @name FrameDictControllerGetByDictId
      * @summary 根据dictId查询字典(有缓存)
-     * @request PATCH:/frame/{dictId}
+     * @request PATCH:/frame/dict/{dictId}
      */
     frameDictControllerGetByDictId: (
       dictId: string,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/frame/${dictId}`,
+        path: `/frame/dict/${dictId}`,
         method: "PATCH",
         ...params,
       }),
@@ -1059,14 +1259,14 @@ export class Api<
      * @tags 字典管理
      * @name FrameDictControllerSave
      * @summary 新增字典
-     * @request POST:/frame
+     * @request POST:/frame/dict
      */
     frameDictControllerSave: (
       data: FrameDictSaveDto,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/frame`,
+        path: `/frame/dict`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -1079,14 +1279,14 @@ export class Api<
      * @tags 字典管理
      * @name FrameDictControllerEdit
      * @summary 修改字典
-     * @request PUT:/frame
+     * @request PUT:/frame/dict
      */
     frameDictControllerEdit: (
       data: FrameDictEditDto,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/frame`,
+        path: `/frame/dict`,
         method: "PUT",
         body: data,
         type: ContentType.Json,
@@ -1099,14 +1299,14 @@ export class Api<
      * @tags 字典管理
      * @name FrameDictControllerDelete
      * @summary 删除字典
-     * @request DELETE:/frame/{dictIds}
+     * @request DELETE:/frame/dict/{dictIds}
      */
     frameDictControllerDelete: (
       dictIds: string[],
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/frame/${dictIds}`,
+        path: `/frame/dict/${dictIds}`,
         method: "DELETE",
         ...params,
       }),
@@ -1117,12 +1317,27 @@ export class Api<
      * @tags 字典项管理
      * @name FrameDictItemControllerPage
      * @summary 字典项分页
-     * @request GET:/frame/dict/page
+     * @request POST:/frame/dict-item/page
      */
-    frameDictItemControllerPage: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/frame/dict/page`,
-        method: "GET",
+    frameDictItemControllerPage: (
+      data: FrameDictItemQueryDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        R & {
+          data?: BasePageVo & {
+            records?: FrameDictItemEntity[];
+            [key: string]: any;
+          };
+          [key: string]: any;
+        },
+        any
+      >({
+        path: `/frame/dict-item/page`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -1132,7 +1347,7 @@ export class Api<
      * @tags 字典项管理
      * @name FrameDictItemControllerGetByDictItemId
      * @summary 根据dictItemId查询字典项(有缓存)
-     * @request PATCH:/frame/dict/id/{dictId}
+     * @request PATCH:/frame/dict-item/id/{dictId}
      */
     frameDictItemControllerGetByDictItemId: (
       dictItemId: string,
@@ -1140,7 +1355,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/frame/dict/id/${dictId}`,
+        path: `/frame/dict-item/id/${dictId}`,
         method: "PATCH",
         ...params,
       }),
@@ -1151,14 +1366,14 @@ export class Api<
      * @tags 字典项管理
      * @name FrameDictItemControllerGetByDictItemCode
      * @summary 根据dictItemCode查询字典项(有缓存)
-     * @request PATCH:/frame/dict/code/{deptCode}
+     * @request PATCH:/frame/dict-item/code/{deptCode}
      */
     frameDictItemControllerGetByDictItemCode: (
       deptCode: string,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/frame/dict/code/${deptCode}`,
+        path: `/frame/dict-item/code/${deptCode}`,
         method: "PATCH",
         ...params,
       }),
@@ -1169,14 +1384,14 @@ export class Api<
      * @tags 字典项管理
      * @name FrameDictItemControllerSave
      * @summary 新增字典项
-     * @request POST:/frame/dict
+     * @request POST:/frame/dict-item
      */
     frameDictItemControllerSave: (
       data: FrameDictItemSaveDto,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/frame/dict`,
+        path: `/frame/dict-item`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -1189,14 +1404,14 @@ export class Api<
      * @tags 字典项管理
      * @name FrameDictItemControllerEdit
      * @summary 修改字典项
-     * @request PUT:/frame/dict
+     * @request PUT:/frame/dict-item
      */
     frameDictItemControllerEdit: (
       data: FrameDictItemEditDto,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/frame/dict`,
+        path: `/frame/dict-item`,
         method: "PUT",
         body: data,
         type: ContentType.Json,
@@ -1209,14 +1424,14 @@ export class Api<
      * @tags 字典项管理
      * @name FrameDictItemControllerDictItemDelete
      * @summary 删除字典项
-     * @request DELETE:/frame/dict/{dictItemIds}
+     * @request DELETE:/frame/dict-item/{dictItemIds}
      */
     frameDictItemControllerDictItemDelete: (
       dictItemIds: string[],
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/frame/dict/${dictItemIds}`,
+        path: `/frame/dict-item/${dictItemIds}`,
         method: "DELETE",
         ...params,
       }),

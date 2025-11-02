@@ -49,8 +49,5 @@ export const generateViewMenuPathPlugin = (): Plugin => {
 				res.end(JSON.stringify({ menuPaths }))
 			})
 		},
-		buildStart() {
-			console.log("🚀 Vite 构建开始...")
-		},
 	}
 }

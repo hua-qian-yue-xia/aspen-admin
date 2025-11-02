@@ -66,6 +66,15 @@ export const exampleRoute: Array<Router.RouteObj> = [
 					order: 200,
 				},
 			},
+			{
+				path: "/sys/dict",
+				lazy: () => import("@/view/frame/dict/index").then(disposePathComponent),
+				handle: {
+					icon: "fluent:book-information-24-regular",
+					title: "字典管理",
+					order: 300,
+				},
+			},
 		],
 	},
 	{

@@ -1,6 +1,4 @@
-import { Flex } from "antd"
-
-import SysMenuTable from "./components/menu-table"
+import SysMenuTable from "./cmp/menu-table"
 
 const MenuPage: React.FC = () => {
 	return (

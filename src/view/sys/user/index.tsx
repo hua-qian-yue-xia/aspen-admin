@@ -8,9 +8,9 @@ import { CrudTable, CrudTableOperation } from "@aspen/crud"
 import { API } from "@@/api/share/request-tool"
 import type { SysUserEntity } from "@@/api/gen/gen-api"
 
-import type { UserFormRef } from "./components/user-form"
+import type { UserFormRef } from "./cmp/user-form"
 
-const UserForm = lazy(() => import("./components/user-form"))
+const UserForm = lazy(() => import("./cmp/user-form"))
 
 const UserPage: React.FC = () => {
 	const formRef = useRef<UserFormRef>(null)
