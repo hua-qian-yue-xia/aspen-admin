@@ -6,7 +6,6 @@ import tool from "@@/tool"
 type Props = Pick<SelectProps, "value" | "onChange">
 
 const SelectMenuPath: React.FC<Props> = (props) => {
-	console.log("value:", props.value)
 	return (
 		<BaseSelect
 			{...props}

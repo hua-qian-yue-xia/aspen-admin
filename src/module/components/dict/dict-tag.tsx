@@ -5,7 +5,7 @@ import { useDict } from "@@/hooks/use-dict"
 
 type Props = {
 	dictType: DICT_KEYS
-	dictItemCode: string
+	dictItemCode: string | any
 }
 
 const DictTag: React.FC<Props> = ({ dictType, dictItemCode }) => {
@@ -18,8 +18,8 @@ const DictTag: React.FC<Props> = ({ dictType, dictItemCode }) => {
 	const targetDict = dict[dictType]
 	if (!targetDict) return <Tag>未知</Tag>
 
-	const targetDictItem = targetDict.find((item) => item.code === dictItemCode)
-	if (!targetDictItem) return <Tag>未知</Tag>
+	const targetDictItem = targetDict.find((item) => item.code === String(dictItemCode))
+	if (!targetDictItem) return "-"
 
 	// tag
 	return <Tag>{targetDictItem.summary}</Tag>

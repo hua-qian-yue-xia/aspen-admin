@@ -1345,12 +1345,12 @@ export class Api<
      * No description
      *
      * @tags 字典项管理
-     * @name FrameDictItemControllerGetListBydictId
+     * @name FrameDictItemControllerGetListBydictCode
      * @summary 根据dictId查询字典项(有缓存)
-     * @request PATCH:/frame/dict-item/id/{dictId}
+     * @request PATCH:/frame/dict-item/dictCode/{dictCode}
      */
-    frameDictItemControllerGetListBydictId: (
-      dictId: string,
+    frameDictItemControllerGetListBydictCode: (
+      dictCode: string,
       params: RequestParams = {},
     ) =>
       this.request<
@@ -1360,7 +1360,7 @@ export class Api<
         },
         any
       >({
-        path: `/frame/dict-item/id/${dictId}`,
+        path: `/frame/dict-item/dictCode/${dictCode}`,
         method: "PATCH",
         format: "json",
         ...params,

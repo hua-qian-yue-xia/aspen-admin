@@ -3,6 +3,7 @@ import type { ProFormColumnsType, ProFormInstance } from "@ant-design/pro-compon
 
 import { API } from "@@/api/share/request-tool"
 import type { SysMenuEntity } from "@@/api/gen/gen-api"
+import CMP from "@@/components"
 
 import SelectMenuPath from "@@/components/select/sys/select-menu-path"
 
@@ -14,7 +15,7 @@ type Props = {
 	onRefresh?: () => void
 }
 
-const columns: Array<ProFormColumnsType> = [
+const columns: Array<ProFormColumnsType<SysMenuEntity>> = [
 	{
 		dataIndex: "parentId",
 		title: "父级菜单",
@@ -33,14 +34,39 @@ const columns: Array<ProFormColumnsType> = [
 		formItemProps: {
 			rules: [{ required: true, message: "请选择菜单类型" }],
 		},
+		renderFormItem: () => <CMP.dict.select dictType="sys_menu_type" autoSelectFirst placeholder="请选择菜单类型" />,
 	},
 	{
-		dataIndex: "path",
-		title: "路由地址",
-		formItemProps: {
-			rules: [{ required: true, message: "请选择菜单路径" }],
+		valueType: "dependency",
+		name: ["type"],
+		columns: (values) => {
+			if (!values?.type) return []
+			// 目录
+			if (values.type == 200) return []
+			// 菜单
+			if (values.type == 100) {
+				return [
+					{
+						dataIndex: "position",
+						title: "菜单位置",
+						formItemProps: {
+							rules: [{ required: true, message: "请选择菜单位置" }],
+						},
+						renderFormItem: () => {
+							return <CMP.dict.select dictType="sys_menu_position" autoSelectFirst placeholder="请选择菜单位置" />
+						},
+					},
+					{
+						dataIndex: "path",
+						title: "路由地址",
+						formItemProps: {
+							rules: [{ required: true, message: "请选择菜单路径" }],
+						},
+						renderFormItem: () => <SelectMenuPath />,
+					},
+				]
+			}
 		},
-		renderFormItem: () => <SelectMenuPath />,
 	},
 ]
 
@@ -80,7 +106,6 @@ const MenuForm = forwardRef<MenuFormRef, Props>((props, ref) => {
 		try {
 			const { data } = await API.sys.sysMenuControllerGetByMenuId(id)
 			setForm(data)
-			formRef.current?.setFieldsValue(data)
 		} catch (error) {
 			console.error("|查询菜单详情|意外的错误,error:", error)
 		}
@@ -92,16 +117,15 @@ const MenuForm = forwardRef<MenuFormRef, Props>((props, ref) => {
 				setLoadingObj({ ...loadingObj, modal: true })
 				setCurrentMenuId(id)
 				setOpen(true)
+				console.log("id:", id)
 				try {
-					if (id === null) {
+					if (id == null) {
 						setForm(null)
-						formRef.current?.setFieldsValue({})
-						formRef.current?.resetFields()
 						return
 					}
 					await getDetail(id)
 				} catch (error) {
-					console.log(error)
+					console.error(error)
 				} finally {
 					setTimeout(() => setLoadingObj({ ...loadingObj, modal: false }), 500)
 				}
@@ -111,12 +135,14 @@ const MenuForm = forwardRef<MenuFormRef, Props>((props, ref) => {
 
 	return (
 		<BetaSchemaForm
+			shouldUpdate={false}
 			formRef={formRef}
 			initialValues={form}
 			loading={loadingObj.form}
 			title={currentMenuId === null ? "新增菜单" : "编辑菜单"}
 			open={open}
 			columns={columns}
+			preserve={false}
 			layoutType="ModalForm"
 			modalProps={{
 				loading: loadingObj.modal,

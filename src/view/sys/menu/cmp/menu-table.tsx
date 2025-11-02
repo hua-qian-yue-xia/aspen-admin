@@ -6,6 +6,7 @@ import { CrudTable, CrudTableOperation } from "@aspen/crud"
 
 import { API } from "@@/api/share/request-tool"
 import type { SysMenuEntity } from "@@/api/gen/gen-api"
+import CMP from "@@/components"
 
 import MenuForm from "./menu-form"
 import type { MenuFormRef } from "./menu-form"
@@ -28,7 +29,17 @@ const MenuTable: React.FC = () => {
 		},
 		{
 			title: "菜单类型",
-			dataIndex: ["type", "summary"],
+			dataIndex: ["type"],
+			render: (dom, entity) => {
+				return <CMP.dict.tag dictType="sys_menu_type" dictItemCode={entity.type} />
+			},
+		},
+		{
+			title: "菜单位置",
+			dataIndex: ["position"],
+			render: (dom, entity) => {
+				return <CMP.dict.tag dictType="sys_menu_position" dictItemCode={entity.position} />
+			},
 		},
 		{
 			title: "路由地址",

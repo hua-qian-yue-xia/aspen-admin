@@ -28,7 +28,7 @@ export const getDict = async (
 }
 
 const getDictItemByApi = async (dict: DICT_KEYS) => {
-	const { data } = await API.frame.frameDictItemControllerGetListBydictId(dict)
+	const { data } = await API.frame.frameDictItemControllerGetListBydictCode(dict)
 	if (data && data.length) {
 		return data
 	}
