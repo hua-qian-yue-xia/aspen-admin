@@ -99,8 +99,10 @@ export interface SysMenuEntity {
   /** 菜单名 */
   menuName: string;
   /** 菜单类型 */
-  type: object;
-  /** 组件 */
+  type: string;
+  /** 菜单位置 */
+  position: string;
+  /** 图标 */
   icon: string;
   /** 路由地址 */
   path: string;
@@ -155,8 +157,8 @@ export interface SysMenuSaveDto {
   /** 菜单名 */
   menuName: string;
   /** 菜单类型 */
-  type: object;
-  /** 组件 */
+  type: string;
+  /** 图标 */
   icon: string;
   /** 路由地址 */
   path: string;
@@ -171,8 +173,8 @@ export interface SysMenuEditDto {
   /** 菜单名 */
   menuName: string;
   /** 菜单类型 */
-  type: object;
-  /** 组件 */
+  type: string;
+  /** 图标 */
   icon: string;
   /** 路由地址 */
   path: string;
@@ -221,6 +223,8 @@ export interface SysRoleSaveDto {
   roleName: string;
   /** 角色编码 */
   roleCode: string;
+  /** 排序 */
+  sort: number;
   [key: string]: any;
 }
 
@@ -254,6 +258,8 @@ export interface SysRoleEditDto {
   roleName: string;
   /** 角色编码 */
   roleCode: string;
+  /** 排序 */
+  sort: number;
   [key: string]: any;
 }
 
@@ -291,6 +297,8 @@ export interface SysUserEntity {
   mobile: string;
   /** 是否启用 */
   enable: boolean;
+  /** 排序 */
+  sort: number;
   [key: string]: any;
 }
 
@@ -350,10 +358,14 @@ export interface FrameDictEntity {
    * @format date-time
    */
   delAt: string;
+  /** 字典摘要 */
+  id: string;
   /** 字典code */
   code: string;
   /** 字典摘要 */
   summary: string;
+  /** 排序 */
+  sort: number;
   [key: string]: any;
 }
 
@@ -379,10 +391,14 @@ export interface FrameDictQueryDto {
    * @format date-time
    */
   delAt: string;
+  /** 字典摘要 */
+  id: string;
   /** 字典code */
   code: string;
   /** 字典摘要 */
   summary: string;
+  /** 排序 */
+  sort: number;
   [key: string]: any;
 }
 
@@ -393,14 +409,20 @@ export interface FrameDictSaveDto {
   code: string;
   /** 字典摘要 */
   summary: string;
+  /** 排序 */
+  sort: number;
   [key: string]: any;
 }
 
 export interface FrameDictEditDto {
+  /** 字典摘要 */
+  id: string;
   /** 字典code */
   code: string;
   /** 字典摘要 */
   summary: string;
+  /** 排序 */
+  sort: number;
   [key: string]: any;
 }
 
@@ -426,7 +448,7 @@ export interface FrameDictItemEntity {
    * @format date-time
    */
   delAt: string;
-  /** 字典项id */
+  /** 字典项code */
   id: string;
   /** 字典项code */
   code: string;
@@ -456,7 +478,7 @@ export interface FrameDictItemSaveDto {
 }
 
 export interface FrameDictItemEditDto {
-  /** 字典项id */
+  /** 字典项code */
   id: string;
   /** 字典项code */
   code: string;
@@ -1241,15 +1263,22 @@ export class Api<
      * @tags 字典管理
      * @name FrameDictControllerGetByDictId
      * @summary 根据dictId查询字典(有缓存)
-     * @request PATCH:/frame/dict/{dictId}
+     * @request GET:/frame/dict/{dictId}
      */
     frameDictControllerGetByDictId: (
       dictId: string,
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<
+        R & {
+          data?: FrameDictEntity;
+          [key: string]: any;
+        },
+        any
+      >({
         path: `/frame/dict/${dictId}`,
-        method: "PATCH",
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1345,9 +1374,34 @@ export class Api<
      * No description
      *
      * @tags 字典项管理
+     * @name FrameDictItemControllerGetByDictItemId
+     * @summary 根据dictItemId查询字典项(有缓存)
+     * @request GET:/frame/dict-item/{dictItemId}
+     */
+    frameDictItemControllerGetByDictItemId: (
+      dictItemId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        R & {
+          data?: FrameDictItemEntity;
+          [key: string]: any;
+        },
+        any
+      >({
+        path: `/frame/dict-item/${dictItemId}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags 字典项管理
      * @name FrameDictItemControllerGetListBydictCode
      * @summary 根据dictId查询字典项(有缓存)
-     * @request PATCH:/frame/dict-item/dictCode/{dictCode}
+     * @request GET:/frame/dict-item/dictCode/{dictCode}
      */
     frameDictItemControllerGetListBydictCode: (
       dictCode: string,
@@ -1361,7 +1415,7 @@ export class Api<
         any
       >({
         path: `/frame/dict-item/dictCode/${dictCode}`,
-        method: "PATCH",
+        method: "GET",
         format: "json",
         ...params,
       }),
@@ -1461,11 +1515,14 @@ export class Api<
      * @tags api管理
      * @name CoreApiControllerGetByRoleId
      * @summary 根据接口id查询接口(有缓存)
-     * @request PATCH:/core/api/id/{apiId}
+     * @request PATCH:/core/api/id/{apiCode}
      */
-    coreApiControllerGetByRoleId: (apiId: number, params: RequestParams = {}) =>
+    coreApiControllerGetByRoleId: (
+      apiCode: string,
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
-        path: `/core/api/id/${apiId}`,
+        path: `/core/api/id/${apiCode}`,
         method: "PATCH",
         ...params,
       }),
@@ -1506,11 +1563,14 @@ export class Api<
      * @tags 日志管理
      * @name CoreLogControllerGetByRoleId
      * @summary 根据接口id查询接口(有缓存)
-     * @request PATCH:/core/log/id/{logId}
+     * @request PATCH:/core/log/id/{logCode}
      */
-    coreLogControllerGetByRoleId: (logId: number, params: RequestParams = {}) =>
+    coreLogControllerGetByRoleId: (
+      logCode: string,
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
-        path: `/core/log/id/${logId}`,
+        path: `/core/log/id/${logCode}`,
         method: "PATCH",
         ...params,
       }),

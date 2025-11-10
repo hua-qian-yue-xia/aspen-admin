@@ -37,6 +37,13 @@ const columns: Array<ProFormColumnsType<SysMenuEntity>> = [
 		renderFormItem: () => <CMP.dict.select dictType="sys_menu_type" autoSelectFirst placeholder="请选择菜单类型" />,
 	},
 	{
+		dataIndex: "icon",
+		title: "图标",
+		formItemProps: {
+			rules: [{ required: true, message: "请选择图标" }],
+		},
+	},
+	{
 		valueType: "dependency",
 		name: ["type"],
 		columns: (values) => {

@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, memo } from "react"
 import { Button, Flex, Typography } from "antd"
 
 import { mergeClass } from "@aspen/common"
@@ -7,13 +7,18 @@ import { API } from "@@/api/share/request-tool"
 import type { FrameDictEntity } from "@/module/api/gen/gen-api"
 import { DeleteOutlined, FormOutlined } from "@ant-design/icons"
 
+import DictKeyFormCmp from "./dict-key-form"
+import { DictKeyFormRef } from "./dict-value-form"
+
 const { Text } = Typography
 
 type Props = {
 	onActive?: (dictId: string | null) => void
 }
 
-const DictKeyManageCmp: React.FC<Props> = ({ onActive }) => {
+const DictKeyTableCmp: React.FC<Props> = ({ onActive }) => {
+	const dictKeyFormRef = useRef<DictKeyFormRef>(null)
+
 	const [activeDictId, setActiveDictId] = useState(null)
 	const [dictKeyList, setDictKeyList] = useState<Array<FrameDictEntity>>([])
 
@@ -39,10 +44,10 @@ const DictKeyManageCmp: React.FC<Props> = ({ onActive }) => {
 		}
 	}
 
-	// 删除字典键
+	// 删除字典
 	const deleteDictKey = async (v: FrameDictEntity) => {
 		try {
-			await API.frame.frameDictControllerDelete([v.dictKeyId])
+			await API.frame.frameDictControllerDelete([v.id])
 			getDictPage()
 		} catch (error) {
 			console.error("|删除字典键|意外的错误,error:", error)
@@ -72,7 +77,16 @@ const DictKeyManageCmp: React.FC<Props> = ({ onActive }) => {
 						</Text>
 					</Flex>
 					<Flex align="center" justify="center">
-						<Button size="small" variant="text" color="primary" icon={<FormOutlined />}>
+						<Button
+							size="small"
+							variant="text"
+							color="primary"
+							icon={<FormOutlined />}
+							onClick={(e) => {
+								e.stopPropagation()
+								dictKeyFormRef.current?.open(v.id)
+							}}
+						>
 							编辑
 						</Button>
 						<Button
@@ -80,15 +94,19 @@ const DictKeyManageCmp: React.FC<Props> = ({ onActive }) => {
 							variant="text"
 							color="danger"
 							icon={<DeleteOutlined />}
-							onClick={() => deleteDictKey(v)}
+							onClick={(e) => {
+								e.stopPropagation()
+								deleteDictKey(v)
+							}}
 						>
 							删除
 						</Button>
 					</Flex>
+					<DictKeyFormCmp ref={dictKeyFormRef} onRefresh={getDictPage} />
 				</Flex>
 			))}
 		</div>
 	)
 }
 
-export default DictKeyManageCmp
+export default memo(DictKeyTableCmp)

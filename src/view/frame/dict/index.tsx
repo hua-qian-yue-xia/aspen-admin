@@ -1,4 +1,5 @@
-import { Button, Splitter } from "antd"
+import { Button, Card, Flex } from "antd"
+import { DeleteOutlined, FormOutlined } from "@ant-design/icons"
 import type { ActionType, ProColumns } from "@ant-design/pro-components"
 
 import { CrudTable, CrudTableOperation } from "@aspen/crud"
@@ -6,11 +7,13 @@ import { CrudTable, CrudTableOperation } from "@aspen/crud"
 import { API } from "@@/api/share/request-tool"
 import type { FrameDictItemEntity } from "@@/api/gen/gen-api"
 
-import DictKeyManageCmp from "./cmp/dict-key-manage"
-import { DeleteOutlined, FormOutlined } from "@ant-design/icons"
+import DictKeyTableCmp from "./cmp/dict-key-table"
+import DictValueFormCmp from "./cmp/dict-value-form"
+import type { DictKeyFormRef } from "./cmp/dict-value-form"
 
 const DictPage: React.FC = () => {
 	const actionRef = useRef<ActionType>(null)
+	const dictValueFormRef = useRef<DictKeyFormRef>(null)
 
 	const [loadingObj, setLoadingObj] = useState({ table: false })
 	const [queryForm, setQueryForm] = useState({
@@ -43,7 +46,12 @@ const DictPage: React.FC = () => {
 			render: (dom, entity) => {
 				return (
 					<div className="flex gap-1">
-						<Button variant="text" color="primary" icon={<FormOutlined />}>
+						<Button
+							variant="text"
+							color="primary"
+							icon={<FormOutlined />}
+							onClick={() => dictValueFormRef.current?.open(entity.dictItemCode)}
+						>
 							编辑
 						</Button>
 						<Button variant="text" color="danger" icon={<DeleteOutlined />} onClick={() => deleteDictItem(entity)}>
@@ -92,17 +100,17 @@ const DictPage: React.FC = () => {
 	}
 
 	return (
-		<Splitter className="full">
-			<Splitter.Panel defaultSize="30%" min="30%" max="40%">
-				<DictKeyManageCmp
+		<Flex className="full">
+			<Card className="w-25% h-full mr-3">
+				<DictKeyTableCmp
 					onActive={(dictId) => {
 						if (!dictId || dictId === queryForm.dictId) return
 						setQueryForm({ dictId })
 						actionRef.current?.reload()
 					}}
 				/>
-			</Splitter.Panel>
-			<Splitter.Panel>
+			</Card>
+			<Card className="flex-1 h-full">
 				<CrudTable
 					actionRef={actionRef}
 					rowKey="id"
@@ -113,10 +121,13 @@ const DictPage: React.FC = () => {
 					request={({ current, pageSize }) => {
 						return getList(current, pageSize)
 					}}
-					toolBarRender={() => [<CrudTableOperation visibleImport={false} />]}
+					toolBarRender={() => [
+						<CrudTableOperation visibleImport={false} onAdd={() => dictValueFormRef.current?.open(null)} />,
+					]}
 				/>
-			</Splitter.Panel>
-		</Splitter>
+			</Card>
+			<DictValueFormCmp ref={dictValueFormRef} onRefresh={() => actionRef.current?.reload()} />
+		</Flex>
 	)
 }
 

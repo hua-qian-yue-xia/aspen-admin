@@ -1,7 +1,5 @@
 import { Outlet } from "react-router-dom"
 
-import { Card } from "antd"
-
 import { useFullscreen } from "ahooks"
 
 import material from "@aspen/material"
@@ -41,9 +39,7 @@ const LayoutHeader: React.FC<{ isDark: boolean }> = ({ isDark }) => {
 const LayoutMain: React.FC = () => {
 	return (
 		<components.common.DarkModeContainer className="full flex-grow p-12px bg-layout">
-			<Card className="full" styles={{ body: { height: "100%" } }}>
-				<Outlet />
-			</Card>
+			<Outlet />
 		</components.common.DarkModeContainer>
 	)
 }

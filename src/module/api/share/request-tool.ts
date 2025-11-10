@@ -14,6 +14,8 @@ API_INSTANCE.interceptors.request.use((config) => {
 
 // 响应拦截器
 API_INSTANCE.interceptors.response.use((response) => {
+	console.log("response:", response)
+
 	return response
 })
 

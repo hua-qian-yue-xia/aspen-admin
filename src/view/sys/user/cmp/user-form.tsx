@@ -47,7 +47,7 @@ const columns: Array<ProFormColumnsType> = [
 	},
 ]
 
-const UserForm = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
+const UserFormCmp = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 	const formRef = useRef<ProFormInstance>()
 
 	const [open, setOpen] = useState(false)
@@ -77,7 +77,7 @@ const UserForm = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 		return true
 	}
 
-	// 查询用户详情（根据传入的 id），避免依赖尚未更新的 state
+	// 查询用户详情
 	const getDetail = async (id: number | null) => {
 		if (id === null) return
 		try {
@@ -116,6 +116,7 @@ const UserForm = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 			title={form?.userId === null ? "新增用户" : "编辑用户"}
 			open={open}
 			columns={columns}
+			preserve={false}
 			layoutType="ModalForm"
 			modalProps={{
 				loading: loadingObj.modal,
@@ -127,4 +128,4 @@ const UserForm = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 	)
 })
 
-export default UserForm
+export default UserFormCmp
