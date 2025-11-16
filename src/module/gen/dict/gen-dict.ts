@@ -1,15 +1,15 @@
 export {} 
 declare global { 
-type DICT_KEYS = "sys_menu_type" | 
-"sys_user_status" | 
-"com_country" | 
-"com_user_gender" | 
-"com_currency" | 
+type DICT_KEYS = "com_currency" | 
 "com_toggle" | 
-"sys_user_type" | 
+"com_user_gender" | 
 "sys_menu_position" | 
-"com_active" | 
-"com_language" | 
+"sys_user_status" | 
 "com_enable" | 
-"com_bool" 
+"com_bool" | 
+"sys_user_type" | 
+"com_language" | 
+"com_active" | 
+"com_country" | 
+"sys_menu_type" 
 }

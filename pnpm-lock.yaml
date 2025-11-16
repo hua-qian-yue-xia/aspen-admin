@@ -29,6 +29,9 @@ importers:
       '@iconify/react':
         specifier: ^5.2.0
         version: 5.2.1(react@18.2.0)
+      '@rive-app/react-canvas':
+        specifier: ^4.23.4
+        version: 4.23.4(react@18.2.0)
       ahooks:
         specifier: ^3.8.4
         version: 3.8.4(react@18.2.0)
@@ -1053,6 +1056,14 @@ packages:
     peerDependencies:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
+
+  '@rive-app/canvas@2.31.6':
+    resolution: {integrity: sha512-YVhBnqZnPEwMANqDzExpoFSPYjkuSm/ZWL6WQetC5S54clSkahmUYIV/eOYRKo3rTeEb0S98CL2tTEZqK3RC4A==}
+
+  '@rive-app/react-canvas@4.23.4':
+    resolution: {integrity: sha512-kIYpvyLxhbpyzUzYaBKgUCNzfKgqMQ2uuGRRpo/iPbY8TIGInTGcwiAOSHr0UKGYD1LaTiBm3gMktjsc673Xfw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0
 
   '@rollup/pluginutils@5.1.4':
     resolution: {integrity: sha512-USm05zrsFxYLPdWWq+K3STlWiT/3ELn3RcV5hJMghpeAIhxfsUIg6mt12CBJBInWMV4VneoV7SfGv8xIwo2qNQ==}
@@ -4236,6 +4247,13 @@ snapshots:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-is: 18.3.1
+
+  '@rive-app/canvas@2.31.6': {}
+
+  '@rive-app/react-canvas@4.23.4(react@18.2.0)':
+    dependencies:
+      '@rive-app/canvas': 2.31.6
+      react: 18.2.0
 
   '@rollup/pluginutils@5.1.4(rollup@4.40.1)':
     dependencies:

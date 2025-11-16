@@ -1,12 +1,10 @@
 import { BetaSchemaForm, ProFormInstance } from "@ant-design/pro-components"
-import { ProFormColumnsType } from "@ant-design/pro-components"
-
-import material from "@aspen/material"
+import type { ProFormColumnsType } from "@ant-design/pro-components"
 
 import { API } from "@@/api/share/request-tool"
-import type { FrameDictItemSaveDto, FrameDictItemEntity } from "@@/api/gen/gen-api"
+import type { SysRoleEntity, SysRoleSaveDto } from "@@/api/gen/gen-api"
 
-export type DictKeyFormRef = {
+export type RoleFormCmpRef = {
 	open: (id: string | null) => Promise<void>
 }
 
@@ -14,54 +12,56 @@ type Props = {
 	onRefresh?: () => void
 }
 
-const columns: Array<ProFormColumnsType<FrameDictItemEntity>> = [
+const columns: Array<ProFormColumnsType<SysRoleEntity>> = [
 	{
-		dataIndex: "summary",
-		title: "字典名称",
+		dataIndex: "parentRoleId",
+		title: "父角色",
+		formItemProps: {},
+	},
+	{
+		dataIndex: "roleName",
+		title: "角色名",
 		formItemProps: {
-			rules: [{ required: true, message: "请输入字典名称" }],
+			rules: [{ required: true, message: "请输入角色名" }],
 		},
 	},
 	{
-		dataIndex: "code",
-		title: "字典值",
+		dataIndex: "roleCode",
+		title: "角色编码",
 		formItemProps: {
-			rules: [{ required: true, message: "请输入字典值" }],
+			rules: [{ required: true, message: "请输入角色编码" }],
 		},
 	},
 	{
-		dataIndex: "hexColor",
-		title: "颜色",
-		formItemProps: {
-			rules: [{ required: true, message: "请选择颜色" }],
-		},
-		renderFormItem: () => <material.CustomColorPicker />,
+		dataIndex: "sort",
+		title: "排序",
+		tooltip: "越大越在前",
+		formItemProps: {},
 	},
 ]
 
-const DictValueFormCmp = forwardRef<DictKeyFormRef, Props>(({ onRefresh }, ref) => {
+const RoleFormCmp = forwardRef<RoleFormCmpRef, Props>(({ onRefresh }, ref) => {
 	const formRef = useRef<ProFormInstance>()
 
 	const [open, setOpen] = useState(false)
-	const [form, setForm] = useState<FrameDictItemSaveDto | null>(null)
+	const [form, setForm] = useState<SysRoleSaveDto>(null)
+	const [roleId, setRoleId] = useState<string | null>(null)
 	const [loadingObj, setLoadingObj] = useState({
 		form: false,
 		modal: false,
 	})
 
-	const [dictItemId, setDictItemId] = useState<string | null>(null)
-
-	// 新增或修改字典项
+	// 新增或修改角色
 	const onFinish = async (values: any) => {
 		setLoadingObj({ ...loadingObj, form: true })
 		try {
-			const api = dictItemId === null ? API.frame.frameDictItemControllerSave : API.frame.frameDictItemControllerEdit
-			await api({ ...values, id: dictItemId })
+			const api = roleId === null ? API.sys.sysRoleControllerSave : API.sys.sysRoleControllerEdit
+			await api({ ...values, roleId })
 			onRefresh?.()
-			window.$message.success(dictItemId === null ? "新增成功" : "编辑成功")
+			window.$message.success(roleId === null ? "新增成功" : "编辑成功")
 			setOpen(false)
 		} catch (error) {
-			console.error("|新增或修改字典项|意外的错误,error:", error)
+			console.error("|新增或修改角色|意外的错误,error:", error)
 			setTimeout(() => setLoadingObj({ ...loadingObj, form: false }), 500)
 			return false
 		}
@@ -69,21 +69,21 @@ const DictValueFormCmp = forwardRef<DictKeyFormRef, Props>(({ onRefresh }, ref) 
 		return true
 	}
 
-	// 查询字典项详情
+	// 查询角色详情
 	const getDetail = async (id: string | null) => {
 		if (id === null) return
 		try {
-			const { data } = await API.frame.frameDictItemControllerGetByDictItemId(id)
+			const { data } = await API.sys.sysRoleControllerGetByRoleId(id)
 			setForm({ ...data } as any)
 		} catch (error) {
-			console.error("|查询字典值详情|意外的错误,error:", error)
+			console.error("|查询角色详情|意外的错误,error:", error)
 		}
 	}
 
 	useImperativeHandle(ref, () => ({
 		open: async (id: string | null) => {
 			setLoadingObj({ ...loadingObj, modal: true })
-			setDictItemId(id)
+			setRoleId(id)
 			setOpen(true)
 			try {
 				if (!id) {
@@ -102,11 +102,11 @@ const DictValueFormCmp = forwardRef<DictKeyFormRef, Props>(({ onRefresh }, ref) 
 
 	return (
 		<BetaSchemaForm
-			key={dictItemId ?? "dictItem"}
+			key={roleId ?? "roleId"}
 			initialValues={form}
 			formRef={formRef}
 			loading={loadingObj.form}
-			title={dictItemId === null ? "新增字典" : "编辑字典"}
+			title={roleId === null ? "新增角色" : "编辑角色"}
 			open={open}
 			columns={columns}
 			preserve={false}
@@ -121,4 +121,4 @@ const DictValueFormCmp = forwardRef<DictKeyFormRef, Props>(({ onRefresh }, ref) 
 	)
 })
 
-export default DictValueFormCmp
+export default RoleFormCmp

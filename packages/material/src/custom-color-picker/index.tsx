@@ -26,7 +26,7 @@ type Props = {
 	/**
 	 * 选中的颜色
 	 */
-	value: string
+	value?: string
 	/**
 	 * 是否禁用
 	 * @default false

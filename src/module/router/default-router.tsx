@@ -67,12 +67,21 @@ export const exampleRoute: Array<Router.RouteObj> = [
 				},
 			},
 			{
+				path: "/sys/role",
+				lazy: () => import("@/view/sys/role/index").then(disposePathComponent),
+				handle: {
+					icon: "fluent:book-information-24-regular",
+					title: "角色权限",
+					order: 300,
+				},
+			},
+			{
 				path: "/sys/dict",
 				lazy: () => import("@/view/frame/dict/index").then(disposePathComponent),
 				handle: {
 					icon: "fluent:book-information-24-regular",
 					title: "字典管理",
-					order: 300,
+					order: 400,
 				},
 			},
 		],

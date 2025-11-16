@@ -1,4 +1,4 @@
-import { Button, Card, Flex } from "antd"
+import { Button, Card, Flex, Tag } from "antd"
 import { DeleteOutlined, FormOutlined } from "@ant-design/icons"
 import type { ActionType, ProColumns } from "@ant-design/pro-components"
 
@@ -7,7 +7,7 @@ import { CrudTable, CrudTableOperation } from "@aspen/crud"
 import { API } from "@@/api/share/request-tool"
 import type { FrameDictItemEntity } from "@@/api/gen/gen-api"
 
-import DictKeyTableCmp from "./cmp/dict-key-table"
+import DictKeyListCmp from "./cmp/dict-key-list"
 import DictValueFormCmp from "./cmp/dict-value-form"
 import type { DictKeyFormRef } from "./cmp/dict-value-form"
 
@@ -29,14 +29,13 @@ const DictPage: React.FC = () => {
 		{
 			title: "字典名称",
 			dataIndex: ["summary"],
+			render: (dom, entity) => {
+				return <Tag color={entity.hexColor}>{entity.summary}</Tag>
+			},
 		},
 		{
 			title: "字典值",
 			dataIndex: ["code"],
-		},
-		{
-			title: "颜色",
-			dataIndex: ["hexColor"],
 		},
 		{
 			title: "操作",
@@ -50,7 +49,7 @@ const DictPage: React.FC = () => {
 							variant="text"
 							color="primary"
 							icon={<FormOutlined />}
-							onClick={() => dictValueFormRef.current?.open(entity.dictItemCode)}
+							onClick={() => dictValueFormRef.current?.open(entity.id)}
 						>
 							编辑
 						</Button>
@@ -102,7 +101,7 @@ const DictPage: React.FC = () => {
 	return (
 		<Flex className="full">
 			<Card className="w-25% h-full mr-3">
-				<DictKeyTableCmp
+				<DictKeyListCmp
 					onActive={(dictId) => {
 						if (!dictId || dictId === queryForm.dictId) return
 						setQueryForm({ dictId })

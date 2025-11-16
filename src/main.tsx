@@ -7,11 +7,7 @@ import App from "./App"
 
 const registerApp = () => {
 	registerAssets()
-	createRoot(document.getElementById("root")!).render(
-		<React.StrictMode>
-			<App />
-		</React.StrictMode>,
-	)
+	createRoot(document.getElementById("root")!).render(<App />)
 }
 
 registerApp()

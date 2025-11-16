@@ -11,62 +11,18 @@
  */
 
 export interface SysDeptSaveDto {
-  /** 新增人 */
-  createBy: string;
-  /**
-   * 新增时间
-   * @format date-time
-   */
-  createAt: string;
-  /** 修改人 */
-  updateBy: string;
-  /**
-   * 修改时间
-   * @format date-time
-   */
-  updateAt: string;
-  /** 删除人 */
-  delBy: string;
-  /**
-   * 删除时间
-   * @format date-time
-   */
-  delAt: string;
-  /** 部门父id */
-  deptParentId: number;
-  /** 部门名 */
-  deptName: string;
-  [key: string]: any;
-}
-
-export interface SysDeptEditDto {
-  /** 新增人 */
-  createBy: string;
-  /**
-   * 新增时间
-   * @format date-time
-   */
-  createAt: string;
-  /** 修改人 */
-  updateBy: string;
-  /**
-   * 修改时间
-   * @format date-time
-   */
-  updateAt: string;
-  /** 删除人 */
-  delBy: string;
-  /**
-   * 删除时间
-   * @format date-time
-   */
-  delAt: string;
-  /** 部门id */
-  deptId: number;
-  /** 部门父id */
-  deptParentId: number;
-  /** 部门名 */
-  deptName: string;
+  /** 登录名 */
+  userId: string;
+  /** 登录名 */
+  username: string;
+  /** 用户昵称 */
+  userNickname: string;
+  /** 用户手机号 */
+  mobile: string;
+  /** 是否启用 */
+  enable: boolean;
+  /** 排序 */
+  sort: number;
   [key: string]: any;
 }
 
@@ -149,23 +105,7 @@ export interface R {
   [key: string]: any;
 }
 
-export type SysMenuQueryDto = object;
-
 export interface SysMenuSaveDto {
-  /** 菜单父id */
-  parentId: number;
-  /** 菜单名 */
-  menuName: string;
-  /** 菜单类型 */
-  type: string;
-  /** 图标 */
-  icon: string;
-  /** 路由地址 */
-  path: string;
-  [key: string]: any;
-}
-
-export interface SysMenuEditDto {
   /** 菜单id */
   menuId: number;
   /** 菜单父id */
@@ -174,61 +114,22 @@ export interface SysMenuEditDto {
   menuName: string;
   /** 菜单类型 */
   type: string;
+  /** 菜单位置 */
+  position: string;
   /** 图标 */
   icon: string;
   /** 路由地址 */
   path: string;
-  [key: string]: any;
-}
-
-export interface SysRolePaDto {
-  /**
-   * 相等查询-roleId角色id
-   * @default null
-   */
-  "eq-roleId"?: number;
-  /**
-   * 模糊查询-roleName角色名
-   * @default null
-   */
-  "like-roleName"?: string;
-  [key: string]: any;
-}
-
-export interface SysRoleSaveDto {
-  /** 新增人 */
-  createBy: string;
-  /**
-   * 新增时间
-   * @format date-time
-   */
-  createAt: string;
-  /** 修改人 */
-  updateBy: string;
-  /**
-   * 修改时间
-   * @format date-time
-   */
-  updateAt: string;
-  /** 删除人 */
-  delBy: string;
-  /**
-   * 删除时间
-   * @format date-time
-   */
-  delAt: string;
-  /** 父角色id */
-  parentRoleId: number;
-  /** 角色名 */
-  roleName: string;
-  /** 角色编码 */
-  roleCode: string;
+  /** 是否显示 */
+  visible: boolean;
+  /** 是否缓存 */
+  keepAlive: boolean;
   /** 排序 */
   sort: number;
   [key: string]: any;
 }
 
-export interface SysRoleEditDto {
+export interface SysRoleEntity {
   /** 新增人 */
   createBy: string;
   /**
@@ -251,7 +152,21 @@ export interface SysRoleEditDto {
    */
   delAt: string;
   /** 角色id */
-  roleId: number;
+  roleId: string;
+  /** 父角色id */
+  parentRoleId: number;
+  /** 角色名 */
+  roleName: string;
+  /** 角色编码 */
+  roleCode: string;
+  /** 排序 */
+  sort: number;
+  [key: string]: any;
+}
+
+export interface SysRoleSaveDto {
+  /** 角色id */
+  roleId: string;
   /** 父角色id */
   parentRoleId: number;
   /** 角色名 */
@@ -286,7 +201,7 @@ export interface SysUserEntity {
    */
   delAt: string;
   /** 登录名 */
-  userId: number;
+  userId: string;
   /** 登录名 */
   username: string;
   /** 用户昵称 */
@@ -299,32 +214,6 @@ export interface SysUserEntity {
   enable: boolean;
   /** 排序 */
   sort: number;
-  [key: string]: any;
-}
-
-export type SysUserQueryDto = object;
-
-export interface SysUserSaveDto {
-  /** 登录名 */
-  username: string;
-  /** 用户昵称 */
-  userNickname: string;
-  /** 用户手机号 */
-  mobile: string;
-  [key: string]: any;
-}
-
-export interface SysUserEditDto {
-  /** 登录名 */
-  userId: number;
-  /** 登录名 */
-  username: string;
-  /** 用户昵称 */
-  userNickname: string;
-  /** 用户手机号 */
-  mobile: string;
-  /** 是否启用 */
-  enable: boolean;
   [key: string]: any;
 }
 
@@ -358,45 +247,14 @@ export interface FrameDictEntity {
    * @format date-time
    */
   delAt: string;
-  /** 字典摘要 */
+  /** 字典id */
   id: string;
   /** 字典code */
   code: string;
   /** 字典摘要 */
   summary: string;
-  /** 排序 */
-  sort: number;
-  [key: string]: any;
-}
-
-export interface FrameDictQueryDto {
-  /** 新增人 */
-  createBy: string;
-  /**
-   * 新增时间
-   * @format date-time
-   */
-  createAt: string;
-  /** 修改人 */
-  updateBy: string;
-  /**
-   * 修改时间
-   * @format date-time
-   */
-  updateAt: string;
-  /** 删除人 */
-  delBy: string;
-  /**
-   * 删除时间
-   * @format date-time
-   */
-  delAt: string;
-  /** 字典摘要 */
-  id: string;
-  /** 字典code */
-  code: string;
-  /** 字典摘要 */
-  summary: string;
+  /** 字典类型 */
+  genType: string;
   /** 排序 */
   sort: number;
   [key: string]: any;
@@ -405,21 +263,11 @@ export interface FrameDictQueryDto {
 export type String = object;
 
 export interface FrameDictSaveDto {
-  /** 字典code */
-  code: string;
-  /** 字典摘要 */
-  summary: string;
-  /** 排序 */
-  sort: number;
-  [key: string]: any;
-}
-
-export interface FrameDictEditDto {
-  /** 字典摘要 */
+  /** id */
   id: string;
-  /** 字典code */
+  /** 字典编码 */
   code: string;
-  /** 字典摘要 */
+  /** 字典名称 */
   summary: string;
   /** 排序 */
   sort: number;
@@ -462,28 +310,22 @@ export interface FrameDictItemEntity {
 }
 
 export interface FrameDictItemQueryDto {
+  /** 字典项编码 */
+  code: string;
   /** 字典id */
   dictId: string;
   [key: string]: any;
 }
 
 export interface FrameDictItemSaveDto {
-  /** 字典项code */
-  code: string;
-  /** 字典项摘要 */
-  summary: string;
-  /** 排序 */
-  sort: number;
-  [key: string]: any;
-}
-
-export interface FrameDictItemEditDto {
-  /** 字典项code */
+  /** id */
   id: string;
-  /** 字典项code */
+  /** 字典编码 */
   code: string;
-  /** 字典项摘要 */
+  /** 字典名称 */
   summary: string;
+  /** 字典项颜色 */
+  hexColor: string;
   /** 排序 */
   sort: number;
   [key: string]: any;
@@ -715,7 +557,7 @@ export class Api<
      * @request PATCH:/sys/dept/id/{deptId}
      */
     sysDeptControllerGetByRoleId: (
-      deptId: number,
+      deptId: string,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
@@ -749,7 +591,7 @@ export class Api<
      * @summary 修改
      * @request PUT:/sys/dept
      */
-    sysDeptControllerEdit: (data: SysDeptEditDto, params: RequestParams = {}) =>
+    sysDeptControllerEdit: (data: SysDeptSaveDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/sys/dept`,
         method: "PUT",
@@ -766,10 +608,7 @@ export class Api<
      * @summary 分页
      * @request GET:/sys/menu/page
      */
-    sysMenuControllerPage: (
-      data: SysMenuQueryDto,
-      params: RequestParams = {},
-    ) =>
+    sysMenuControllerPage: (data: SysMenuEntity, params: RequestParams = {}) =>
       this.request<
         R & {
           data?: BasePageVo & {
@@ -797,7 +636,7 @@ export class Api<
      * @request GET:/sys/menu/select
      */
     sysMenuControllerSelect: (
-      data: SysMenuQueryDto,
+      data: SysMenuEntity,
       params: RequestParams = {},
     ) =>
       this.request<
@@ -886,7 +725,7 @@ export class Api<
      * @summary 修改菜单
      * @request PUT:/sys/menu
      */
-    sysMenuControllerEdit: (data: SysMenuEditDto, params: RequestParams = {}) =>
+    sysMenuControllerEdit: (data: SysMenuSaveDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/sys/menu`,
         method: "PUT",
@@ -918,12 +757,22 @@ export class Api<
      * @summary 分页
      * @request POST:/sys/role/page
      */
-    sysRoleControllerPage: (data: SysRolePaDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+    sysRoleControllerPage: (data: SysRoleEntity, params: RequestParams = {}) =>
+      this.request<
+        R & {
+          data?: BasePageVo & {
+            records?: SysRoleEntity[];
+            [key: string]: any;
+          };
+          [key: string]: any;
+        },
+        any
+      >({
         path: `/sys/role/page`,
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -935,12 +784,25 @@ export class Api<
      * @summary 下拉(没有权限控制)
      * @request POST:/sys/role/select
      */
-    sysRoleControllerSelect: (data: SysRolePaDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+    sysRoleControllerSelect: (
+      data: SysRoleEntity,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        R & {
+          data?: BasePageVo & {
+            records?: SysRoleEntity[];
+            [key: string]: any;
+          };
+          [key: string]: any;
+        },
+        any
+      >({
         path: `/sys/role/select`,
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -950,15 +812,22 @@ export class Api<
      * @tags 角色管理
      * @name SysRoleControllerGetByRoleId
      * @summary 根据角色id查询角色(有缓存)
-     * @request PATCH:/sys/role/id/{roleId}
+     * @request GET:/sys/role/id/{roleId}
      */
     sysRoleControllerGetByRoleId: (
-      roleId: number,
+      roleId: string,
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<
+        R & {
+          data?: SysRoleEntity;
+          [key: string]: any;
+        },
+        any
+      >({
         path: `/sys/role/id/${roleId}`,
-        method: "PATCH",
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -968,15 +837,22 @@ export class Api<
      * @tags 角色管理
      * @name SysRoleControllerGetByRoleCode
      * @summary 根据角色code查询角色(有缓存)
-     * @request PATCH:/sys/role/code/{roleCode}
+     * @request GET:/sys/role/code/{roleCode}
      */
     sysRoleControllerGetByRoleCode: (
       roleCode: string,
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<
+        R & {
+          data?: SysRoleEntity;
+          [key: string]: any;
+        },
+        any
+      >({
         path: `/sys/role/code/${roleCode}`,
-        method: "PATCH",
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1001,14 +877,11 @@ export class Api<
      * No description
      *
      * @tags 角色管理
-     * @name SysRoleControllerUpdate
+     * @name SysRoleControllerEdit
      * @summary 修改角色(限流、日志)
      * @request PUT:/sys/role
      */
-    sysRoleControllerUpdate: (
-      data: SysRoleEditDto,
-      params: RequestParams = {},
-    ) =>
+    sysRoleControllerEdit: (data: SysRoleSaveDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/sys/role`,
         method: "PUT",
@@ -1043,10 +916,7 @@ export class Api<
      * @summary 分页
      * @request GET:/sys/user/page
      */
-    sysUserControllerPage: (
-      data: SysUserQueryDto,
-      params: RequestParams = {},
-    ) =>
+    sysUserControllerPage: (data: SysUserEntity, params: RequestParams = {}) =>
       this.request<
         R & {
           data?: BasePageVo & {
@@ -1074,7 +944,7 @@ export class Api<
      * @request GET:/sys/user/select
      */
     sysUserControllerSelect: (
-      data: SysUserQueryDto,
+      data: SysUserEntity,
       params: RequestParams = {},
     ) =>
       this.request<
@@ -1104,7 +974,7 @@ export class Api<
      * @request GET:/sys/user/id/{userId}
      */
     sysUserControllerGetByUserId: (
-      userId: number,
+      userId: string,
       params: RequestParams = {},
     ) =>
       this.request<
@@ -1128,7 +998,7 @@ export class Api<
      * @summary 新增用户
      * @request POST:/sys/user
      */
-    sysUserControllerSave: (data: SysUserSaveDto, params: RequestParams = {}) =>
+    sysUserControllerSave: (data: SysDeptSaveDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/sys/user`,
         method: "POST",
@@ -1145,7 +1015,7 @@ export class Api<
      * @summary 修改用户
      * @request PUT:/sys/user
      */
-    sysUserControllerEdit: (data: SysUserEditDto, params: RequestParams = {}) =>
+    sysUserControllerEdit: (data: SysDeptSaveDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/sys/user`,
         method: "PUT",
@@ -1214,7 +1084,7 @@ export class Api<
      * @request POST:/frame/dict/page
      */
     frameDictControllerPage: (
-      data: FrameDictQueryDto,
+      data: FrameDictEntity,
       params: RequestParams = {},
     ) =>
       this.request<
@@ -1311,7 +1181,7 @@ export class Api<
      * @request PUT:/frame/dict
      */
     frameDictControllerEdit: (
-      data: FrameDictEditDto,
+      data: FrameDictSaveDto,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
@@ -1449,7 +1319,7 @@ export class Api<
      * @request PUT:/frame/dict-item
      */
     frameDictItemControllerEdit: (
-      data: FrameDictItemEditDto,
+      data: FrameDictItemSaveDto,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({

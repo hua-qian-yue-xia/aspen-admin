@@ -33,7 +33,7 @@ const DictKeyFormCmp = forwardRef<DictValueFormRef, Props>(({ onRefresh }, ref) 
 	const formRef = useRef<ProFormInstance>()
 
 	const [open, setOpen] = useState(false)
-	const [form, setForm] = useState<FrameDictSaveDto | null>(null)
+	const [form, setForm] = useState<FrameDictSaveDto>(null)
 	const [loadingObj, setLoadingObj] = useState({
 		form: false,
 		modal: false,
@@ -64,7 +64,7 @@ const DictKeyFormCmp = forwardRef<DictValueFormRef, Props>(({ onRefresh }, ref) 
 		if (id === null) return
 		try {
 			const { data } = await API.frame.frameDictControllerGetByDictId(id)
-			setForm(data)
+			setForm({ ...data } as any)
 		} catch (error) {
 			console.error("|查询字典值详情|意外的错误,error:", error)
 		}

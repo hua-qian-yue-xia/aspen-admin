@@ -6,6 +6,7 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const API: typeof import('antd')['PI']
   const IconAntDesignReloadOutlined: typeof import('~icons/ant-design/reload-outlined.tsx')['default']
   const IconGridiconsFullscreen: typeof import('~icons/gridicons/fullscreen.tsx')['default']
   const IconGridiconsFullscreenExit: typeof import('~icons/gridicons/fullscreen-exit.tsx')['default']
