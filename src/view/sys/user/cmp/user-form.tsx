@@ -2,12 +2,12 @@ import type { ProFormColumnsType, ProFormInstance } from "@ant-design/pro-compon
 import { BetaSchemaForm } from "@ant-design/pro-components"
 
 import { API } from "@@/api/share/request-tool"
-import type { SysUserEditDto } from "@@/api/gen/gen-api"
+import type { SysUserSaveDto } from "@@/api/gen/gen-api"
 
 import CONSTANT from "@@/constant"
 
 export type UserFormRef = {
-	open: (id: number | null) => Promise<void>
+	open: (id: string | null) => Promise<void>
 }
 
 type Props = {
@@ -45,19 +45,33 @@ const columns: Array<ProFormColumnsType> = [
 			],
 		},
 	},
+	{
+		dataIndex: "deptIds",
+		title: "部门",
+		formItemProps: {
+			rules: [{ required: true, message: "请选择部门" }],
+		},
+	},
+	{
+		dataIndex: "roleIds",
+		title: "角色",
+		formItemProps: {
+			rules: [{ required: true, message: "请选择角色" }],
+		},
+	},
 ]
 
 const UserFormCmp = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 	const formRef = useRef<ProFormInstance>()
 
 	const [open, setOpen] = useState(false)
-	const [form, setForm] = useState<SysUserEditDto | null>(null)
+	const [form, setForm] = useState<SysUserSaveDto | null>(null)
 	const [loadingObj, setLoadingObj] = useState({
 		form: false,
 		modal: false,
 	})
 
-	const [currentUserId, setCurrentUserId] = useState<number | null>(null)
+	const [currentUserId, setCurrentUserId] = useState<string | null>(null)
 
 	// 新增或修改用户
 	const onFinish = async (values: any) => {
@@ -78,7 +92,7 @@ const UserFormCmp = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 	}
 
 	// 查询用户详情
-	const getDetail = async (id: number | null) => {
+	const getDetail = async (id: string | null) => {
 		if (id === null) return
 		try {
 			const { data } = await API.sys.sysUserControllerGetByUserId(id)
@@ -89,7 +103,7 @@ const UserFormCmp = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 	}
 
 	useImperativeHandle(ref, () => ({
-		open: async (id: number | null) => {
+		open: async (id: string | null) => {
 			setLoadingObj({ ...loadingObj, modal: true })
 			setCurrentUserId(id)
 			try {
@@ -110,6 +124,7 @@ const UserFormCmp = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 
 	return (
 		<BetaSchemaForm
+			grid
 			initialValues={form}
 			formRef={formRef}
 			loading={loadingObj.form}

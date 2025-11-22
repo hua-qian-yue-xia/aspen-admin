@@ -1,6 +1,6 @@
 import { useEffect, memo, useMemo, useRef, useState } from "react"
 import { Button, Flex, Typography, Input } from "antd"
-import { DeleteOutlined, FormOutlined, SearchOutlined } from "@ant-design/icons"
+import { DeleteOutlined, ExportOutlined, FormOutlined, SearchOutlined } from "@ant-design/icons"
 
 import { mergeClass } from "@aspen/common"
 
@@ -70,14 +70,14 @@ const DictKeyListCmp: React.FC<Props> = ({ onActive }) => {
 	}
 
 	return (
-		<div className="full">
+		<Flex vertical className="full">
 			<Title level={5}>字典键管理</Title>
 			<Flex align="center" justify="space-between" className="p-x-2 p-y-2 m-b-2 gap-2">
 				<Input
 					allowClear
 					placeholder="搜索字典名称/值"
 					value={searchText}
-					prefix={<SearchOutlined />}
+					suffix={<SearchOutlined />}
 					onChange={(e) => setSearchText(e.target.value)}
 					className="flex-1"
 				/>
@@ -91,59 +91,64 @@ const DictKeyListCmp: React.FC<Props> = ({ onActive }) => {
 					新增字典
 				</Button>
 			</Flex>
-			{filteredDictKeyList.length === 0 && <div className="p-4 text-center opacity-70">暂无数据</div>}
-			{filteredDictKeyList.map((v) => (
-				<Flex
-					key={v.id}
-					align="center"
-					justify="space-between"
-					className={mergeClass(
-						"p-x-4 p-y-1 m-b-2 rounded-2 cursor-pointer transition-colors duration-200 hover:bg-primary/10",
-						activeDictId === v.id ? "bg-primary/10" : "",
-					)}
-					onClick={() => {
-						setActiveDictId(v.id)
-						onActive?.(v.id)
-					}}
-				>
-					<Flex align="center" justify="center">
-						<div className="flex flex-col">
-							<Text strong className="color-primary!">
-								{v.summary}
-							</Text>
-							<Text className="opacity-70 text-14px">{v.code}</Text>
-						</div>
+			<Flex vertical flex={1}>
+				{filteredDictKeyList.length === 0 && <div className="p-4 text-center opacity-70">暂无数据</div>}
+				{filteredDictKeyList.map((v) => (
+					<Flex
+						key={v.id}
+						align="center"
+						justify="space-between"
+						className={mergeClass(
+							"p-x-4 p-y-1 m-b-2 rounded-2 cursor-pointer transition-colors duration-200 hover:bg-primary/10",
+							activeDictId === v.id ? "bg-primary/10" : "",
+						)}
+						onClick={() => {
+							setActiveDictId(v.id)
+							onActive?.(v.id)
+						}}
+					>
+						<Flex align="center" justify="center">
+							<div className="flex flex-col">
+								<Text strong className="color-primary!">
+									{v.summary}
+								</Text>
+								<Text className="opacity-70 text-14px">{v.code}</Text>
+							</div>
+						</Flex>
+						<Flex align="center" justify="center">
+							<Button
+								size="small"
+								variant="text"
+								color="primary"
+								icon={<FormOutlined />}
+								onClick={(e) => {
+									e.stopPropagation()
+									dictKeyFormRef.current?.open(v.id)
+								}}
+							>
+								编辑
+							</Button>
+							<Button
+								size="small"
+								variant="text"
+								color="danger"
+								icon={<DeleteOutlined />}
+								onClick={(e) => {
+									e.stopPropagation()
+									deleteDictKey(v)
+								}}
+							>
+								删除
+							</Button>
+						</Flex>
 					</Flex>
-					<Flex align="center" justify="center">
-						<Button
-							size="small"
-							variant="text"
-							color="primary"
-							icon={<FormOutlined />}
-							onClick={(e) => {
-								e.stopPropagation()
-								dictKeyFormRef.current?.open(v.id)
-							}}
-						>
-							编辑
-						</Button>
-						<Button
-							size="small"
-							variant="text"
-							color="danger"
-							icon={<DeleteOutlined />}
-							onClick={(e) => {
-								e.stopPropagation()
-								deleteDictKey(v)
-							}}
-						>
-							删除
-						</Button>
-					</Flex>
-				</Flex>
-			))}
+				))}
+			</Flex>
+			<Button className="w-full" type="primary" size="middle" icon={<ExportOutlined />}>
+				导出
+			</Button>
 			<DictKeyFormCmp ref={dictKeyFormRef} onRefresh={getDictPage} />
-		</div>
+		</Flex>
 	)
 }
 

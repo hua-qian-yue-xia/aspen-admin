@@ -11,16 +11,12 @@
  */
 
 export interface SysDeptSaveDto {
-  /** 登录名 */
-  userId: string;
-  /** 登录名 */
-  username: string;
-  /** 用户昵称 */
-  userNickname: string;
-  /** 用户手机号 */
-  mobile: string;
-  /** 是否启用 */
-  enable: boolean;
+  /** 部门id */
+  deptId: string;
+  /** 部门父id */
+  deptParentId: string;
+  /** 部门名 */
+  deptName: string;
   /** 排序 */
   sort: number;
   [key: string]: any;
@@ -208,6 +204,22 @@ export interface SysUserEntity {
   userNickname: string;
   /** 用户密码 */
   password: string;
+  /** 用户手机号 */
+  mobile: string;
+  /** 是否启用 */
+  enable: boolean;
+  /** 排序 */
+  sort: number;
+  [key: string]: any;
+}
+
+export interface SysUserSaveDto {
+  /** 登录名 */
+  userId: string;
+  /** 登录名 */
+  username: string;
+  /** 用户昵称 */
+  userNickname: string;
   /** 用户手机号 */
   mobile: string;
   /** 是否启用 */
@@ -998,7 +1010,7 @@ export class Api<
      * @summary 新增用户
      * @request POST:/sys/user
      */
-    sysUserControllerSave: (data: SysDeptSaveDto, params: RequestParams = {}) =>
+    sysUserControllerSave: (data: SysUserSaveDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/sys/user`,
         method: "POST",
@@ -1015,7 +1027,7 @@ export class Api<
      * @summary 修改用户
      * @request PUT:/sys/user
      */
-    sysUserControllerEdit: (data: SysDeptSaveDto, params: RequestParams = {}) =>
+    sysUserControllerEdit: (data: SysUserSaveDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/sys/user`,
         method: "PUT",

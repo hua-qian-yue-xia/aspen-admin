@@ -120,6 +120,8 @@ const UserPage: React.FC = () => {
 	return (
 		<>
 			<CrudTable
+				className="h-full"
+				cardProps={{ bodyStyle: { height: "100%" }, style: { height: "100%" } }}
 				actionRef={actionRef}
 				rowKey="userId"
 				headerTitle="系统用户"

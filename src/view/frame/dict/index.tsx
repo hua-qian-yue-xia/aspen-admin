@@ -100,7 +100,7 @@ const DictPage: React.FC = () => {
 
 	return (
 		<Flex className="full">
-			<Card className="w-25% h-full mr-3">
+			<Card className="w-25% h-full mr-3" styles={{ body: { height: "100%" } }}>
 				<DictKeyListCmp
 					onActive={(dictId) => {
 						if (!dictId || dictId === queryForm.dictId) return

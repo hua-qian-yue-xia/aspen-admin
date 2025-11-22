@@ -58,12 +58,21 @@ export const exampleRoute: Array<Router.RouteObj> = [
 				},
 			},
 			{
+				path: "/sys/dept",
+				lazy: () => import("@/view/sys/dept/index").then(disposePathComponent),
+				handle: {
+					icon: "fluent:book-information-24-regular",
+					title: "部门管理",
+					order: 200,
+				},
+			},
+			{
 				path: "/sys/menu",
 				lazy: () => import("@/view/sys/menu/index").then(disposePathComponent),
 				handle: {
 					icon: "fluent:book-information-24-regular",
 					title: "菜单管理",
-					order: 200,
+					order: 300,
 				},
 			},
 			{
@@ -72,7 +81,7 @@ export const exampleRoute: Array<Router.RouteObj> = [
 				handle: {
 					icon: "fluent:book-information-24-regular",
 					title: "角色权限",
-					order: 300,
+					order: 400,
 				},
 			},
 			{
@@ -81,7 +90,7 @@ export const exampleRoute: Array<Router.RouteObj> = [
 				handle: {
 					icon: "fluent:book-information-24-regular",
 					title: "字典管理",
-					order: 400,
+					order: 500,
 				},
 			},
 		],
