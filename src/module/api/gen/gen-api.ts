@@ -38,6 +38,10 @@ export interface SysDeptEntity {
   deptParentId: string;
   /** 部门名 */
   deptName: string;
+  /** 部门类型 */
+  deptType: string;
+  /** 是否为部门目录的专属部门 */
+  isCatalogueDpet: boolean;
   /** 排序 */
   sort: number;
   [key: string]: any;
@@ -84,6 +88,8 @@ export interface SysDeptSaveDto {
   deptParentId: string;
   /** 部门名 */
   deptName: string;
+  /** 部门类型 */
+  deptType: string;
   /** 排序 */
   sort: number;
   [key: string]: any;
@@ -200,7 +206,7 @@ export interface SysRoleEntity {
   /** 角色id */
   roleId: string;
   /** 父角色id */
-  parentRoleId: number;
+  parentRoleId: string;
   /** 角色名 */
   roleName: string;
   /** 角色编码 */

@@ -121,7 +121,7 @@ const UserPage: React.FC = () => {
 	return (
 		<Flex className="full">
 			<Card className="min-w-85 w-20% h-full mr-3" styles={{ body: { height: "100%" } }}>
-				<CMP.tree.dept />
+				<CMP.tree.dept title={null} />
 			</Card>
 			<Card className="flex-1 h-full" styles={{ body: { height: "100%" } }}>
 				<CrudTable

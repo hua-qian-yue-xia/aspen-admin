@@ -1,7 +1,7 @@
 import React from "react"
 
-const DeptPage: React.FC = () => {
+const DeptRouterPage: React.FC = () => {
 	return <></>
 }
 
-export default DeptPage
+export default DeptRouterPage

@@ -16,14 +16,13 @@ const BaseSelect: React.FC<BaseSelectProps> = (props) => {
 	const [options, setOptions] = useState<Array<BaseSelectOption>>([])
 
 	const tryGetOptions = async () => {
-		if (getOptions) {
-			const result = getOptions()
-			if (result instanceof Promise) {
-				const options = await result
-				setOptions(options ?? [])
-			} else {
-				setOptions(result ?? [])
-			}
+		if (!getOptions) return
+		const result = getOptions()
+		if (result instanceof Promise) {
+			const options = await result
+			setOptions(options ?? [])
+		} else {
+			setOptions(result ?? [])
 		}
 	}
 

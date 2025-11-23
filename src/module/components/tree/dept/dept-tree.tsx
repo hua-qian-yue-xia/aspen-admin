@@ -68,22 +68,26 @@ const DeptTreeCmp: React.FC<Props> = ({ title = "部门管理", visibleDeptView 
 			const _params: any = {}
 			const { data } = await API.sys.sysDeptControllerTree(_params)
 			const convTreeData = TOOL.tree.map(data, (entity) => {
+				const isAdd = entity.deptType === "200"
 				return {
 					title: entity.deptName,
 					key: entity.deptId,
 					isLeaf: !entity.children?.length,
 					icon: (tree: any) => {
 						// 有子节点时,显示文件夹
-						if (tree.data.children?.length) {
+						if (tree.data.children?.length || isAdd) {
 							return tree.expanded ? <FolderOpenOutlined /> : <FolderOutlined />
 						}
 						return <BaseSvgIcon className="inline" icon="clarity:organization-solid" />
+					},
+					extra: {
+						isAdd: isAdd,
 					},
 				}
 			})
 			// 创建一个默认的expandedKeys,deptParentId为-1
 			const defaultExpandedKeys = convTreeData.filter((node) => node.key === "-1").map((node) => node.key)
-			setExpandedKeys(defaultExpandedKeys)
+			setExpandedKeys((prev) => [...prev, ...defaultExpandedKeys])
 			setTreeData(convTreeData)
 		} catch (error) {
 			console.error("|获取部门dept树|意外的错误,error:", error)
@@ -153,16 +157,17 @@ const DeptTreeCmp: React.FC<Props> = ({ title = "部门管理", visibleDeptView 
 								<Text className="min-w-5 max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
 									{String(node.title)}
 								</Text>
-
 								<Flex>
-									<Button
-										type="text"
-										icon={<PlusCircleOutlined className="color-primary" />}
-										onClick={(e) => {
-											e.stopPropagation()
-											moreItemsClick("ADD", node)
-										}}
-									/>
+									{(node as any)?.extra?.isAdd && (
+										<Button
+											type="text"
+											icon={<PlusCircleOutlined className="color-primary" />}
+											onClick={(e) => {
+												e.stopPropagation()
+												moreItemsClick("ADD", node)
+											}}
+										/>
+									)}
 									<Dropdown
 										menu={{
 											items: moreItems,

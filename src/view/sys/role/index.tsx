@@ -26,7 +26,7 @@ const RolePage: React.FC = () => {
 	return (
 		<Card className="full" styles={{ body: { height: "100%" } }}>
 			<Flex className="full flex">
-				<Flex className="w-15% h-full">
+				<Flex className="min-w-65 w-15% h-full">
 					<RoleListCmp />
 				</Flex>
 				<Divider className="h-full" orientation="vertical" />

@@ -2,7 +2,9 @@ import { BetaSchemaForm, ProFormInstance } from "@ant-design/pro-components"
 import type { ProFormColumnsType } from "@ant-design/pro-components"
 
 import { API } from "@@/api/share/request-tool"
-import type { SysDeptSaveDto, SysDeptEntity } from "@@/api/gen/gen-api"
+import type { SysDeptEntity } from "@@/api/gen/gen-api"
+
+import CMP from "@@/components"
 
 export type DeptFormCmpRef = {
 	open: (deptParentId: string, id: string | null) => Promise<void>
@@ -14,22 +16,56 @@ type Props = {
 
 const columns: Array<ProFormColumnsType<SysDeptEntity>> = [
 	{
-		dataIndex: "deptParentId",
-		title: "父部门",
-		tooltip: "如果不选择,则默认为顶级部门",
-	},
-	{
-		dataIndex: "deptName",
-		title: "字典名称",
-		formItemProps: {
-			rules: [{ required: true, message: "请输入部门名" }],
+		valueType: "dependency",
+		name: ["isCatalogueDpet"],
+		columns: (values) => {
+			const isCatalogueDpet = values?.isCatalogueDpet ?? false
+			return [
+				{
+					dataIndex: "deptParentId",
+					title: "父部门",
+					tooltip: "如果不选择,则默认为顶级部门",
+					fieldProps: {
+						disabled: isCatalogueDpet,
+					},
+					renderFormItem: () => {
+						return <CMP.tree.deptSelect />
+					},
+				},
+				{
+					dataIndex: "deptName",
+					title: "部门名称",
+					fieldProps: {
+						disabled: isCatalogueDpet,
+					},
+					formItemProps: {
+						rules: [{ required: true, message: "请输入部门名" }],
+					},
+				},
+				{
+					dataIndex: "deptType",
+					title: "类型",
+					fieldProps: {
+						disabled: isCatalogueDpet,
+					},
+					formItemProps: {
+						rules: [{ required: true, message: "请选择部门类型" }],
+					},
+					renderFormItem: () => {
+						return <CMP.dict.select dictType="sys_dept_type" autoSelectFirst placeholder="请选择类型" />
+					},
+				},
+				{
+					dataIndex: "sort",
+					title: "排序",
+					tooltip: "越大越在前",
+					fieldProps: {
+						disabled: isCatalogueDpet,
+					},
+					formItemProps: {},
+				},
+			]
 		},
-	},
-	{
-		dataIndex: "sort",
-		title: "排序",
-		tooltip: "越大越在前",
-		formItemProps: {},
 	},
 ]
 
@@ -37,7 +73,7 @@ const DeptFormCmp = forwardRef<DeptFormCmpRef, Props>(({ onRefresh }, ref) => {
 	const formRef = useRef<ProFormInstance>()
 
 	const [open, setOpen] = useState(false)
-	const [form, setForm] = useState<SysDeptSaveDto>(null)
+	const [form, setForm] = useState<SysDeptEntity>(null)
 	const [loadingObj, setLoadingObj] = useState({
 		form: false,
 		modal: false,
@@ -70,6 +106,8 @@ const DeptFormCmp = forwardRef<DeptFormCmpRef, Props>(({ onRefresh }, ref) => {
 		try {
 			const { data } = await API.sys.sysDeptControllerGetByDeptId(id)
 			setForm({ ...data } as any)
+			console.log("data:", data)
+			formRef.current?.setFieldsValue(data)
 		} catch (error) {
 			console.error("|查询部门详情|意外的错误,error:", error)
 		}
@@ -83,7 +121,7 @@ const DeptFormCmp = forwardRef<DeptFormCmpRef, Props>(({ onRefresh }, ref) => {
 			setOpen(true)
 			try {
 				if (!id) {
-					setForm({ deptParentId: deptParentId === "-1" ? null : deptParentId } as SysDeptSaveDto)
+					setForm({ deptParentId: deptParentId === "-1" ? null : deptParentId } as SysDeptEntity)
 					formRef.current?.resetFields()
 					return
 				}
