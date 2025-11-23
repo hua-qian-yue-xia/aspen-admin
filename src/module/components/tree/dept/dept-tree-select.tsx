@@ -18,13 +18,21 @@ type Props = {
 	 * 选择的类型
 	 * catalogue: 目录部门
 	 * dept: 部门
+	 * @default catalogue,dept
 	 */
 	selectTypes?: Array<"catalogue" | "dept">
+	/**
+	 * 是否开启多选
+	 * @default false
+	 */
+	multiple?: boolean
 }
 
 const { Text } = Typography
 
-const DeptTreeSelectCmp: React.FC<Props> = ({ value = null, onChange = null, selectTypes = ["catalogue", "dept"] }) => {
+const DeptTreeSelectCmp: React.FC<Props> = (props) => {
+	const { value = null, onChange = null, selectTypes = ["catalogue", "dept"], multiple = false } = props
+
 	const [treeData, setTreeData] = useState([])
 	const [expandedKeys, setExpandedKeys] = useState([])
 	const deferredExpandedKeys = useDeferredValue(expandedKeys)
@@ -34,6 +42,14 @@ const DeptTreeSelectCmp: React.FC<Props> = ({ value = null, onChange = null, sel
 			getDeptTree()
 		}
 	}, [value])
+
+	const displayValue = useMemo(() => {
+		if (multiple) {
+			if (Array.isArray(value)) return value
+			return [value]
+		}
+		return value || ""
+	}, [value, multiple])
 
 	const tryGetOptions: TreeSelectProps["onOpenChange"] = async (open) => {
 		if (!open) return
@@ -94,7 +110,8 @@ const DeptTreeSelectCmp: React.FC<Props> = ({ value = null, onChange = null, sel
 
 	return (
 		<TreeSelect
-			value={value}
+			value={displayValue}
+			treeCheckable={multiple}
 			treeIcon
 			treeLine
 			className="full"
@@ -118,4 +135,4 @@ const DeptTreeSelectCmp: React.FC<Props> = ({ value = null, onChange = null, sel
 	)
 }
 
-export default DeptTreeSelectCmp
+export default memo(DeptTreeSelectCmp)
