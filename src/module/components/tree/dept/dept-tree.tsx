@@ -86,8 +86,11 @@ const DeptTreeCmp: React.FC<Props> = ({ title = "部门管理", visibleDeptView 
 				}
 			})
 			// 创建一个默认的expandedKeys,deptParentId为-1
-			const defaultExpandedKeys = convTreeData.filter((node) => node.key === "-1").map((node) => node.key)
-			setExpandedKeys((prev) => [...prev, ...defaultExpandedKeys])
+			const defaultExpandedKeys = TOOL.tree
+				.flatten(data)
+				?.filter((node) => node.deptId === "-1" || node.deptParentId === "-1")
+				?.map((node) => node.deptId)
+			setExpandedKeys((prev) => Array.from(new Set([...prev, ...defaultExpandedKeys])))
 			setTreeData(convTreeData)
 		} catch (error) {
 			console.error("|获取部门dept树|意外的错误,error:", error)

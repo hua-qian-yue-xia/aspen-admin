@@ -29,7 +29,7 @@ const columns: Array<ProFormColumnsType<SysDeptEntity>> = [
 						disabled: isCatalogueDpet,
 					},
 					renderFormItem: () => {
-						return <CMP.tree.deptSelect />
+						return <CMP.tree.deptSelect selectTypes={["catalogue"]} />
 					},
 				},
 				{

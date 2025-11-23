@@ -1,7 +1,7 @@
 import React from "react"
 
 import { Flex, TreeSelect, Typography } from "antd"
-import type { TreeDataNode, TreeSelectProps } from "antd"
+import type { TreeSelectProps } from "antd"
 
 import { API } from "@@/api/share/request-tool"
 import BaseSvgIcon from "~/packages/crud/src/module/base/base-svg-icon"
@@ -14,14 +14,18 @@ import "./css/dept-css.scss"
 type Props = {
 	value?: string | Array<string>
 	onChange?: (value: string | Array<string>) => void
+	/**
+	 * 选择的类型
+	 * catalogue: 目录部门
+	 * dept: 部门
+	 */
+	selectTypes?: Array<"catalogue" | "dept">
 }
 
 const { Text } = Typography
 
-const DeptTreeSelectCmp: React.FC<Props> = ({ value = null, onChange = null }) => {
-	console.log("DeptTreeSelectCmp value:", value)
-
-	const [treeData, setTreeData] = useState<Array<TreeDataNode>>([])
+const DeptTreeSelectCmp: React.FC<Props> = ({ value = null, onChange = null, selectTypes = ["catalogue", "dept"] }) => {
+	const [treeData, setTreeData] = useState([])
 	const [expandedKeys, setExpandedKeys] = useState([])
 	const deferredExpandedKeys = useDeferredValue(expandedKeys)
 
@@ -43,6 +47,15 @@ const DeptTreeSelectCmp: React.FC<Props> = ({ value = null, onChange = null }) =
 			const { data } = await API.sys.sysDeptControllerTree(_params)
 			const convTreeData = TOOL.tree.map(data, (entity) => {
 				const isAdd = entity.deptType === "200"
+				let disabled = false
+				if (selectTypes.length == 1) {
+					if (!selectTypes.includes("catalogue") && entity.deptType === "200") {
+						disabled = true
+					}
+					if (!selectTypes.includes("dept") && entity.deptType === "100") {
+						disabled = true
+					}
+				}
 				return {
 					title: entity.deptName,
 					value: entity.deptId,
@@ -55,15 +68,19 @@ const DeptTreeSelectCmp: React.FC<Props> = ({ value = null, onChange = null }) =
 						}
 						return <BaseSvgIcon className="inline" icon="clarity:organization-solid" />
 					},
-					disabled: !isAdd,
+					disabled: disabled,
 					extra: {
-						isAdd: isAdd,
+						isAdd: entity.deptType === "200",
+						parentKey: entity.deptParentId,
 					},
 				}
 			})
-			// 创建一个默认的expandedKeys,deptParentId为-1
-			const defaultExpandedKeys = convTreeData.filter((node) => node.key === "-1").map((node) => node.key)
-			setExpandedKeys((prev) => [...prev, ...defaultExpandedKeys])
+			// 创建一个默认的 expandedKeys：根节点（parentId 为 null/undefined/0/-1）或 id 为 -1
+			const defaultExpandedKeys = TOOL.tree
+				.flatten(data)
+				?.filter((node) => node.deptId === "-1" || node.deptParentId === "-1")
+				?.map((node) => node.deptId)
+			setExpandedKeys((prev) => Array.from(new Set([...prev, ...defaultExpandedKeys])))
 			setTreeData(convTreeData)
 		} catch (error) {
 			console.error("|获取部门dept树|意外的错误,error:", error)
@@ -85,7 +102,8 @@ const DeptTreeSelectCmp: React.FC<Props> = ({ value = null, onChange = null }) =
 			showSearch
 			onOpenChange={tryGetOptions}
 			treeData={treeData}
-			treeDefaultExpandedKeys={deferredExpandedKeys}
+			treeExpandedKeys={deferredExpandedKeys}
+			onTreeExpand={(keys) => setExpandedKeys(keys as any)}
 			treeTitleRender={(node) => {
 				return (
 					<Flex key={node.key} className="w-full" flex={1} align="center" justify="space-between">

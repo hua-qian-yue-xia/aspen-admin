@@ -4,6 +4,8 @@ import { BetaSchemaForm } from "@ant-design/pro-components"
 import { API } from "@@/api/share/request-tool"
 import type { SysUserSaveDto } from "@@/api/gen/gen-api"
 
+import CMP from "@@/components"
+
 import CONSTANT from "@@/constant"
 
 export type UserFormRef = {
@@ -50,6 +52,9 @@ const columns: Array<ProFormColumnsType> = [
 		title: "部门",
 		formItemProps: {
 			rules: [{ required: true, message: "请选择部门" }],
+		},
+		renderFormItem: () => {
+			return <CMP.tree.deptSelect selectTypes={["dept"]} />
 		},
 	},
 	{
