@@ -77,7 +77,7 @@ const DictKeyListCmp: React.FC<Props> = ({ onActive }) => {
 					allowClear
 					placeholder="搜索字典名称/值"
 					value={searchText}
-					suffix={<SearchOutlined />}
+					prefix={<SearchOutlined />}
 					onChange={(e) => setSearchText(e.target.value)}
 					className="flex-1"
 				/>

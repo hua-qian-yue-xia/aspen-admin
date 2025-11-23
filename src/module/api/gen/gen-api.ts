@@ -10,6 +10,73 @@
  * ---------------------------------------------------------------
  */
 
+export interface SysDeptEntity {
+  /** 新增人 */
+  createBy: string;
+  /**
+   * 新增时间
+   * @format date-time
+   */
+  createAt: string;
+  /** 修改人 */
+  updateBy: string;
+  /**
+   * 修改时间
+   * @format date-time
+   */
+  updateAt: string;
+  /** 删除人 */
+  delBy: string;
+  /**
+   * 删除时间
+   * @format date-time
+   */
+  delAt: string;
+  /** 部门id */
+  deptId: string;
+  /** 部门父id */
+  deptParentId: string;
+  /** 部门名 */
+  deptName: string;
+  /** 排序 */
+  sort: number;
+  [key: string]: any;
+}
+
+export interface BasePageVo {
+  /**
+   * 当前页码
+   * @default 1
+   */
+  page: number;
+  /**
+   * 分页大小
+   * @default 10
+   */
+  pageSize: number;
+  /**
+   * 总页数
+   * @default 0
+   */
+  totalPage: number;
+  /**
+   * 总记录数
+   * @default 0
+   */
+  totalRecord: number;
+  [key: string]: any;
+}
+
+export interface R {
+  /** 状态码 */
+  code: number;
+  /** 状态描述 */
+  msg: string;
+  /** 数据 */
+  data: object;
+  [key: string]: any;
+}
+
 export interface SysDeptSaveDto {
   /** 部门id */
   deptId: string;
@@ -19,6 +86,23 @@ export interface SysDeptSaveDto {
   deptName: string;
   /** 排序 */
   sort: number;
+  [key: string]: any;
+}
+
+export interface SwaggerTreeNode {
+  /**
+   * 子节点
+   * @default []
+   */
+  children: SwaggerTreeNode[];
+  [key: string]: any;
+}
+
+export interface SysDeptQueryDto {
+  /** 部门父id */
+  deptParentId: string;
+  /** 部门名 */
+  deptNameLike: string;
   [key: string]: any;
 }
 
@@ -64,40 +148,6 @@ export interface SysMenuEntity {
   keepAlive: boolean;
   /** 排序 */
   sort: number;
-  [key: string]: any;
-}
-
-export interface BasePageVo {
-  /**
-   * 当前页码
-   * @default 1
-   */
-  page: number;
-  /**
-   * 分页大小
-   * @default 10
-   */
-  pageSize: number;
-  /**
-   * 总页数
-   * @default 0
-   */
-  totalPage: number;
-  /**
-   * 总记录数
-   * @default 0
-   */
-  totalRecord: number;
-  [key: string]: any;
-}
-
-export interface R {
-  /** 状态码 */
-  code: number;
-  /** 状态描述 */
-  msg: string;
-  /** 数据 */
-  data: object;
   [key: string]: any;
 }
 
@@ -537,11 +587,21 @@ export class Api<
      * @request GET:/sys/dept/page
      */
     sysDeptControllerPage: (data: SysDeptSaveDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<
+        R & {
+          data?: BasePageVo & {
+            records?: SysDeptEntity[];
+            [key: string]: any;
+          };
+          [key: string]: any;
+        },
+        any
+      >({
         path: `/sys/dept/page`,
         method: "GET",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -554,9 +614,19 @@ export class Api<
      * @request GET:/sys/dept/select
      */
     sysDeptControllerSelect: (params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<
+        R & {
+          data?: BasePageVo & {
+            records?: SysDeptEntity[];
+            [key: string]: any;
+          };
+          [key: string]: any;
+        },
+        any
+      >({
         path: `/sys/dept/select`,
         method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -564,17 +634,51 @@ export class Api<
      * No description
      *
      * @tags 部门管理
-     * @name SysDeptControllerGetByRoleId
-     * @summary 根据部门id查询部门(有缓存)
-     * @request PATCH:/sys/dept/id/{deptId}
+     * @name SysDeptControllerTree
+     * @summary 树状结构
+     * @request POST:/sys/dept/tree
      */
-    sysDeptControllerGetByRoleId: (
+    sysDeptControllerTree: (
+      data: SysDeptQueryDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        R & {
+          data?: (SysDeptEntity & SwaggerTreeNode)[];
+          [key: string]: any;
+        },
+        any
+      >({
+        path: `/sys/dept/tree`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags 部门管理
+     * @name SysDeptControllerGetByDeptId
+     * @summary 根据部门id查询部门(有缓存)
+     * @request GET:/sys/dept/id/{deptId}
+     */
+    sysDeptControllerGetByDeptId: (
       deptId: string,
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<
+        R & {
+          data?: SysDeptEntity;
+          [key: string]: any;
+        },
+        any
+      >({
         path: `/sys/dept/id/${deptId}`,
-        method: "PATCH",
+        method: "GET",
+        format: "json",
         ...params,
       }),
 

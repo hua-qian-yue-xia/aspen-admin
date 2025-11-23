@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/graphs": "^2.1.1",
     "@ant-design/icons": "^6.0.0",
     "@ant-design/pro-components": "2.8.10",
     "@aspen/common": "workspace:*",
@@ -19,7 +20,7 @@
     "@iconify/react": "^5.2.0",
     "@rive-app/react-canvas": "^4.23.4",
     "ahooks": "^3.8.4",
-    "antd": "^5.27.4",
+    "antd": "^6.0.0",
     "axios": "^1.12.2",
     "dayjs": "^1.11.13",
     "immer": "^10.1.1",

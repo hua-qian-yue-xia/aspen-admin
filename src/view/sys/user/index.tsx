@@ -1,10 +1,11 @@
 import type { ActionType, ProColumns } from "@ant-design/pro-components"
 
-import { Button, Switch } from "antd"
+import { Button, Card, Flex, Switch } from "antd"
 import { DeleteOutlined, FormOutlined } from "@ant-design/icons"
 
 import { CrudTable, CrudTableOperation } from "@aspen/crud"
 
+import CMP from "@@/components"
 import { API } from "@@/api/share/request-tool"
 import type { SysUserEntity } from "@@/api/gen/gen-api"
 
@@ -118,23 +119,28 @@ const UserPage: React.FC = () => {
 	}
 
 	return (
-		<>
-			<CrudTable
-				className="h-full"
-				cardProps={{ bodyStyle: { height: "100%" }, style: { height: "100%" } }}
-				actionRef={actionRef}
-				rowKey="userId"
-				headerTitle="系统用户"
-				columns={columns}
-				search={false}
-				loading={loadingObj.table}
-				request={({ current, pageSize }) => {
-					return getList(current, pageSize)
-				}}
-				toolBarRender={() => [<CrudTableOperation onAdd={() => formRef.current?.open(null)} />]}
-			/>
-			<UserForm ref={formRef} onRefresh={() => actionRef.current?.reload()} />
-		</>
+		<Flex className="full">
+			<Card className="min-w-85 w-20% h-full mr-3" styles={{ body: { height: "100%" } }}>
+				<CMP.tree.dept />
+			</Card>
+			<Card className="flex-1 h-full" styles={{ body: { height: "100%" } }}>
+				<CrudTable
+					cardProps={false}
+					className="h-full"
+					actionRef={actionRef}
+					rowKey="userId"
+					headerTitle="系统用户"
+					columns={columns}
+					search={false}
+					loading={loadingObj.table}
+					request={({ current, pageSize }) => {
+						return getList(current, pageSize)
+					}}
+					toolBarRender={() => [<CrudTableOperation onAdd={() => formRef.current?.open(null)} />]}
+				/>
+				<UserForm ref={formRef} onRefresh={() => actionRef.current?.reload()} />
+			</Card>
+		</Flex>
 	)
 }
 

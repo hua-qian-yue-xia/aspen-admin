@@ -48,7 +48,7 @@ const CrudTableOperation: React.FC<Props> = ({
 				{rightRender}
 			</Flex>
 			{visibleAdd || visibleImport || leftRender || rightRender ? (
-				<Divider type="vertical" size="small" style={{ height: "calc(var(--ant-control-height) * 0.8)" }} />
+				<Divider orientation="vertical" size="small" style={{ height: "calc(var(--ant-control-height) * 0.8)" }} />
 			) : null}
 		</Flex>
 	)

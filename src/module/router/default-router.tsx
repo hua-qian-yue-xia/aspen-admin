@@ -53,7 +53,7 @@ export const exampleRoute: Array<Router.RouteObj> = [
 				lazy: () => import("@/view/sys/user/index").then(disposePathComponent),
 				handle: {
 					icon: "fluent:book-information-24-regular",
-					title: "用户管理",
+					title: "用户部门",
 					order: 100,
 				},
 			},

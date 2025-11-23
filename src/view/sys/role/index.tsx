@@ -29,7 +29,7 @@ const RolePage: React.FC = () => {
 				<Flex className="w-15% h-full">
 					<RoleListCmp />
 				</Flex>
-				<Divider className="h-full" type="vertical" />
+				<Divider className="h-full" orientation="vertical" />
 				<Flex vertical className="flex-1 h-full p-x-2">
 					<Tabs defaultActiveKey={TabItems[0].key} items={TabItems} onChange={tabChange} />
 					{activeTab === "ROLE" && <RoleSettingCmp />}

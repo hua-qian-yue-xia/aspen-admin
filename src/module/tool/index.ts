@@ -2,10 +2,12 @@ import * as genHttpTool from "./gen-http-tool"
 import * as storageTool from "./storage-tool"
 import * as urlTool from "./url-tool"
 import * as dictTool from "./dict-tool"
+import { TreeTool } from "./tree-tool"
 
 export default {
 	url: urlTool,
 	genHttp: genHttpTool,
 	storage: storageTool,
 	dict: dictTool,
+	tree: TreeTool,
 }
