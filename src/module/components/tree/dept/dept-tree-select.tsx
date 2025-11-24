@@ -44,6 +44,7 @@ const DeptTreeSelectCmp: React.FC<Props> = (props) => {
 	}, [value])
 
 	const displayValue = useMemo(() => {
+		if (!treeData || !treeData.length) return null
 		if (multiple) {
 			if (Array.isArray(value)) return value
 			return [value]
@@ -52,7 +53,7 @@ const DeptTreeSelectCmp: React.FC<Props> = (props) => {
 			return value[0]
 		}
 		return value || null
-	}, [value, multiple])
+	}, [value, multiple, treeData])
 
 	const tryGetOptions: TreeSelectProps["onOpenChange"] = async (open) => {
 		if (!open) return
