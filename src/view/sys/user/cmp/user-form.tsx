@@ -48,7 +48,8 @@ const columns: Array<ProFormColumnsType> = [
 		},
 	},
 	{
-		dataIndex: "deptIds",
+		dataIndex: "deptIdList",
+		name: "deptIdList",
 		title: "部门",
 		formItemProps: {
 			rules: [{ required: true, message: "请选择部门" }],
@@ -56,12 +57,20 @@ const columns: Array<ProFormColumnsType> = [
 		renderFormItem: () => {
 			return <CMP.tree.deptSelect selectTypes={["dept"]} />
 		},
+		transform: (value: string | Array<string>) => {
+			return {
+				deptIdList: Array.isArray(value) ? value : [value],
+			}
+		},
 	},
 	{
-		dataIndex: "roleIds",
+		dataIndex: "roleIdList",
 		title: "角色",
 		formItemProps: {
 			rules: [{ required: true, message: "请选择角色" }],
+		},
+		renderFormItem: () => {
+			return <CMP.tree.roleSelect selectTypes={["role"]} multiple />
 		},
 	},
 ]
@@ -101,7 +110,13 @@ const UserFormCmp = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 		if (id === null) return
 		try {
 			const { data } = await API.sys.sysUserControllerGetByUserId(id)
-			setForm(data)
+			const form = {
+				...data,
+				roleIdList: data.userRoles.map((v) => v.roleId),
+				deptIdList: data.userDepts.map((v) => v.deptId),
+			}
+			setForm(form)
+			formRef.current?.setFieldsValue(form)
 		} catch (error) {
 			console.error("|查询用户详情|意外的错误,error:", error)
 		}

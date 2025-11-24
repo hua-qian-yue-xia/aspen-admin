@@ -49,7 +49,7 @@ const columns: Array<ProFormColumnsType<SysDeptEntity>> = [
 						disabled: isCatalogueDpet,
 					},
 					formItemProps: {
-						rules: [{ required: true, message: "请选择部门类型" }],
+						rules: [{ required: true, message: "请选择类型" }],
 					},
 					renderFormItem: () => {
 						return <CMP.dict.select dictType="sys_dept_type" autoSelectFirst placeholder="请选择类型" />

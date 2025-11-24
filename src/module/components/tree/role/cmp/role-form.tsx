@@ -1,42 +1,77 @@
 import { BetaSchemaForm, ProFormInstance } from "@ant-design/pro-components"
 import type { ProFormColumnsType } from "@ant-design/pro-components"
 
+import CMP from "@@/components"
+
 import { API } from "@@/api/share/request-tool"
-import type { SysRoleEntity, SysRoleSaveDto } from "@@/api/gen/gen-api"
+import type { SysRoleEntity } from "@@/api/gen/gen-api"
 
 export type RoleFormCmpRef = {
-	open: (id: string | null) => Promise<void>
+	open: (roleParentId: string, id: string | null) => Promise<void>
 }
 
 type Props = {
 	onRefresh?: () => void
 }
 
+const notExistRootRoleId = "-99"
+
 const columns: Array<ProFormColumnsType<SysRoleEntity>> = [
 	{
-		dataIndex: "parentRoleId",
-		title: "父角色",
-		formItemProps: {},
-	},
-	{
-		dataIndex: "roleName",
-		title: "角色名",
-		formItemProps: {
-			rules: [{ required: true, message: "请输入角色名" }],
+		valueType: "dependency",
+		name: ["isCatalogueRole"],
+		columns: (values) => {
+			const isCatalogueRole = values?.isCatalogueRole ?? false
+			return [
+				{
+					dataIndex: "parentRoleId",
+					title: "父角色",
+					formItemProps: {},
+					fieldProps: {
+						disabled: isCatalogueRole,
+					},
+					renderFormItem: () => {
+						return <CMP.tree.roleSelect selectTypes={["catalogue"]} />
+					},
+				},
+				{
+					dataIndex: "roleName",
+					title: "角色名",
+					fieldProps: {
+						disabled: isCatalogueRole,
+					},
+					formItemProps: {
+						rules: [{ required: true, message: "请输入角色名" }],
+					},
+				},
+				{
+					dataIndex: "roleCode",
+					title: "角色编码",
+					fieldProps: {
+						disabled: isCatalogueRole,
+					},
+					formItemProps: {
+						rules: [{ required: true, message: "请输入角色编码" }],
+					},
+				},
+				{
+					dataIndex: "roleType",
+					fieldProps: {
+						disabled: isCatalogueRole,
+					},
+					title: "类型",
+					renderFormItem: () => {
+						return <CMP.dict.select dictType="sys_role_type" autoSelectFirst placeholder="请选择类型" />
+					},
+				},
+				{
+					dataIndex: "sort",
+					title: "排序",
+					tooltip: "越大越在前",
+					formItemProps: {},
+				},
+			]
 		},
-	},
-	{
-		dataIndex: "roleCode",
-		title: "角色编码",
-		formItemProps: {
-			rules: [{ required: true, message: "请输入角色编码" }],
-		},
-	},
-	{
-		dataIndex: "sort",
-		title: "排序",
-		tooltip: "越大越在前",
-		formItemProps: {},
 	},
 ]
 
@@ -44,8 +79,9 @@ const RoleFormCmp = forwardRef<RoleFormCmpRef, Props>(({ onRefresh }, ref) => {
 	const formRef = useRef<ProFormInstance>()
 
 	const [open, setOpen] = useState(false)
-	const [form, setForm] = useState<SysRoleSaveDto>(null)
+	const [form, setForm] = useState<SysRoleEntity>(null)
 	const [roleId, setRoleId] = useState<string | null>(null)
+	const [roleParentId, setRoleParentId] = useState<string | null>(null)
 	const [loadingObj, setLoadingObj] = useState({
 		form: false,
 		modal: false,
@@ -74,20 +110,25 @@ const RoleFormCmp = forwardRef<RoleFormCmpRef, Props>(({ onRefresh }, ref) => {
 		if (id === null) return
 		try {
 			const { data } = await API.sys.sysRoleControllerGetByRoleId(id)
+			if (data.parentRoleId == notExistRootRoleId) {
+				data.parentRoleId = null
+			}
 			setForm({ ...data } as any)
+			formRef.current?.setFieldsValue(data)
 		} catch (error) {
 			console.error("|查询角色详情|意外的错误,error:", error)
 		}
 	}
 
 	useImperativeHandle(ref, () => ({
-		open: async (id: string | null) => {
+		open: async (roleParentId: string, id: string | null) => {
 			setLoadingObj({ ...loadingObj, modal: true })
+			setRoleParentId(roleParentId)
 			setRoleId(id)
 			setOpen(true)
 			try {
 				if (!id) {
-					setForm(null)
+					setForm({ parentRoleId: roleParentId === notExistRootRoleId ? null : roleParentId } as any)
 					formRef.current?.resetFields()
 					return
 				}

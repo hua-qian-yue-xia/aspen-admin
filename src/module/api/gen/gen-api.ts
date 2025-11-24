@@ -211,6 +211,10 @@ export interface SysRoleEntity {
   roleName: string;
   /** 角色编码 */
   roleCode: string;
+  /** 角色类型 */
+  roleType: string;
+  /** 是否为角色目录的专属部门 */
+  isCatalogueRole: boolean;
   /** 排序 */
   sort: number;
   [key: string]: any;
@@ -225,6 +229,8 @@ export interface SysRoleSaveDto {
   roleName: string;
   /** 角色编码 */
   roleCode: string;
+  /** 角色类型 */
+  roleType: string;
   /** 排序 */
   sort: number;
   [key: string]: any;
@@ -875,22 +881,19 @@ export class Api<
      * No description
      *
      * @tags 角色管理
-     * @name SysRoleControllerPage
-     * @summary 分页
-     * @request POST:/sys/role/page
+     * @name SysRoleControllerTree
+     * @summary 树状结构
+     * @request POST:/sys/role/tree
      */
-    sysRoleControllerPage: (data: SysRoleEntity, params: RequestParams = {}) =>
+    sysRoleControllerTree: (data: SysRoleEntity, params: RequestParams = {}) =>
       this.request<
         R & {
-          data?: BasePageVo & {
-            records?: SysRoleEntity[];
-            [key: string]: any;
-          };
+          data?: (SysRoleEntity & SwaggerTreeNode)[];
           [key: string]: any;
         },
         any
       >({
-        path: `/sys/role/page`,
+        path: `/sys/role/tree`,
         method: "POST",
         body: data,
         type: ContentType.Json,

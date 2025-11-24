@@ -1,7 +1,8 @@
 import { Card, Divider, Flex, Tabs } from "antd"
 import type { TabsProps } from "antd"
 
-import RoleListCmp from "./cmp/role-list"
+import CMP from "@@/components"
+
 import RoleSettingCmp from "./cmp/role-setting"
 import RoleUserListCmp from "./cmp/role-user-list"
 
@@ -27,7 +28,7 @@ const RolePage: React.FC = () => {
 		<Card className="full" styles={{ body: { height: "100%" } }}>
 			<Flex className="full flex">
 				<Flex className="min-w-65 w-15% h-full">
-					<RoleListCmp />
+					<CMP.tree.role />
 				</Flex>
 				<Divider className="h-full" orientation="vertical" />
 				<Flex vertical className="flex-1 h-full p-x-2">
