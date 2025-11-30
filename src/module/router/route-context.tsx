@@ -6,11 +6,11 @@ export const useRoute = <
 	Q extends Record<string, string> | null = Record<string, string>,
 	P extends Record<string, string | Array<string>> = Record<string, string | Array<string>>,
 >() => {
-	const matches = useMatches() as unknown as Array<Router.Route<T>>
+	const matches = useMatches() as unknown as Array<App.Route<T>>
 	// 获取当前路由
-	const currentMatch = matches.at(-1) as unknown as Router.Route<T>
+	const currentMatch = matches.at(-1) as unknown as App.Route<T>
 	// 获取除了根路由之外的所有路由
-	const matched = matches.slice(1) as unknown as Router.Route<T>
+	const matched = matches.slice(1) as unknown as App.Route<T>
 	const { hash, pathname, search } = useLocation()
 	// 获取当前路由的完整路径
 	const fullPath = pathname + search + hash
@@ -27,6 +27,6 @@ export const useRoute = <
 			query: "",
 			hash,
 			pathname,
-		} as unknown as Router.Route<T, Q, P>
+		} as unknown as App.Route<T, Q, P>
 	}, [fullPath])
 }

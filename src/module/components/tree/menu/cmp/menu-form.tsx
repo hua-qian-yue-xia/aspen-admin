@@ -7,19 +7,24 @@ import CMP from "@@/components"
 
 import SelectMenuPath from "@@/components/select/sys/select-menu-path"
 
-export type MenuFormRef = {
-	open: (id: number | null) => Promise<void>
+export type MenuFormCmpRef = {
+	open: (menuParentId: string, id: string | null) => Promise<void>
 }
 
 type Props = {
 	onRefresh?: () => void
 }
 
+const notExistMenuRoleId = "-99"
+
 const columns: Array<ProFormColumnsType<SysMenuEntity>> = [
 	{
 		dataIndex: "parentId",
 		title: "父级菜单",
 		tooltip: "如果为空,则为一级菜单",
+		renderFormItem: () => {
+			return <CMP.tree.menuSelect selectTypes={["catalogue"]} />
+		},
 	},
 	{
 		dataIndex: "menuName",
@@ -31,6 +36,7 @@ const columns: Array<ProFormColumnsType<SysMenuEntity>> = [
 	{
 		dataIndex: "type",
 		title: "菜单类型",
+		name: ["type"],
 		formItemProps: {
 			rules: [{ required: true, message: "请选择菜单类型" }],
 		},
@@ -77,7 +83,7 @@ const columns: Array<ProFormColumnsType<SysMenuEntity>> = [
 	},
 ]
 
-const MenuForm = forwardRef<MenuFormRef, Props>((props, ref) => {
+const MenuFormCmp = forwardRef<MenuFormCmpRef, Props>((props, ref) => {
 	const formRef = useRef<ProFormInstance>()
 
 	const [open, setOpen] = useState(false)
@@ -87,16 +93,17 @@ const MenuForm = forwardRef<MenuFormRef, Props>((props, ref) => {
 		modal: false,
 	})
 
-	const [currentMenuId, setCurrentMenuId] = useState<number | null>(null)
+	const [menuId, setMenuId] = useState<string | null>(null)
+	const [menuParentId, setMenuParentId] = useState<string | null>(null)
 
 	// 新增或修改菜单
 	const onFinish = async (values: any) => {
 		setLoadingObj({ ...loadingObj, form: true })
 		try {
-			const api = currentMenuId == null ? API.sys.sysMenuControllerSave : API.sys.sysMenuControllerEdit
-			await api({ ...values, menuId: form?.menuId })
+			const api = menuId == null ? API.sys.sysMenuControllerSave : API.sys.sysMenuControllerEdit
+			await api({ ...values, menuId })
 			props.onRefresh?.()
-			window.$message.success(currentMenuId == null ? "新增成功" : "编辑成功")
+			window.$message.success(menuId == null ? "新增成功" : "编辑成功")
 			setOpen(false)
 		} catch (error) {
 			console.error("|新增或修改菜单|意外的错误,error:", error)
@@ -107,12 +114,13 @@ const MenuForm = forwardRef<MenuFormRef, Props>((props, ref) => {
 		return true
 	}
 
-	// 查询菜单详情（根据传入的 id），避免依赖尚未更新的 state
-	const getDetail = async (id: number | null) => {
-		if (id === null) return
+	// 查询菜单详情
+	const getDetail = async () => {
+		if (!menuId) return
 		try {
-			const { data } = await API.sys.sysMenuControllerGetByMenuId(id)
+			const { data } = await API.sys.sysMenuControllerGetByMenuId(menuId)
 			setForm(data)
+			formRef.current.setFieldsValue(data)
 		} catch (error) {
 			console.error("|查询菜单详情|意外的错误,error:", error)
 		}
@@ -120,19 +128,22 @@ const MenuForm = forwardRef<MenuFormRef, Props>((props, ref) => {
 
 	useImperativeHandle(ref, () => {
 		return {
-			open: async (id: number | null) => {
+			open: async (menuParentId: string, id: string | null) => {
+				console.log("|打开菜单表单|menuParentId:", menuParentId, "id:", id)
+
 				setLoadingObj({ ...loadingObj, modal: true })
-				setCurrentMenuId(id)
+				setMenuId(id)
+				setMenuParentId(menuParentId)
 				setOpen(true)
-				console.log("id:", id)
 				try {
 					if (id == null) {
-						setForm(null)
+						setForm({ parentId: menuParentId === notExistMenuRoleId ? null : menuParentId } as any)
+						formRef.current.resetFields()
 						return
 					}
-					await getDetail(id)
+					await getDetail()
 				} catch (error) {
-					console.error(error)
+					console.error("|查询菜单详情|意外的错误,error:", error)
 				} finally {
 					setTimeout(() => setLoadingObj({ ...loadingObj, modal: false }), 500)
 				}
@@ -146,7 +157,7 @@ const MenuForm = forwardRef<MenuFormRef, Props>((props, ref) => {
 			formRef={formRef}
 			initialValues={form}
 			loading={loadingObj.form}
-			title={currentMenuId === null ? "新增菜单" : "编辑菜单"}
+			title={menuId === null ? "新增菜单" : "编辑菜单"}
 			open={open}
 			columns={columns}
 			preserve={false}
@@ -161,4 +172,4 @@ const MenuForm = forwardRef<MenuFormRef, Props>((props, ref) => {
 	)
 })
 
-export default MenuForm
+export default MenuFormCmp

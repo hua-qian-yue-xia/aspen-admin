@@ -1,4 +1,4 @@
-declare namespace Router {
+declare namespace App {
 	type RouteObj = import("react-router-dom").RouteObject & {
 		handle?: {
 			/**
@@ -41,12 +41,49 @@ declare namespace Router {
 	> = {
 		error: Error | null
 		fullPath: string
-		matches: Array<UIMatch<T, Router.RouteObj["handle"]>>
-		matched: Array<UIMatch<T, Router.RouteObj["handle"]>>
-		currentMatch: UIMatch<T, Router.RouteObj["handle"]>
+		matches: Array<UIMatch<T, App.RouteObj["handle"]>>
+		matched: Array<UIMatch<T, App.RouteObj["handle"]>>
+		currentMatch: UIMatch<T, App.RouteObj["handle"]>
 		query: Q
 		params: P
 		hash: string
 		pathname: string
 	}
+
+	type IconProps = {
+		className?: string
+		style?: React.CSSProperties
+		/**
+		 * Iconify 图标
+		 * @see https://icones.js.org
+		 */
+		icon?: string
+		/**
+		 * 本地svg图标
+		 */
+		localIcon?: string
+	}
+
+	type Menu = {
+		/**
+		 * 子菜单
+		 */
+		children?: Menu[]
+		/**
+		 * 菜单图标
+		 */
+		icon?: React.FunctionComponentElement<IconProps>
+		/**
+		 * 路由key确保唯一
+		 */
+		key: string
+		/**
+		 * 菜单标题
+		 */
+		label: React.ReactNode
+		/**
+		 * 菜单标题
+		 */
+		title?: string
+	} & Record<string, any>
 }

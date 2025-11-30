@@ -25,7 +25,7 @@ export const useTab = (): UseTabHook => {
 export const useTabListren = (): void => {
 	const route = useRoute()
 
-	const addTab = (route: Router.Route) => {
+	const addTab = (route: App.Route) => {
 		const currentTab = _transformTabByRoute(route)
 		if (!currentTab) return
 		// 添加tab
@@ -38,7 +38,7 @@ export const useTabListren = (): void => {
 	}, [route.fullPath])
 }
 
-const _transformTabByRoute = (route: Router.Route): SysKey.Tab.TabObj | null => {
+const _transformTabByRoute = (route: App.Route): SysKey.Tab.TabObj | null => {
 	const handle = route.currentMatch.handle
 	if (!handle) return null
 	return {

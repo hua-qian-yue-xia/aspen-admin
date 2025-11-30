@@ -15,26 +15,30 @@ type Props = {
 	disableLink?: boolean
 } & Omit<LinkProps, "to">
 
-const GlobalLogo: React.FC<Props> = memo(({ visibleTitle = true, disableLink = false, ...res }) => {
-	const { settingStore } = store
+const GlobalLogo: React.FC<Props> = ({ visibleTitle = true, disableLink = false, ...res }) => {
+	const { settingStore, themeStore } = store
 	const { global } = settingStore.store((store) => store)
+	const { aside } = themeStore.store((store) => store)
 
-	const logoContent = (
-		<h2
-			className="pl-8px text-16px text-primary font-bold transition duration-300 ease-in-out"
-			style={{ display: visibleTitle ? "block" : "none" }}
-		>
-			{global.sysName}
-		</h2>
-	)
-	if (disableLink) {
-		return <div className="full flex-row-center">{logoContent}</div>
+	const LogoCmp = () => {
+		return (
+			<div className="full flex-row-center gap-1">
+				<img className="w-24px h-24px" src="/svg/logo.svg" alt={global.sysName} />
+				<h2
+					className="text-16px text-primary font-bold transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap"
+					style={{ maxWidth: visibleTitle ? aside.width : 0, opacity: visibleTitle ? 1 : 0 }}
+				>
+					{global.sysName}
+				</h2>
+			</div>
+		)
 	}
+	if (disableLink) return <LogoCmp />
 	return (
 		<Link className="full flex-row-center" to="/" {...res}>
-			{logoContent}
+			<LogoCmp />
 		</Link>
 	)
-})
+}
 
-export default GlobalLogo
+export default memo(GlobalLogo)

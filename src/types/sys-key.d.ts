@@ -6,8 +6,6 @@ declare namespace SysKey {
 		 * - vertical 垂直布局
 		 */
 		type LayoutMode = "horizontal" | "vertical"
-
-		type MenuItem = Required<import("antd").MenuProps>["items"][number]
 	}
 	namespace Tab {
 		type TabObj = {

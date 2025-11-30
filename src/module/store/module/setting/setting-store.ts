@@ -11,7 +11,7 @@ type SettingStore = {
 const defaultSettingStore = (): SettingStore => {
 	return {
 		global: {
-			sysName: "aspen管理系统",
+			sysName: "Aspen管理系统",
 		},
 	}
 }

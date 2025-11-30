@@ -7,10 +7,10 @@ const disposePathComponent = (pathComponent: any) => {
 }
 
 // 错误页面路由
-const errorRoute: Array<Router.RouteObj> = []
+const errorRoute: Array<App.RouteObj> = []
 
 // 其他路由
-const otherRoute: Array<Router.RouteObj> = [
+const otherRoute: Array<App.RouteObj> = [
 	{
 		path: "/login",
 		lazy: () => import("@/view/sys/login").then(disposePathComponent),
@@ -39,7 +39,7 @@ const otherRoute: Array<Router.RouteObj> = [
 ]
 
 // 示例路由
-export const exampleRoute: Array<Router.RouteObj> = [
+export const exampleRoute: Array<App.RouteObj> = [
 	{
 		path: "/sys",
 		handle: {
@@ -58,11 +58,11 @@ export const exampleRoute: Array<Router.RouteObj> = [
 				},
 			},
 			{
-				path: "/sys/dept",
-				lazy: () => import("@/view/sys/dept/index").then(disposePathComponent),
+				path: "/sys/role",
+				lazy: () => import("@/view/sys/role/index").then(disposePathComponent),
 				handle: {
 					icon: "fluent:book-information-24-regular",
-					title: "部门管理",
+					title: "角色权限",
 					order: 200,
 				},
 			},
@@ -73,15 +73,6 @@ export const exampleRoute: Array<Router.RouteObj> = [
 					icon: "fluent:book-information-24-regular",
 					title: "菜单管理",
 					order: 300,
-				},
-			},
-			{
-				path: "/sys/role",
-				lazy: () => import("@/view/sys/role/index").then(disposePathComponent),
-				handle: {
-					icon: "fluent:book-information-24-regular",
-					title: "角色权限",
-					order: 400,
 				},
 			},
 			{

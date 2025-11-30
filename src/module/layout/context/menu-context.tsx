@@ -1,16 +1,26 @@
 import React, { createContext, PropsWithChildren, useContext } from "react"
-import type { MenuProps } from "antd"
 
 import { router } from "@@/index"
 
 type MenuContextProps = {
-	menuList: Array<Required<MenuProps>["items"][number]>
+	/**
+	 * 所有的菜单
+	 */
+	menuList: Array<App.Menu>
+	/**
+	 * 选择的菜单key
+	 */
 	selectKeys: Array<string>
+	/**
+	 * 当前的路由
+	 */
+	currentRoute: App.Route
 }
 
 const MenuContext = createContext<MenuContextProps>({
 	menuList: [],
 	selectKeys: [],
+	currentRoute: {} as App.Route,
 })
 
 export const useMenuContext = () => {
@@ -30,11 +40,12 @@ export const MenuProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const menuContext: MenuContextProps = {
 		menuList: menuList,
 		selectKeys: selectKey,
+		currentRoute: route,
 	}
 	return <MenuContext.Provider value={menuContext}>{children}</MenuContext.Provider>
 }
 
-const getSelectKey = (route: Router.Route): Array<string> => {
+const getSelectKey = (route: App.Route): Array<string> => {
 	if (!route.currentMatch.handle) return []
 	const { hideInMenu } = route.currentMatch.handle
 	const name = route.pathname

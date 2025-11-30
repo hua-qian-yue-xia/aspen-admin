@@ -10,6 +10,9 @@ const Layout: React.FC<Props> = (props) => {
 		headerNode,
 		headerVisible,
 		headerHeight,
+		tabNode,
+		tabVisible,
+		tabHeight,
 		asideNode,
 		asideVisible,
 		asideCollapse,
@@ -19,10 +22,13 @@ const Layout: React.FC<Props> = (props) => {
 		footerNode,
 		footerVisible,
 		footerHeight,
+		maxZIndex,
 	} = _.assign(defaultProps, props)
 
 	const varCss = createLayoutVarCss({
+		maxZIndex: maxZIndex,
 		headerHeight: headerHeight,
+		tabHeight: tabHeight,
 		asideWidth: asideWidth,
 		asideCollapseWidth: asideCollapseWidth,
 		footerHeight: footerHeight,
@@ -30,6 +36,7 @@ const Layout: React.FC<Props> = (props) => {
 
 	// show
 	const headerShow = useMemo(() => !_.isEmpty(headerNode) && headerVisible, [headerNode, headerVisible])
+	const tabShow = useMemo(() => !_.isEmpty(tabNode) && tabVisible, [tabNode, tabVisible])
 	const asideShow = useMemo(() => !_.isEmpty(asideNode) && asideVisible, [asideNode, asideVisible])
 	const footerShow = useMemo(() => !_.isEmpty(footerNode) && footerVisible, [footerNode, footerVisible])
 
@@ -51,7 +58,16 @@ const Layout: React.FC<Props> = (props) => {
 		[asideGapClass, commonClass],
 	)
 	const headerReplaceCalss = useMemo(
-		() => mergeClass(styles["layout-header"], asideGapClass, "flex-shrink-0"),
+		() => mergeClass(styles["layout-header-placement"], asideGapClass, "flex-shrink-0"),
+		[asideGapClass, commonClass],
+	)
+	// table class
+	const tabClass = useMemo(
+		() => mergeClass(styles["layout-tab"], commonClass, asideGapClass, "flex-shrink-0 absolute left-0 right-0"),
+		[asideGapClass, commonClass],
+	)
+	const tabReplaceCalss = useMemo(
+		() => mergeClass(styles["layout-tab-placement"], asideGapClass, "flex-shrink-0"),
 		[asideGapClass],
 	)
 	// aside class
@@ -82,6 +98,7 @@ const Layout: React.FC<Props> = (props) => {
 
 	// style
 	const headerStyle = useMemo(() => ({}), [])
+	const tabStyle = useMemo(() => ({}), [])
 	const asideStyle = useMemo(() => ({}), [])
 	const mainStyle = useMemo(() => ({}), [])
 	const footerStyle = useMemo(() => ({}), [])
@@ -94,6 +111,14 @@ const Layout: React.FC<Props> = (props) => {
 						{headerNode}
 					</header>
 					<div className={headerReplaceCalss} />
+				</>
+			)}
+			{tabShow && (
+				<>
+					<div style={tabStyle} className={tabClass}>
+						{tabNode}
+					</div>
+					<div className={tabReplaceCalss} />
 				</>
 			)}
 			{asideShow && (

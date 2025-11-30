@@ -7,6 +7,9 @@ import DeptTreeCmp from "./tree/dept/dept-tree"
 import RoleTreeCmp from "./tree/role/role-tree"
 import RoleTreeSelectCmp from "./tree/role/role-tree-select"
 
+import MenuTreeCmp from "./tree/menu/menu-tree"
+import MenuTreeSelectCmp from "./tree/menu/menu-tree-select"
+
 export default {
 	dict: {
 		select: DictSelect,
@@ -17,5 +20,7 @@ export default {
 		deptSelect: DeptTreeSelectCmp,
 		role: RoleTreeCmp,
 		roleSelect: RoleTreeSelectCmp,
+		menu: MenuTreeCmp,
+		menuSelect: MenuTreeSelectCmp,
 	},
 }

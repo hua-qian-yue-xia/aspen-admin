@@ -8,11 +8,11 @@ import { API } from "@@/api/share/request-tool"
 import type { SysMenuEntity } from "@@/api/gen/gen-api"
 import CMP from "@@/components"
 
-import MenuForm from "./menu-form"
-import type { MenuFormRef } from "./menu-form"
+import MenuForm from "@@/components/tree/menu/cmp/menu-form"
+import type { MenuFormCmpRef } from "@@/components/tree/menu/cmp/menu-form"
 
-const MenuTable: React.FC = () => {
-	const formRef = useRef<MenuFormRef>(null)
+const MenuTableCmp: React.FC = () => {
+	const formRef = useRef<MenuFormCmpRef>(null)
 	const actionRef = useRef<ActionType>(null)
 
 	const [loadingObj, setLoadingObj] = useState({ table: false })
@@ -78,11 +78,11 @@ const MenuTable: React.FC = () => {
 				page: page,
 				pageSize: pageSize,
 			}
-			const { data } = await API.sys.sysMenuControllerPage(_params)
+			const { data } = await API.sys.sysMenuControllerTree(_params)
 			return {
-				data: data.records || [],
+				data: data || [],
 				success: true,
-				total: data.totalRecord || 0,
+				total: 0,
 			}
 		} catch (error) {
 			console.error("|获取系统菜单列表|意外的错误,error:", error)
@@ -124,4 +124,4 @@ const MenuTable: React.FC = () => {
 	)
 }
 
-export default MenuTable
+export default MenuTableCmp

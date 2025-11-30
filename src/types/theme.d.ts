@@ -97,4 +97,6 @@ declare namespace Theme {
 			[K in keyof Theme.ThemeToken]?: Partial<Theme.ThemeToken[K]>
 		}
 	}
+
+	type ThemeMainAnimateMode = "fade" | "fade-bottom" | "fade-scale" | "fade-slide" | "none" | "zoom-fade" | "zoom-out"
 }

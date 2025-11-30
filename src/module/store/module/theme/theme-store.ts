@@ -28,6 +28,10 @@ type ThemeStore = {
 		// 高度
 		height: number
 	}
+	tab: {
+		// 高度
+		height: number
+	}
 	footer: {
 		// 高度
 		height: number
@@ -39,6 +43,14 @@ type ThemeStore = {
 		collapsedWidth: number
 		// 折叠状态
 		collapsed: boolean
+	}
+	main: {
+		// 刷新
+		reload: boolean
+		// 是否开启动画
+		animate: boolean
+		// 动画模式
+		animateMode: Theme.ThemeMainAnimateMode
 	}
 	watermark: {
 		// 是否开启
@@ -94,6 +106,9 @@ const defaultThemeStore = (): ThemeStore => {
 		header: {
 			height: 50,
 		},
+		tab: {
+			height: 46,
+		},
 		footer: {
 			height: 76,
 		},
@@ -101,6 +116,11 @@ const defaultThemeStore = (): ThemeStore => {
 			width: 200,
 			collapsedWidth: 65,
 			collapsed: true,
+		},
+		main: {
+			reload: false,
+			animate: true,
+			animateMode: "fade",
 		},
 		watermark: {
 			enable: false,
@@ -217,6 +237,34 @@ export const changeWatermarkContent = (value: string) => {
 export const togglerOnlyExpandParentMenu = () => {
 	store.setState((state) => {
 		state.theme.onlyExpandParentMenu = !state.theme.onlyExpandParentMenu
+	})
+}
+
+// 改变main是否重新加载
+export const togglerMainReload = async (duration = 300) => {
+	// 判断是否在`reload`中
+	if (store.getState().main.reload) return
+	store.setState((state) => {
+		state.main.reload = true
+	})
+	const currentDuration = store.getState().main.animate ? duration : 40
+	await new Promise((resolve) => setTimeout(resolve, currentDuration))
+	store.setState((state) => {
+		state.main.reload = false
+	})
+}
+
+// 改变main是否开启动画
+export const togglerMainAnimate = () => {
+	store.setState((state) => {
+		state.main.animate = !state.main.animate
+	})
+}
+
+// 改变main动画模式
+export const changeMainAnimateMode = (animateMode: Theme.ThemeMainAnimateMode) => {
+	store.setState((state) => {
+		state.main.animateMode = animateMode
 	})
 }
 

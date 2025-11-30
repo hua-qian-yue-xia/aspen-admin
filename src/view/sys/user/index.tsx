@@ -24,23 +24,29 @@ const UserPage: React.FC = () => {
 			title: "排序",
 			key: "sort",
 			dataIndex: ["sort", "sort"],
+			search: false,
 		},
 		{
 			title: "用户名",
 			key: "username",
 			dataIndex: "username",
+			copyable: true,
+			search: false,
 		},
 		{
 			title: "用户昵称",
 			dataIndex: "userNickname",
+			search: false,
 		},
 		{
 			title: "用户手机号",
 			dataIndex: "mobile",
+			search: false,
 		},
 		{
 			title: "是否启用",
 			dataIndex: "enable",
+			search: false,
 			render: (dom, entity) => {
 				return (
 					<Switch
@@ -57,6 +63,7 @@ const UserPage: React.FC = () => {
 			width: 120,
 			align: "center",
 			dataIndex: "operation",
+			search: false,
 			render: (dom, entity) => {
 				return (
 					<div className="flex gap-1">
@@ -131,7 +138,6 @@ const UserPage: React.FC = () => {
 					rowKey="userId"
 					headerTitle="系统用户"
 					columns={columns}
-					search={false}
 					loading={loadingObj.table}
 					request={({ current, pageSize }) => {
 						return getList(current, pageSize)

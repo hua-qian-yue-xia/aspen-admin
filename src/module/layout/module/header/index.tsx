@@ -1,12 +1,9 @@
 import React from "react"
 
-type Props = {
-	header: number
-}
+import BreadcrumbCmp from "./cmp/breadcrumb-nav"
 
-const GlobalHeader: React.FC<Props> = ({ header }) => {
-	console.log(header)
-	return <></>
+const GlobalHeader: React.FC = () => {
+	return <BreadcrumbCmp />
 }
 
 export default GlobalHeader

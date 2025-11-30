@@ -22,3 +22,13 @@ export const darkColorMap = [
 ]
 
 export const DARK_CLASS = "dark"
+
+export const themeMainAnimationModeOptions = [
+	{ label: "fade", value: "弹动" },
+	{ label: "fade-bottom", value: "底部消退" },
+	{ label: "fade-scale", value: "缩放消退" },
+	{ label: "fade-slide", value: "滑动" },
+	{ label: "none", value: "无" },
+	{ label: "zoom-fade", value: "渐变" },
+	{ label: "zoom-out", value: "闪现" },
+]

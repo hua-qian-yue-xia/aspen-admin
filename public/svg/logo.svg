@@ -1,0 +1,33 @@
+    <svg style="background: transparent;" xmlns="http://www.w3.org/2000/svg" width="60" height="40.55" viewBox="0 0 81.66999816894531 55.20000076293945">
+        <defs>
+            <linearGradient id="a2b8b9841-c19c-4cdb-9f3d-806226771bd8" x1="7.2" y1="37.26"
+                x2="19.27" y2="49.33" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#a8083f"></stop>
+                <stop offset=".59" stop-color="#bf0947"></stop>
+                <stop offset="1" stop-color="#ca0a4b"></stop>
+            </linearGradient>
+            <linearGradient id="b0a2c3b46-0017-4c22-943c-b8e2f04dbcc6" x1="48.34" y1="51.59"
+                x2="66.75" y2="33.18" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#ca0a4b"></stop>
+                <stop offset=".46" stop-color="#bd0946"></stop>
+                <stop offset="1" stop-color="#a8083f"></stop>
+            </linearGradient>
+            <linearGradient id="c65701874-7a0e-4179-bb89-fd36062f83d7" x1="15.2" y1="53.03"
+                x2="74.95" y2="-6.72" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#0baccc"></stop>
+                <stop offset=".55" stop-color="#0cbbdd"></stop>
+                <stop offset="1" stop-color="#0dc2e6"></stop>
+            </linearGradient>
+        </defs>
+        <g>
+            <path
+                d="M4.56 41.84L0 55.2c9.9 0 19.09-1.61 22.58-11.59l4.19-11.91s-9.52-.95-14.93 1.87a16.11 16.11 0 0 0-7.28 8.27z"
+                fill="url(#a2b8b9841-c19c-4cdb-9f3d-806226771bd8)"></path>
+            <path
+                d="M52.88 29.47l-5 14.05c-3.47 10 5 11.68 14.45 11.68l5-14.35s1.2-3.6 1-4.72c-.47-2.53-3.13-6.66-15.45-6.66z"
+                fill="url(#b0a2c3b46-0017-4c22-943c-b8e2f04dbcc6)"></path>
+            <path
+                d="M20.68 7.2c-3.82 3.49-6.88 8.33-9.31 14.8 0 .09-6.95 20.3-6.95 20.3C5.67 39 11.51 33 25.68 33h19.93c22.59 0 22.57 5 21.51 8.54L81.67 0H41.42C32.78 0 26 2.36 20.68 7.2zm29.13 3.46h9.38l-.34.7c-2.56 5.57-7.73 10.9-20.1 10.9h-8.51a15.23 15.23 0 0 1 8.18-9.39A24.65 24.65 0 0 1 48 10.7c.61-.02 1.2-.04 1.81-.04z"
+                fill="url(#c65701874-7a0e-4179-bb89-fd36062f83d7)"></path>
+        </g>
+    </svg>

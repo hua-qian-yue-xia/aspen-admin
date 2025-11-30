@@ -5,9 +5,9 @@ import material from "@aspen/material"
 
 import { store, router } from "@@/index"
 
-import { useMenuContext } from "../context/menu-context"
+import { useMenuContext } from "../../../context/menu-context"
 
-const getSelectedMenuKeyPath = (matches: Router.Route["matches"]): Array<string> => {
+const getSelectedMenuKeyPath = (matches: App.Route["matches"]): Array<string> => {
 	if (!matches.length) return []
 	const result = matches.reduce((acc: Array<string>, match, index) => {
 		if (index < matches.length - 1 && match.pathname) {
@@ -34,8 +34,6 @@ const VerticalMenu: React.FC = memo(() => {
 
 	// 被选中时调用
 	const doSelect: MenuProps["onSelect"] = (info) => {
-		console.log(info.key)
-
 		navigate(info.key)
 		// 设置activeTab
 		tabStore.activeTab(info.key)

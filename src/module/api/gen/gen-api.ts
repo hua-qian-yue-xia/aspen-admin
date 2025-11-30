@@ -135,9 +135,9 @@ export interface SysMenuEntity {
    */
   delAt: string;
   /** 菜单id */
-  menuId: number;
+  menuId: string;
   /** 菜单父id */
-  parentId: number;
+  parentId: string;
   /** 菜单名 */
   menuName: string;
   /** 菜单类型 */
@@ -157,11 +157,23 @@ export interface SysMenuEntity {
   [key: string]: any;
 }
 
+export interface SysMenuQueryDto {
+  /** 菜单父id */
+  menuId: string;
+  /** 菜单父id */
+  parentId: string;
+  /** 菜单名、路由地址 */
+  quick: string;
+  /** 菜单类型 */
+  type: string;
+  [key: string]: any;
+}
+
 export interface SysMenuSaveDto {
   /** 菜单id */
-  menuId: number;
+  menuId: string;
   /** 菜单父id */
-  parentId: number;
+  parentId: string;
   /** 菜单名 */
   menuName: string;
   /** 菜单类型 */
@@ -288,6 +300,10 @@ export interface SysUserSaveDto {
   enable: boolean;
   /** 排序 */
   sort: number;
+  /** 部门id列表 */
+  deptIdList: string[];
+  /** 角色id列表 */
+  roleIdList: string[];
   [key: string]: any;
 }
 
@@ -732,23 +748,23 @@ export class Api<
      * No description
      *
      * @tags 菜单管理
-     * @name SysMenuControllerPage
-     * @summary 分页
-     * @request GET:/sys/menu/page
+     * @name SysMenuControllerTree
+     * @summary 树状结构
+     * @request POST:/sys/menu/tree
      */
-    sysMenuControllerPage: (data: SysMenuEntity, params: RequestParams = {}) =>
+    sysMenuControllerTree: (
+      data: SysMenuQueryDto,
+      params: RequestParams = {},
+    ) =>
       this.request<
         R & {
-          data?: BasePageVo & {
-            records?: SysMenuEntity[];
-            [key: string]: any;
-          };
+          data?: (SysMenuEntity & SwaggerTreeNode)[];
           [key: string]: any;
         },
         any
       >({
-        path: `/sys/menu/page`,
-        method: "GET",
+        path: `/sys/menu/tree`,
+        method: "POST",
         body: data,
         type: ContentType.Json,
         format: "json",
@@ -764,7 +780,7 @@ export class Api<
      * @request GET:/sys/menu/select
      */
     sysMenuControllerSelect: (
-      data: SysMenuEntity,
+      data: SysMenuQueryDto,
       params: RequestParams = {},
     ) =>
       this.request<
@@ -794,7 +810,7 @@ export class Api<
      * @request GET:/sys/menu/id/{menuId}
      */
     sysMenuControllerGetByMenuId: (
-      menuId: number,
+      menuId: string,
       params: RequestParams = {},
     ) =>
       this.request<
@@ -819,7 +835,7 @@ export class Api<
      * @request PATCH:/sys/menu/id/{menuId}
      */
     sysMenuControllerGetByRoleId: (
-      menuId: number,
+      menuId: string,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({

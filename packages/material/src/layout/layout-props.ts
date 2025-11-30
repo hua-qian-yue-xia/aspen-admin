@@ -6,6 +6,12 @@ export type Header = {
 	headerHeight?: number
 }
 
+export type Tab = {
+	tabNode?: React.ReactNode
+	tabVisible?: boolean
+	tabHeight?: number
+}
+
 export type Aside = {
 	asideNode?: React.ReactNode
 	asideVisible?: boolean
@@ -25,15 +31,24 @@ export type Footer = {
 }
 
 export type Props = Header &
+	Tab &
 	Aside &
 	Main &
 	Footer & {
 		commonClass?: string
+	} & {
+		/**
+		 * 布局最大 z-index
+		 * @default 1000
+		 */
+		maxZIndex?: number
 	}
 
 export const defaultProps: Props = {
 	headerVisible: true,
 	headerHeight: 56,
+	tabVisible: true,
+	tabHeight: 46,
 	asideVisible: true,
 	asideCollapse: true,
 	asideWidth: 64,
@@ -41,4 +56,5 @@ export const defaultProps: Props = {
 	footerVisible: true,
 	footerHeight: 46,
 	commonClass: "transition-all-300",
+	maxZIndex: 1000,
 }
