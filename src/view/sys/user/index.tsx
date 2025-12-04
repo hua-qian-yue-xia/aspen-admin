@@ -1,6 +1,6 @@
 import type { ActionType, ProColumns } from "@ant-design/pro-components"
 
-import { Button, Card, Flex, Switch } from "antd"
+import { Button, Card, Flex, Switch, Tag } from "antd"
 import { DeleteOutlined, FormOutlined } from "@ant-design/icons"
 
 import { CrudTable, CrudTableOperation } from "@aspen/crud"
@@ -32,12 +32,26 @@ const UserPage: React.FC = () => {
 			copyable: true,
 		},
 		{
-			title: "用户昵称",
+			title: "昵称",
 			dataIndex: "userNickname",
 		},
 		{
-			title: "用户手机号",
+			title: "手机号",
 			dataIndex: "mobile",
+		},
+		{
+			title: "部门",
+			dataIndex: "userDepts",
+			render: (dom, entity) => {
+				return <Flex gap={4}>{entity.userDepts?.map((item) => <Tag key={item.deptId}>{item.deptName}</Tag>)}</Flex>
+			},
+		},
+		{
+			title: "角色",
+			dataIndex: "userRoles",
+			render: (dom, entity) => {
+				return <Flex gap={4}>{entity.userRoles?.map((item) => <Tag key={item.roleId}>{item.roleName}</Tag>)}</Flex>
+			},
 		},
 		{
 			title: "是否启用",
@@ -58,7 +72,7 @@ const UserPage: React.FC = () => {
 			width: 120,
 			align: "center",
 			dataIndex: "operation",
-			search: false,
+			fixed: true,
 			render: (dom, entity) => {
 				return (
 					<div className="flex gap-1">
