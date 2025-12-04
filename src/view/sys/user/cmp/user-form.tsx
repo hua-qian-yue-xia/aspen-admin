@@ -55,6 +55,8 @@ const columns: Array<ProFormColumnsType> = [
 			rules: [{ required: true, message: "请选择部门" }],
 		},
 		renderFormItem: () => {
+			console.log("|部门选择|")
+
 			return <CMP.tree.deptSelect selectTypes={["dept"]} />
 		},
 		transform: (value: string | Array<string>) => {
@@ -70,7 +72,7 @@ const columns: Array<ProFormColumnsType> = [
 			rules: [{ required: true, message: "请选择角色" }],
 		},
 		renderFormItem: () => {
-			return <CMP.tree.roleSelect selectTypes={["role"]} multiple />
+			return <CMP.sysRole.RoleSelect mode="multiple" />
 		},
 	},
 ]
@@ -125,6 +127,7 @@ const UserFormCmp = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 	useImperativeHandle(ref, () => ({
 		open: async (id: string | null) => {
 			setLoadingObj({ ...loadingObj, modal: true })
+			setOpen(true)
 			setCurrentUserId(id)
 			try {
 				if (id === null) {
@@ -136,7 +139,6 @@ const UserFormCmp = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 			} catch (error) {
 				console.log(error)
 			} finally {
-				setOpen(true)
 				setTimeout(() => setLoadingObj({ ...loadingObj, modal: false }), 500)
 			}
 		},

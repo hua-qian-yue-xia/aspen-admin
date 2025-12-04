@@ -58,7 +58,7 @@ const LayoutTab: React.FC<{ isDark: boolean }> = ({ isDark }) => {
 			</li>
 			<li className="h-full flex-row-center">
 				<components.global.GlobalRefresh loading={main.reload} click={() => themeStore.togglerMainReload()} />
-				<components.global.GlobalFullScreen tooltipPlacement="top" />
+				<components.global.GlobalFullScreen tooltipPlacement="bottom" tooltipContent={true ? "退出全屏" : "全屏"} />
 			</li>
 		</components.common.DarkModeContainer>
 	)

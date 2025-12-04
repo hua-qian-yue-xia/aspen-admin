@@ -217,32 +217,30 @@ export interface SysRoleEntity {
   delAt: string;
   /** 角色id */
   roleId: string;
-  /** 父角色id */
-  parentRoleId: string;
   /** 角色名 */
   roleName: string;
   /** 角色编码 */
   roleCode: string;
-  /** 角色类型 */
-  roleType: string;
-  /** 是否为角色目录的专属部门 */
-  isCatalogueRole: boolean;
   /** 排序 */
   sort: number;
+  [key: string]: any;
+}
+
+export interface SysRoleQueryDto {
+  /** 角色id */
+  roleId: string;
+  /** 角色名、角色编码 */
+  quick: string;
   [key: string]: any;
 }
 
 export interface SysRoleSaveDto {
   /** 角色id */
   roleId: string;
-  /** 父角色id */
-  parentRoleId: number;
   /** 角色名 */
   roleName: string;
   /** 角色编码 */
   roleCode: string;
-  /** 角色类型 */
-  roleType: string;
   /** 排序 */
   sort: number;
   [key: string]: any;
@@ -897,19 +895,25 @@ export class Api<
      * No description
      *
      * @tags 角色管理
-     * @name SysRoleControllerTree
-     * @summary 树状结构
-     * @request POST:/sys/role/tree
+     * @name SysRoleControllerScopePage
+     * @summary 分页结构
+     * @request POST:/sys/role/scopePage
      */
-    sysRoleControllerTree: (data: SysRoleEntity, params: RequestParams = {}) =>
+    sysRoleControllerScopePage: (
+      data: SysRoleQueryDto,
+      params: RequestParams = {},
+    ) =>
       this.request<
         R & {
-          data?: (SysRoleEntity & SwaggerTreeNode)[];
+          data?: BasePageVo & {
+            records?: SysRoleEntity[];
+            [key: string]: any;
+          };
           [key: string]: any;
         },
         any
       >({
-        path: `/sys/role/tree`,
+        path: `/sys/role/scopePage`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -926,7 +930,7 @@ export class Api<
      * @request POST:/sys/role/select
      */
     sysRoleControllerSelect: (
-      data: SysRoleEntity,
+      data: SysRoleQueryDto,
       params: RequestParams = {},
     ) =>
       this.request<

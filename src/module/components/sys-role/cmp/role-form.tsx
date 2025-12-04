@@ -1,20 +1,17 @@
 import { BetaSchemaForm, ProFormInstance } from "@ant-design/pro-components"
 import type { ProFormColumnsType } from "@ant-design/pro-components"
-
-import CMP from "@@/components"
+import { useSetState } from "ahooks"
 
 import { API } from "@@/api/share/request-tool"
 import type { SysRoleEntity } from "@@/api/gen/gen-api"
 
 export type RoleFormCmpRef = {
-	open: (roleParentId: string, id: string | null) => Promise<void>
+	open: (roleId: string | null) => Promise<void>
 }
 
 type Props = {
 	onRefresh?: () => void
 }
-
-const notExistRootRoleId = "-99"
 
 const columns: Array<ProFormColumnsType<SysRoleEntity>> = [
 	{
@@ -23,17 +20,6 @@ const columns: Array<ProFormColumnsType<SysRoleEntity>> = [
 		columns: (values) => {
 			const isCatalogueRole = values?.isCatalogueRole ?? false
 			return [
-				{
-					dataIndex: "parentRoleId",
-					title: "父角色",
-					formItemProps: {},
-					fieldProps: {
-						disabled: isCatalogueRole,
-					},
-					renderFormItem: () => {
-						return <CMP.tree.roleSelect selectTypes={["catalogue"]} />
-					},
-				},
 				{
 					dataIndex: "roleName",
 					title: "角色名",
@@ -55,16 +41,6 @@ const columns: Array<ProFormColumnsType<SysRoleEntity>> = [
 					},
 				},
 				{
-					dataIndex: "roleType",
-					fieldProps: {
-						disabled: isCatalogueRole,
-					},
-					title: "类型",
-					renderFormItem: () => {
-						return <CMP.dict.select dictType="sys_role_type" autoSelectFirst placeholder="请选择类型" />
-					},
-				},
-				{
 					dataIndex: "sort",
 					title: "排序",
 					tooltip: "越大越在前",
@@ -81,15 +57,14 @@ const RoleFormCmp = forwardRef<RoleFormCmpRef, Props>(({ onRefresh }, ref) => {
 	const [open, setOpen] = useState(false)
 	const [form, setForm] = useState<SysRoleEntity>(null)
 	const [roleId, setRoleId] = useState<string | null>(null)
-	const [roleParentId, setRoleParentId] = useState<string | null>(null)
-	const [loadingObj, setLoadingObj] = useState({
+	const [loadingObj, setLoadingObj] = useSetState({
 		form: false,
 		modal: false,
 	})
 
 	// 新增或修改角色
 	const onFinish = async (values: any) => {
-		setLoadingObj({ ...loadingObj, form: true })
+		setLoadingObj({ form: true })
 		try {
 			const api = roleId === null ? API.sys.sysRoleControllerSave : API.sys.sysRoleControllerEdit
 			await api({ ...values, roleId })
@@ -98,10 +73,10 @@ const RoleFormCmp = forwardRef<RoleFormCmpRef, Props>(({ onRefresh }, ref) => {
 			setOpen(false)
 		} catch (error) {
 			console.error("|新增或修改角色|意外的错误,error:", error)
-			setTimeout(() => setLoadingObj({ ...loadingObj, form: false }), 500)
+			setTimeout(() => setLoadingObj({ form: false }), 500)
 			return false
 		}
-		setTimeout(() => setLoadingObj({ ...loadingObj, form: false }), 500)
+		setTimeout(() => setLoadingObj({ form: false }), 500)
 		return true
 	}
 
@@ -110,9 +85,6 @@ const RoleFormCmp = forwardRef<RoleFormCmpRef, Props>(({ onRefresh }, ref) => {
 		if (id === null) return
 		try {
 			const { data } = await API.sys.sysRoleControllerGetByRoleId(id)
-			if (data.parentRoleId == notExistRootRoleId) {
-				data.parentRoleId = null
-			}
 			setForm({ ...data } as any)
 			formRef.current?.setFieldsValue(data)
 		} catch (error) {
@@ -121,22 +93,21 @@ const RoleFormCmp = forwardRef<RoleFormCmpRef, Props>(({ onRefresh }, ref) => {
 	}
 
 	useImperativeHandle(ref, () => ({
-		open: async (roleParentId: string, id: string | null) => {
-			setLoadingObj({ ...loadingObj, modal: true })
-			setRoleParentId(roleParentId)
-			setRoleId(id)
+		open: async (roleId: string | null) => {
+			setLoadingObj({ modal: true })
+			setRoleId(roleId)
 			setOpen(true)
 			try {
-				if (!id) {
-					setForm({ parentRoleId: roleParentId === notExistRootRoleId ? null : roleParentId } as any)
+				if (!roleId) {
+					setForm(null)
 					formRef.current?.resetFields()
 					return
 				}
-				await getDetail(id)
+				await getDetail(roleId)
 			} catch (error) {
 				console.log(error)
 			} finally {
-				setTimeout(() => setLoadingObj({ ...loadingObj, modal: false }), 500)
+				setTimeout(() => setLoadingObj({ modal: false }), 500)
 			}
 		},
 	}))

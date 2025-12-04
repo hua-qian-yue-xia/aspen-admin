@@ -24,29 +24,24 @@ const UserPage: React.FC = () => {
 			title: "排序",
 			key: "sort",
 			dataIndex: ["sort", "sort"],
-			search: false,
 		},
 		{
 			title: "用户名",
 			key: "username",
 			dataIndex: "username",
 			copyable: true,
-			search: false,
 		},
 		{
 			title: "用户昵称",
 			dataIndex: "userNickname",
-			search: false,
 		},
 		{
 			title: "用户手机号",
 			dataIndex: "mobile",
-			search: false,
 		},
 		{
 			title: "是否启用",
 			dataIndex: "enable",
-			search: false,
 			render: (dom, entity) => {
 				return (
 					<Switch
@@ -86,7 +81,7 @@ const UserPage: React.FC = () => {
 
 	// 编辑用户启用状态
 	const editUserEnable = async (entity: SysUserEntity) => {
-		await API.sys.sysUserControllerEdit({ ...entity, enable: !entity.enable })
+		await API.sys.sysUserControllerEdit({ ...entity, enable: !entity.enable } as any)
 		actionRef.current?.reload()
 		window.$message.success("操作成功")
 	}
@@ -130,22 +125,26 @@ const UserPage: React.FC = () => {
 			<Card className="min-w-85 w-20% h-full mr-3" styles={{ body: { height: "100%" } }}>
 				<CMP.tree.dept title={null} />
 			</Card>
-			<Card className="flex-1 h-full" styles={{ body: { height: "100%" } }}>
-				<CrudTable
-					cardProps={false}
-					className="h-full"
-					actionRef={actionRef}
-					rowKey="userId"
-					headerTitle="系统用户"
-					columns={columns}
-					loading={loadingObj.table}
-					request={({ current, pageSize }) => {
-						return getList(current, pageSize)
-					}}
-					toolBarRender={() => [<CrudTableOperation onAdd={() => formRef.current?.open(null)} />]}
-				/>
-				<UserForm ref={formRef} onRefresh={() => actionRef.current?.reload()} />
-			</Card>
+			<Flex className="flex-1" vertical gap={12}>
+				<Card></Card>
+				<Card className="flex-1 h-full" styles={{ body: { height: "100%" } }}>
+					<CrudTable
+						search={false}
+						cardProps={false}
+						className="h-full"
+						actionRef={actionRef}
+						rowKey="userId"
+						headerTitle="系统用户"
+						columns={columns}
+						loading={loadingObj.table}
+						request={({ current, pageSize }) => {
+							return getList(current, pageSize)
+						}}
+						toolBarRender={() => [<CrudTableOperation onAdd={() => formRef.current?.open(null)} />]}
+					/>
+					<UserForm ref={formRef} onRefresh={() => actionRef.current?.reload()} />
+				</Card>
+			</Flex>
 		</Flex>
 	)
 }
