@@ -1,3 +1,7 @@
+import ButtonIcon from "./icon/button-icon"
+import SelectIcon from "./icon/select-icon"
+import SvgIcon from "./icon/svg-icon"
+
 import DictSelect from "./dict/dict-select"
 import DictTag from "./dict/dict-tag"
 
@@ -11,6 +15,11 @@ import MenuTreeCmp from "./tree/menu/menu-tree"
 import MenuTreeSelectCmp from "./tree/menu/menu-tree-select"
 
 export default {
+	icon: {
+		button: ButtonIcon,
+		select: SelectIcon,
+		svg: SvgIcon,
+	},
 	dict: {
 		select: DictSelect,
 		tag: DictTag,

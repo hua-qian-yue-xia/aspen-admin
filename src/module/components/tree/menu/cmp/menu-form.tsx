@@ -48,11 +48,13 @@ const columns: Array<ProFormColumnsType<SysMenuEntity>> = [
 		formItemProps: {
 			rules: [{ required: true, message: "请选择图标" }],
 		},
+		renderFormItem: () => <CMP.icon.select />,
 	},
 	{
 		valueType: "dependency",
 		name: ["type"],
 		columns: (values) => {
+			console.log("values:", values)
 			if (!values?.type) return []
 			// 目录
 			if (values.type == 200) return []
@@ -94,7 +96,6 @@ const MenuFormCmp = forwardRef<MenuFormCmpRef, Props>((props, ref) => {
 	})
 
 	const [menuId, setMenuId] = useState<string | null>(null)
-	const [menuParentId, setMenuParentId] = useState<string | null>(null)
 
 	// 新增或修改菜单
 	const onFinish = async (values: any) => {
@@ -115,10 +116,11 @@ const MenuFormCmp = forwardRef<MenuFormCmpRef, Props>((props, ref) => {
 	}
 
 	// 查询菜单详情
-	const getDetail = async () => {
-		if (!menuId) return
+	const getDetail = async (id: string) => {
+		console.log("menuId:", id)
+		if (!id) return
 		try {
-			const { data } = await API.sys.sysMenuControllerGetByMenuId(menuId)
+			const { data } = await API.sys.sysMenuControllerGetByMenuId(id)
 			setForm(data)
 			formRef.current.setFieldsValue(data)
 		} catch (error) {
@@ -129,11 +131,8 @@ const MenuFormCmp = forwardRef<MenuFormCmpRef, Props>((props, ref) => {
 	useImperativeHandle(ref, () => {
 		return {
 			open: async (menuParentId: string, id: string | null) => {
-				console.log("|打开菜单表单|menuParentId:", menuParentId, "id:", id)
-
 				setLoadingObj({ ...loadingObj, modal: true })
 				setMenuId(id)
-				setMenuParentId(menuParentId)
 				setOpen(true)
 				try {
 					if (id == null) {
@@ -141,7 +140,7 @@ const MenuFormCmp = forwardRef<MenuFormCmpRef, Props>((props, ref) => {
 						formRef.current.resetFields()
 						return
 					}
-					await getDetail()
+					await getDetail(id)
 				} catch (error) {
 					console.error("|查询菜单详情|意外的错误,error:", error)
 				} finally {

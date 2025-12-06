@@ -57,7 +57,7 @@ const MenuTableCmp: React.FC = () => {
 							variant="text"
 							color="primary"
 							icon={<FormOutlined />}
-							onClick={() => formRef.current?.open(entity.menuId)}
+							onClick={() => formRef.current?.open(entity.parentId, entity.menuId)}
 						>
 							编辑
 						</Button>
@@ -117,7 +117,7 @@ const MenuTableCmp: React.FC = () => {
 				request={({ current, pageSize }) => {
 					return getList(current, pageSize)
 				}}
-				toolBarRender={() => [<CrudTableOperation onAdd={() => formRef.current?.open(null)} />]}
+				toolBarRender={() => [<CrudTableOperation onAdd={() => formRef.current?.open(null, null)} />]}
 			/>
 			<MenuForm ref={formRef} onRefresh={() => actionRef.current?.reload()} />
 		</>

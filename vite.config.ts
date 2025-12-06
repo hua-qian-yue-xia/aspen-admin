@@ -1,6 +1,6 @@
 import { URL, fileURLToPath } from "node:url"
 
-import { defineConfig } from "vite"
+import { defineConfig, loadEnv } from "vite"
 import react from "@vitejs/plugin-react"
 
 import { registerPlugins } from "./build"
@@ -10,7 +10,9 @@ import { generateDictCode } from "./script/generate-dict"
 
 // https://vite.dev/config/
 export default defineConfig((configEnv) => {
+	const viteEnv = loadEnv(configEnv.mode, process.cwd()) as Env.ImportMeta
 	console.log("configEnv:", configEnv)
+	console.log("viteEnv:", viteEnv)
 
 	generateOpenApi("http://127.0.0.1:7001/doc-json", fileURLToPath(new URL("src/module/api/gen", import.meta.url)))
 	generateDictCode(
@@ -18,7 +20,7 @@ export default defineConfig((configEnv) => {
 		fileURLToPath(new URL("src/module/gen/dict", import.meta.url)),
 	)
 	return {
-		plugins: [react(), generateViewMenuPathPlugin(), ...registerPlugins()],
+		plugins: [react(), generateViewMenuPathPlugin(), ...registerPlugins(viteEnv)],
 		resolve: {
 			alias: {
 				"@": fileURLToPath(new URL("src", import.meta.url)),
