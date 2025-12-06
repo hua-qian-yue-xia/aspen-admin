@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React, { memo, useEffect, useMemo } from "react"
 
 import { Select } from "antd"
 import type { SelectProps } from "antd"
@@ -11,20 +11,33 @@ type Props = { dictType: DICT_KEYS; autoSelectFirst?: boolean } & Pick<
 >
 
 const DictSelect: React.FC<Props> = (props) => {
-	const { dictType, autoSelectFirst = false, placeholder = "请选择", value = null, ...rest } = props
-	let selectValue = value
+	const {
+		dictType,
+		autoSelectFirst = false,
+		placeholder = "请选择",
+		value = null,
+		onChange = undefined,
+		...rest
+	} = props
 	// 获取字典数据
 	const [dict, loading] = useDict(dictType)
 	const targetDict = dict[dictType]
-	const options =
-		targetDict?.map((v) => ({
-			label: v.summary,
-			value: v.code,
-		})) ?? []
-	if (autoSelectFirst && !value && options.length) {
-		selectValue = options[0].value
-	}
-	return <Select loading={loading} options={options} placeholder={placeholder} value={selectValue} {...rest}></Select>
+	const options = useMemo(() => {
+		return (
+			targetDict?.map((v) => ({
+				label: v.summary,
+				value: v.code,
+			})) ?? []
+		)
+	}, [targetDict])
+	useEffect(() => {
+		if (autoSelectFirst && !value && options.length) {
+			onChange?.(options[0].value, undefined)
+		}
+	}, [autoSelectFirst, value, options, onChange])
+	return (
+		<Select loading={loading} options={options} placeholder={placeholder} value={value} onChange={onChange} {...rest} />
+	)
 }
 
 export default memo(DictSelect)

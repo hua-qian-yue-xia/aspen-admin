@@ -32,6 +32,12 @@ const localIcons = getLocalIcons()
 
 const { Text } = Typography
 
+const iconType = [
+	{ label: "本地图标", value: "local" },
+	{ label: "Ant Design 图标", value: "antd" },
+	{ label: "网络图标", value: "network" },
+]
+
 const localIconRender: React.FC<IconRenderProps> = ({ value, onChange }) => {
 	return (
 		<ProCard wrap gutter={[12, 12]} bodyStyle={{ padding: 0 }} className="full">
@@ -77,16 +83,11 @@ const SelectIcon: React.FC<Props> = (props) => {
 			placement="bottomLeft"
 			arrow={true}
 			trigger="click"
+			onOpenChange={(visible) => popoverOpenAction.set(visible)}
 			open={popoverOpen}
 			content={
 				<Flex vertical style={style} className={mergeClass(className, "min-w-180")}>
-					<Segmented
-						block
-						options={[
-							{ label: "本地图标", value: "local" },
-							{ label: "全局图标", value: "global" },
-						]}
-					/>
+					<Segmented block options={iconType} />
 					{localIconRender({ value, onChange: handleClick })}
 				</Flex>
 			}

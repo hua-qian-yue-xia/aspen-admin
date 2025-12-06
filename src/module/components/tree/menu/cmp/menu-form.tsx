@@ -117,7 +117,6 @@ const MenuFormCmp = forwardRef<MenuFormCmpRef, Props>((props, ref) => {
 
 	// 查询菜单详情
 	const getDetail = async (id: string) => {
-		console.log("menuId:", id)
 		if (!id) return
 		try {
 			const { data } = await API.sys.sysMenuControllerGetByMenuId(id)
