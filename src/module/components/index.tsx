@@ -5,14 +5,17 @@ import SvgIcon from "./icon/svg-icon"
 import DictSelect from "./dict/dict-select"
 import DictTag from "./dict/dict-tag"
 
+import DeptForm from "./sys-dept/dept-form"
+import DeptTree from "./sys-dept/dept-tree"
+import DeptTreeSelect from "./sys-dept/dept-tree-select"
+
+import MenuForm from "./sys-menu/menu-form"
+import MenuTree from "./sys-menu/menu-tree"
+import MenuTreeSelect from "./sys-menu/menu-tree-select"
+
+import RoleForm from "./sys-role/role-form"
 import RoleList from "./sys-role/role-list"
 import RoleSelect from "./sys-role/role-select"
-
-import DeptTreeSelectCmp from "./tree/dept/dept-tree-select"
-import DeptTreeCmp from "./tree/dept/dept-tree"
-
-import MenuTreeCmp from "./tree/menu/menu-tree"
-import MenuTreeSelectCmp from "./tree/menu/menu-tree-select"
 
 export default {
 	icon: {
@@ -25,13 +28,18 @@ export default {
 		tag: DictTag,
 	},
 	sysRole: {
+		RoleForm,
 		RoleList,
 		RoleSelect,
 	},
-	tree: {
-		dept: DeptTreeCmp,
-		deptSelect: DeptTreeSelectCmp,
-		menu: MenuTreeCmp,
-		menuSelect: MenuTreeSelectCmp,
+	sysDept: {
+		DeptForm,
+		DeptTree,
+		DeptTreeSelect,
+	},
+	sysMenu: {
+		MenuForm,
+		MenuTree,
+		MenuTreeSelect,
 	},
 }

@@ -112,7 +112,7 @@ const DictKeyListCmp: React.FC<Props> = ({ onActive }) => {
 								<Text strong className="color-primary!">
 									{v.summary}
 								</Text>
-								<Text className="opacity-70 text-14px">{v.code}</Text>
+								<Text className="opacity-70 text-sm">{v.code}</Text>
 							</div>
 						</Flex>
 						<Flex align="center" justify="center">

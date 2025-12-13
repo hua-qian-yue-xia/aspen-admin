@@ -7,7 +7,7 @@ import { FolderOpenOutlined, FolderOutlined } from "@ant-design/icons"
 import TOOL from "@/module/tool"
 import { API } from "@@/api/share/request-tool"
 
-import "./cmp/menu-form"
+import "./menu-form"
 
 type Props = {
 	value?: string | Array<string>

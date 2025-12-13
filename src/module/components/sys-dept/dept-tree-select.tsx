@@ -15,23 +15,21 @@ type Props = {
 	value?: string | Array<string>
 	onChange?: (value: string | Array<string>) => void
 	/**
-	 * 选择的类型
-	 * catalogue: 目录部门
-	 * dept: 部门
-	 * @default catalogue,dept
-	 */
-	selectTypes?: Array<"catalogue" | "dept">
-	/**
 	 * 是否开启多选
 	 * @default false
 	 */
 	multiple?: boolean
+	/**
+	 * 是否禁用
+	 * @default false
+	 */
+	disabled?: boolean
 }
 
 const { Text } = Typography
 
 const DeptTreeSelectCmp: React.FC<Props> = (props) => {
-	const { value = null, onChange = null, selectTypes = ["catalogue", "dept"], multiple = false } = props
+	const { value = null, onChange = null, multiple = false, disabled = false } = props
 
 	const [treeData, setTreeData] = useState([])
 	const [expandedKeys, setExpandedKeys] = useState([])
@@ -66,16 +64,6 @@ const DeptTreeSelectCmp: React.FC<Props> = (props) => {
 			const _params: any = {}
 			const { data } = await API.sys.sysDeptControllerTree(_params)
 			const convTreeData = TOOL.tree.map(data, (entity) => {
-				const isAdd = entity.deptType === "200"
-				let disabled = false
-				if (selectTypes.length == 1) {
-					if (!selectTypes.includes("catalogue") && entity.deptType === "200") {
-						disabled = true
-					}
-					if (!selectTypes.includes("dept") && entity.deptType === "100") {
-						disabled = true
-					}
-				}
 				return {
 					title: entity.deptName,
 					value: entity.deptId,
@@ -83,15 +71,10 @@ const DeptTreeSelectCmp: React.FC<Props> = (props) => {
 					isLeaf: !entity.children?.length,
 					icon: (tree: any) => {
 						// 有子节点时,显示文件夹
-						if (tree.data.children?.length || isAdd) {
+						if (tree.data.children?.length) {
 							return tree.expanded ? <FolderOpenOutlined /> : <FolderOutlined />
 						}
 						return <BaseSvgIcon className="inline" icon="clarity:organization-solid" />
-					},
-					disabled: disabled,
-					extra: {
-						isAdd: entity.deptType === "200",
-						parentKey: entity.deptParentId,
 					},
 				}
 			})
@@ -116,6 +99,7 @@ const DeptTreeSelectCmp: React.FC<Props> = (props) => {
 		<TreeSelect
 			value={displayValue}
 			treeCheckable={multiple}
+			disabled={disabled}
 			treeIcon
 			treeLine
 			className="full"

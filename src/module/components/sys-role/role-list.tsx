@@ -17,9 +17,9 @@ import { mergeClass } from "@aspen/common"
 import { API } from "@@/api/share/request-tool"
 import type { SysRoleEntity, SysRoleQueryDto } from "@@/api/gen/gen-api"
 
-import type { RoleFormCmpRef } from "./cmp/role-form"
+import type { RoleFormCmpRef } from "./role-form"
 
-const RoleFormCmp = lazy(() => import("./cmp/role-form"))
+const RoleFormCmp = lazy(() => import("./role-form"))
 
 const { Text, Title } = Typography
 

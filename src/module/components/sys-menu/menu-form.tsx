@@ -23,44 +23,71 @@ const columns: Array<ProFormColumnsType<SysMenuEntity>> = [
 		title: "父级菜单",
 		tooltip: "如果为空,则为一级菜单",
 		renderFormItem: () => {
-			return <CMP.tree.menuSelect selectTypes={["catalogue"]} />
+			return <CMP.sysMenu.MenuTreeSelect selectTypes={["catalogue"]} />
 		},
-	},
-	{
-		dataIndex: "menuName",
-		title: "菜单名称",
-		formItemProps: {
-			rules: [{ required: true, message: "请输入菜单名称" }],
-		},
-	},
-	{
-		dataIndex: "type",
-		title: "菜单类型",
-		name: ["type"],
-		formItemProps: {
-			rules: [{ required: true, message: "请选择菜单类型" }],
-		},
-		renderFormItem: () => <CMP.dict.select dictType="sys_menu_type" autoSelectFirst placeholder="请选择菜单类型" />,
-	},
-	{
-		dataIndex: "icon",
-		title: "图标",
-		formItemProps: {
-			rules: [{ required: true, message: "请选择图标" }],
-		},
-		renderFormItem: () => <CMP.icon.select />,
 	},
 	{
 		valueType: "dependency",
 		name: ["type"],
 		columns: (values) => {
-			console.log("values:", values)
+			if (!values?.type) return []
+			let title = "菜单名称"
+			if (values.type == 200) {
+				title = "目录名称"
+			}
+			if (values.type == 300) {
+				title = "能力/权限名称"
+			}
+			return [
+				{
+					dataIndex: "menuName",
+					title: title,
+					formItemProps: {
+						rules: [{ required: true, message: "请输入菜单名称" }],
+					},
+				},
+			]
+		},
+	},
+	{
+		dataIndex: "type",
+		title: "菜单类型",
+		formItemProps: {
+			rules: [{ required: true, message: "请选择菜单类型" }],
+		},
+		renderFormItem: () => {
+			return <CMP.dict.select dictType="sys_menu_type" autoSelectFirst placeholder="请选择菜单类型" />
+		},
+	},
+	{
+		valueType: "dependency",
+		name: ["type"],
+		columns: (values) => {
 			if (!values?.type) return []
 			// 目录
-			if (values.type == 200) return []
+			if (values.type == 200) {
+				return [
+					{
+						dataIndex: "icon",
+						title: "图标",
+						formItemProps: {
+							rules: [{ required: true, message: "请选择图标" }],
+						},
+						renderFormItem: () => <CMP.icon.select />,
+					},
+				]
+			}
 			// 菜单
 			if (values.type == 100) {
 				return [
+					{
+						dataIndex: "icon",
+						title: "图标",
+						formItemProps: {
+							rules: [{ required: true, message: "请选择图标" }],
+						},
+						renderFormItem: () => <CMP.icon.select />,
+					},
 					{
 						dataIndex: "position",
 						title: "菜单位置",
@@ -81,6 +108,7 @@ const columns: Array<ProFormColumnsType<SysMenuEntity>> = [
 					},
 				]
 			}
+			return []
 		},
 	},
 ]

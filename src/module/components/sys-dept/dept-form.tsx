@@ -29,7 +29,7 @@ const columns: Array<ProFormColumnsType<SysDeptEntity>> = [
 						disabled: isCatalogueDpet,
 					},
 					renderFormItem: () => {
-						return <CMP.tree.deptSelect selectTypes={["catalogue"]} />
+						return <CMP.sysDept.DeptTreeSelect />
 					},
 				},
 				{
@@ -40,19 +40,6 @@ const columns: Array<ProFormColumnsType<SysDeptEntity>> = [
 					},
 					formItemProps: {
 						rules: [{ required: true, message: "请输入部门名" }],
-					},
-				},
-				{
-					dataIndex: "deptType",
-					title: "类型",
-					fieldProps: {
-						disabled: isCatalogueDpet,
-					},
-					formItemProps: {
-						rules: [{ required: true, message: "请选择类型" }],
-					},
-					renderFormItem: () => {
-						return <CMP.dict.select dictType="sys_dept_type" autoSelectFirst placeholder="请选择类型" />
 					},
 				},
 				{
@@ -105,6 +92,9 @@ const DeptFormCmp = forwardRef<DeptFormCmpRef, Props>(({ onRefresh }, ref) => {
 		if (id === null) return
 		try {
 			const { data } = await API.sys.sysDeptControllerGetByDeptId(id)
+			if (data.deptParentId === "-99") {
+				data.deptParentId = null
+			}
 			setForm({ ...data } as any)
 			console.log("data:", data)
 			formRef.current?.setFieldsValue(data)
@@ -121,7 +111,7 @@ const DeptFormCmp = forwardRef<DeptFormCmpRef, Props>(({ onRefresh }, ref) => {
 			setOpen(true)
 			try {
 				if (!id) {
-					setForm({ deptParentId: deptParentId === "-1" ? null : deptParentId } as SysDeptEntity)
+					setForm({ deptParentId: deptParentId === "-99" ? null : deptParentId } as SysDeptEntity)
 					formRef.current?.resetFields()
 					return
 				}

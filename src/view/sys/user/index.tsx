@@ -2,21 +2,25 @@ import type { ActionType, ProColumns } from "@ant-design/pro-components"
 
 import { Button, Card, Flex, Switch, Tag } from "antd"
 import { DeleteOutlined, FormOutlined } from "@ant-design/icons"
+import { useSetState } from "ahooks"
 
 import { CrudTable, CrudTableOperation } from "@aspen/crud"
 
 import CMP from "@@/components"
 import { API } from "@@/api/share/request-tool"
-import type { SysUserEntity } from "@@/api/gen/gen-api"
+import type { SysUserEntity, SysUserQueryDto } from "@@/api/gen/gen-api"
 
 import type { UserFormRef } from "./cmp/user-form"
 
 const UserForm = lazy(() => import("./cmp/user-form"))
+const DeptOrgCmp = lazy(() => import("./cmp/dept-org"))
 
 const UserPage: React.FC = () => {
 	const formRef = useRef<UserFormRef>(null)
 	const actionRef = useRef<ActionType>(null)
 
+	const [searchParams, setSearchParams] = useSetState<SysUserQueryDto>({})
+	const [viewType, setViewType] = useState<"user" | "dept">("user")
 	const [loadingObj, setLoadingObj] = useState({ table: false })
 
 	const columns: Array<ProColumns<SysUserEntity>> = [
@@ -117,9 +121,10 @@ const UserPage: React.FC = () => {
 	const getList = async (page: number = 1, pageSize: number = 10) => {
 		try {
 			setLoadingObj({ table: true })
-			const _params: any = {
+			const _params = {
 				page: page,
 				pageSize: pageSize,
+				...searchParams,
 			}
 			const { data } = await API.sys.sysUserControllerPage(_params)
 			return {
@@ -137,28 +142,42 @@ const UserPage: React.FC = () => {
 	return (
 		<Flex className="full">
 			<Card className="min-w-85 w-20% h-full mr-3" styles={{ body: { height: "100%" } }}>
-				<CMP.tree.dept title={null} />
+				<CMP.sysDept.DeptTree
+					title={null}
+					viewType={viewType}
+					viewTypeChange={(next) => startTransition(() => setViewType(next))}
+					onCheck={(deptIds) => {
+						if (viewType === "user") {
+							setSearchParams({ deptIds })
+							actionRef.current?.reload()
+						}
+					}}
+				/>
 			</Card>
-			<Flex className="flex-1" vertical gap={12}>
-				<Card></Card>
-				<Card className="flex-1 h-full" styles={{ body: { height: "100%" } }}>
-					<CrudTable
-						search={false}
-						cardProps={false}
-						className="h-full"
-						actionRef={actionRef}
-						rowKey="userId"
-						headerTitle="系统用户"
-						columns={columns}
-						loading={loadingObj.table}
-						request={({ current, pageSize }) => {
-							return getList(current, pageSize)
-						}}
-						toolBarRender={() => [<CrudTableOperation onAdd={() => formRef.current?.open(null)} />]}
-					/>
-					<UserForm ref={formRef} onRefresh={() => actionRef.current?.reload()} />
-				</Card>
-			</Flex>
+			{viewType == "user" ? (
+				<Flex className="flex-1" vertical gap={12}>
+					<Card></Card>
+					<Card className="flex-1 h-full" styles={{ body: { height: "100%" } }}>
+						<CrudTable
+							search={false}
+							cardProps={false}
+							className="h-full"
+							actionRef={actionRef}
+							rowKey="userId"
+							headerTitle="系统用户"
+							columns={columns}
+							loading={loadingObj.table}
+							request={({ current, pageSize }) => {
+								return getList(current, pageSize)
+							}}
+							toolBarRender={() => [<CrudTableOperation onAdd={() => formRef.current?.open(null)} />]}
+						/>
+						<UserForm ref={formRef} onRefresh={() => actionRef.current?.reload()} />
+					</Card>
+				</Flex>
+			) : (
+				<DeptOrgCmp />
+			)}
 		</Flex>
 	)
 }

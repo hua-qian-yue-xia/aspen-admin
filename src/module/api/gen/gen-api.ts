@@ -12,38 +12,34 @@
 
 export interface SysDeptEntity {
   /** 新增人 */
-  createBy: string;
+  createBy?: string;
   /**
    * 新增时间
    * @format date-time
    */
-  createAt: string;
+  createAt?: string;
   /** 修改人 */
-  updateBy: string;
+  updateBy?: string;
   /**
    * 修改时间
    * @format date-time
    */
-  updateAt: string;
+  updateAt?: string;
   /** 删除人 */
-  delBy: string;
+  delBy?: string;
   /**
    * 删除时间
    * @format date-time
    */
-  delAt: string;
+  delAt?: string;
   /** 部门id */
-  deptId: string;
+  deptId?: string;
   /** 部门父id */
-  deptParentId: string;
+  deptParentId?: string;
   /** 部门名 */
-  deptName: string;
-  /** 部门类型 */
-  deptType: string;
-  /** 是否为部门目录的专属部门 */
-  isCatalogueDpet: boolean;
+  deptName?: string;
   /** 排序 */
-  sort: number;
+  sort?: number;
   [key: string]: any;
 }
 
@@ -81,17 +77,11 @@ export interface R {
   [key: string]: any;
 }
 
-export interface SysDeptSaveDto {
-  /** 部门id */
-  deptId: string;
+export interface SysDeptQueryDto {
   /** 部门父id */
-  deptParentId: string;
+  deptParentId?: string;
   /** 部门名 */
-  deptName: string;
-  /** 部门类型 */
-  deptType: string;
-  /** 排序 */
-  sort: number;
+  deptNameLike?: string;
   [key: string]: any;
 }
 
@@ -104,190 +94,210 @@ export interface SwaggerTreeNode {
   [key: string]: any;
 }
 
-export interface SysDeptQueryDto {
+export interface SysDeptSaveDto {
+  /** 部门id */
+  deptId?: string;
   /** 部门父id */
-  deptParentId: string;
+  deptParentId?: string;
   /** 部门名 */
-  deptNameLike: string;
+  deptName: string;
+  /** 排序 */
+  sort?: number;
   [key: string]: any;
 }
 
 export interface SysMenuEntity {
   /** 新增人 */
-  createBy: string;
+  createBy?: string;
   /**
    * 新增时间
    * @format date-time
    */
-  createAt: string;
+  createAt?: string;
   /** 修改人 */
-  updateBy: string;
+  updateBy?: string;
   /**
    * 修改时间
    * @format date-time
    */
-  updateAt: string;
+  updateAt?: string;
   /** 删除人 */
-  delBy: string;
+  delBy?: string;
   /**
    * 删除时间
    * @format date-time
    */
-  delAt: string;
+  delAt?: string;
   /** 菜单id */
-  menuId: string;
+  menuId?: string;
   /** 菜单父id */
-  parentId: string;
+  parentId?: string;
   /** 菜单名 */
-  menuName: string;
+  menuName?: string;
   /** 菜单类型 */
-  type: string;
+  type?: string;
   /** 菜单位置 */
-  position: string;
+  position?: string;
   /** 图标 */
-  icon: string;
+  icon?: string;
   /** 路由地址 */
-  path: string;
+  path?: string;
+  /** 权限标识 */
+  perm?: string;
   /** 是否显示 */
-  visible: boolean;
+  visible?: boolean;
   /** 是否缓存 */
-  keepAlive: boolean;
+  keepAlive?: boolean;
   /** 排序 */
-  sort: number;
+  sort?: number;
   [key: string]: any;
 }
 
 export interface SysMenuQueryDto {
   /** 菜单父id */
-  menuId: string;
+  menuId?: string;
   /** 菜单父id */
-  parentId: string;
+  parentId?: string;
   /** 菜单名、路由地址 */
-  quick: string;
+  quick?: string;
   /** 菜单类型 */
-  type: string;
+  type?: string;
   [key: string]: any;
 }
 
 export interface SysMenuSaveDto {
   /** 菜单id */
-  menuId: string;
+  menuId?: string;
   /** 菜单父id */
-  parentId: string;
+  parentId?: string;
   /** 菜单名 */
   menuName: string;
   /** 菜单类型 */
   type: string;
   /** 菜单位置 */
-  position: string;
+  position?: string;
   /** 图标 */
-  icon: string;
+  icon?: string;
   /** 路由地址 */
-  path: string;
+  path?: string;
+  /** 权限标识 */
+  perm?: string;
   /** 是否显示 */
-  visible: boolean;
+  visible?: boolean;
   /** 是否缓存 */
-  keepAlive: boolean;
+  keepAlive?: boolean;
   /** 排序 */
-  sort: number;
+  sort?: number;
   [key: string]: any;
 }
 
 export interface SysRoleEntity {
   /** 新增人 */
-  createBy: string;
+  createBy?: string;
   /**
    * 新增时间
    * @format date-time
    */
-  createAt: string;
+  createAt?: string;
   /** 修改人 */
-  updateBy: string;
+  updateBy?: string;
   /**
    * 修改时间
    * @format date-time
    */
-  updateAt: string;
+  updateAt?: string;
   /** 删除人 */
-  delBy: string;
+  delBy?: string;
   /**
    * 删除时间
    * @format date-time
    */
-  delAt: string;
+  delAt?: string;
   /** 角色id */
-  roleId: string;
+  roleId?: string;
   /** 角色名 */
-  roleName: string;
+  roleName?: string;
   /** 角色编码 */
-  roleCode: string;
+  roleCode?: string;
   /** 排序 */
-  sort: number;
+  sort?: number;
   [key: string]: any;
 }
 
 export interface SysRoleQueryDto {
   /** 角色id */
-  roleId: string;
+  roleId?: string;
   /** 角色名、角色编码 */
-  quick: string;
+  quick?: string;
   [key: string]: any;
 }
 
 export interface SysRoleSaveDto {
   /** 角色id */
-  roleId: string;
+  roleId?: string;
   /** 角色名 */
   roleName: string;
   /** 角色编码 */
   roleCode: string;
   /** 排序 */
-  sort: number;
+  sort?: number;
   [key: string]: any;
 }
 
 export interface SysUserEntity {
   /** 新增人 */
-  createBy: string;
+  createBy?: string;
   /**
    * 新增时间
    * @format date-time
    */
-  createAt: string;
+  createAt?: string;
   /** 修改人 */
-  updateBy: string;
+  updateBy?: string;
   /**
    * 修改时间
    * @format date-time
    */
-  updateAt: string;
+  updateAt?: string;
   /** 删除人 */
-  delBy: string;
+  delBy?: string;
   /**
    * 删除时间
    * @format date-time
    */
-  delAt: string;
+  delAt?: string;
   /** 登录名 */
-  userId: string;
+  userId?: string;
   /** 登录名 */
-  username: string;
+  username?: string;
   /** 用户昵称 */
-  userNickname: string;
+  userNickname?: string;
   /** 用户密码 */
-  password: string;
+  password?: string;
   /** 用户手机号 */
-  mobile: string;
+  mobile?: string;
   /** 是否启用 */
-  enable: boolean;
+  enable?: boolean;
   /** 排序 */
-  sort: number;
+  sort?: number;
+  [key: string]: any;
+}
+
+export interface SysUserQueryDto {
+  /** 登录名、用户昵称、用户手机号 */
+  quick?: string;
+  /** 是否启用 */
+  enable?: boolean;
+  /** 部门id列表 */
+  deptIds?: string[];
+  /** 角色id列表 */
+  roleIds?: string[];
   [key: string]: any;
 }
 
 export interface SysUserSaveDto {
-  /** 登录名 */
-  userId: string;
+  /** 用户id */
+  userId?: string;
   /** 登录名 */
   username: string;
   /** 用户昵称 */
@@ -295,9 +305,9 @@ export interface SysUserSaveDto {
   /** 用户手机号 */
   mobile: string;
   /** 是否启用 */
-  enable: boolean;
+  enable?: boolean;
   /** 排序 */
-  sort: number;
+  sort?: number;
   /** 部门id列表 */
   deptIdList: string[];
   /** 角色id列表 */
@@ -315,36 +325,36 @@ export interface SysUserAdminLoginDto {
 
 export interface FrameDictEntity {
   /** 新增人 */
-  createBy: string;
+  createBy?: string;
   /**
    * 新增时间
    * @format date-time
    */
-  createAt: string;
+  createAt?: string;
   /** 修改人 */
-  updateBy: string;
+  updateBy?: string;
   /**
    * 修改时间
    * @format date-time
    */
-  updateAt: string;
+  updateAt?: string;
   /** 删除人 */
-  delBy: string;
+  delBy?: string;
   /**
    * 删除时间
    * @format date-time
    */
-  delAt: string;
+  delAt?: string;
   /** 字典id */
-  id: string;
+  id?: string;
   /** 字典code */
-  code: string;
+  code?: string;
   /** 字典摘要 */
-  summary: string;
+  summary?: string;
   /** 字典类型 */
-  genType: string;
+  genType?: string;
   /** 排序 */
-  sort: number;
+  sort?: number;
   [key: string]: any;
 }
 
@@ -352,70 +362,70 @@ export type String = object;
 
 export interface FrameDictSaveDto {
   /** id */
-  id: string;
+  id?: string;
   /** 字典编码 */
   code: string;
   /** 字典名称 */
   summary: string;
   /** 排序 */
-  sort: number;
+  sort?: number;
   [key: string]: any;
 }
 
 export interface FrameDictItemEntity {
   /** 新增人 */
-  createBy: string;
+  createBy?: string;
   /**
    * 新增时间
    * @format date-time
    */
-  createAt: string;
+  createAt?: string;
   /** 修改人 */
-  updateBy: string;
+  updateBy?: string;
   /**
    * 修改时间
    * @format date-time
    */
-  updateAt: string;
+  updateAt?: string;
   /** 删除人 */
-  delBy: string;
+  delBy?: string;
   /**
    * 删除时间
    * @format date-time
    */
-  delAt: string;
+  delAt?: string;
   /** 字典项code */
-  id: string;
+  id?: string;
   /** 字典项code */
-  code: string;
+  code?: string;
   /** 字典项摘要 */
-  summary: string;
+  summary?: string;
   /** 字典项颜色 */
-  hexColor: string;
+  hexColor?: string;
   /** 排序 */
-  sort: number;
+  sort?: number;
   [key: string]: any;
 }
 
 export interface FrameDictItemQueryDto {
   /** 字典项编码 */
-  code: string;
+  code?: string;
   /** 字典id */
-  dictId: string;
+  dictId?: string;
   [key: string]: any;
 }
 
 export interface FrameDictItemSaveDto {
   /** id */
-  id: string;
+  id?: string;
   /** 字典编码 */
   code: string;
   /** 字典名称 */
   summary: string;
   /** 字典项颜色 */
-  hexColor: string;
+  hexColor?: string;
   /** 排序 */
-  sort: number;
+  sort?: number;
   [key: string]: any;
 }
 
@@ -610,9 +620,12 @@ export class Api<
      * @tags 部门管理
      * @name SysDeptControllerPage
      * @summary 分页
-     * @request GET:/sys/dept/page
+     * @request POST:/sys/dept/page
      */
-    sysDeptControllerPage: (data: SysDeptSaveDto, params: RequestParams = {}) =>
+    sysDeptControllerPage: (
+      data: SysDeptQueryDto,
+      params: RequestParams = {},
+    ) =>
       this.request<
         R & {
           data?: BasePageVo & {
@@ -624,7 +637,7 @@ export class Api<
         any
       >({
         path: `/sys/dept/page`,
-        method: "GET",
+        method: "POST",
         body: data,
         type: ContentType.Json,
         format: "json",
@@ -637,9 +650,12 @@ export class Api<
      * @tags 部门管理
      * @name SysDeptControllerSelect
      * @summary 下拉
-     * @request GET:/sys/dept/select
+     * @request POST:/sys/dept/select
      */
-    sysDeptControllerSelect: (params: RequestParams = {}) =>
+    sysDeptControllerSelect: (
+      data: SysDeptQueryDto,
+      params: RequestParams = {},
+    ) =>
       this.request<
         R & {
           data?: BasePageVo & {
@@ -651,7 +667,9 @@ export class Api<
         any
       >({
         path: `/sys/dept/select`,
-        method: "GET",
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -739,6 +757,21 @@ export class Api<
         method: "PUT",
         body: data,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags 部门管理
+     * @name SysDeptControllerDelete
+     * @summary 删除
+     * @request DELETE:/sys/dept/{deptIds}
+     */
+    sysDeptControllerDelete: (deptIds: string[], params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/sys/dept/${deptIds}`,
+        method: "DELETE",
         ...params,
       }),
 
@@ -1059,9 +1092,12 @@ export class Api<
      * @tags 用户管理
      * @name SysUserControllerPage
      * @summary 分页
-     * @request GET:/sys/user/page
+     * @request POST:/sys/user/page
      */
-    sysUserControllerPage: (data: SysUserEntity, params: RequestParams = {}) =>
+    sysUserControllerPage: (
+      data: SysUserQueryDto,
+      params: RequestParams = {},
+    ) =>
       this.request<
         R & {
           data?: BasePageVo & {
@@ -1073,7 +1109,7 @@ export class Api<
         any
       >({
         path: `/sys/user/page`,
-        method: "GET",
+        method: "POST",
         body: data,
         type: ContentType.Json,
         format: "json",
@@ -1089,7 +1125,7 @@ export class Api<
      * @request GET:/sys/user/select
      */
     sysUserControllerSelect: (
-      data: SysUserEntity,
+      data: SysUserQueryDto,
       params: RequestParams = {},
     ) =>
       this.request<

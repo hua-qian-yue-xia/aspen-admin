@@ -7,11 +7,15 @@ import { CrudTable, CrudTableOperation } from "@aspen/crud"
 import { API } from "@@/api/share/request-tool"
 import type { SysMenuEntity } from "@@/api/gen/gen-api"
 import CMP from "@@/components"
+import TOOL from "@@/tool"
 
-import MenuForm from "@@/components/tree/menu/cmp/menu-form"
-import type { MenuFormCmpRef } from "@@/components/tree/menu/cmp/menu-form"
+import type { MenuFormCmpRef } from "@@/components/sys-menu/menu-form"
 
-const MenuTableCmp: React.FC = () => {
+type Props = {
+	reload?: () => void
+}
+
+const MenuTableCmp: React.FC<Props> = ({ reload }) => {
 	const formRef = useRef<MenuFormCmpRef>(null)
 	const actionRef = useRef<ActionType>(null)
 
@@ -79,8 +83,17 @@ const MenuTableCmp: React.FC = () => {
 				pageSize: pageSize,
 			}
 			const { data } = await API.sys.sysMenuControllerTree(_params)
+			const tree = data ?? []
+			if (tree.length) {
+				TOOL.tree.map(tree, (node) => {
+					if (!node.children.length) {
+						node.children = undefined
+					}
+					return node
+				})
+			}
 			return {
-				data: data || [],
+				data: tree,
 				success: true,
 				total: 0,
 			}
@@ -117,9 +130,21 @@ const MenuTableCmp: React.FC = () => {
 				request={({ current, pageSize }) => {
 					return getList(current, pageSize)
 				}}
+				// expandable={{
+				// 	rowExpandable: (record) => Array.isArray(record.children) && record.children.length > 0 && false,
+				// 	expandedRowRender: (record) => {
+				// 		return null
+				// 	},
+				// }}
 				toolBarRender={() => [<CrudTableOperation onAdd={() => formRef.current?.open(null, null)} />]}
 			/>
-			<MenuForm ref={formRef} onRefresh={() => actionRef.current?.reload()} />
+			<CMP.sysMenu.MenuForm
+				ref={formRef}
+				onRefresh={() => {
+					actionRef.current?.reload()
+					reload?.()
+				}}
+			/>
 		</>
 	)
 }

@@ -57,7 +57,7 @@ const columns: Array<ProFormColumnsType> = [
 		renderFormItem: () => {
 			console.log("|部门选择|")
 
-			return <CMP.tree.deptSelect selectTypes={["dept"]} />
+			return <CMP.sysDept.DeptTreeSelect />
 		},
 		transform: (value: string | Array<string>) => {
 			return {
@@ -116,7 +116,7 @@ const UserFormCmp = forwardRef<UserFormRef, Props>(({ onRefresh }, ref) => {
 				...data,
 				roleIdList: data.userRoles.map((v) => v.roleId),
 				deptIdList: data.userDepts.map((v) => v.deptId),
-			}
+			} as SysUserSaveDto
 			setForm(form)
 			formRef.current?.setFieldsValue(form)
 		} catch (error) {

@@ -1,57 +1,65 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 
-import { Button, Flex, Input, Typography, Dropdown, Tree } from "antd"
-import type { MenuProps, TreeDataNode, TreeProps } from "antd"
+import { Button, Dropdown, Flex, Input, Tree, Typography } from "antd"
+import type { TreeDataNode, TreeProps } from "antd"
 
 import {
-	ExportOutlined,
-	SearchOutlined,
-	MoreOutlined,
-	FolderOutlined,
-	FolderOpenOutlined,
-	PlusCircleOutlined,
-	FormOutlined,
 	DeleteOutlined,
+	ExportOutlined,
+	FolderOpenOutlined,
+	FolderOutlined,
+	FormOutlined,
+	MoreOutlined,
+	PlusCircleOutlined,
+	SearchOutlined,
 } from "@ant-design/icons"
 
 import TOOL from "@/module/tool"
 import { API } from "@@/api/share/request-tool"
 
-import BaseSvgIcon from "~/packages/crud/src/module/base/base-svg-icon"
+import type { MenuFormCmpRef } from "./menu-form"
 
-import type { DeptFormCmpRef } from "./cmp/dept-form"
+import "./menu-form"
 
-import "./css/dept-css.scss"
-
-const DeptFormCmp = lazy(() => import("./cmp/dept-form"))
+const MenuFormCmp = lazy(() => import("./menu-form"))
 
 const { Text, Title } = Typography
+
+const notExistRootMenuId = "-99"
+
+const moreItems = [
+	{
+		key: "EDIT",
+		icon: <FormOutlined />,
+		label: "编辑",
+	},
+	{
+		key: "DELETE",
+		icon: <DeleteOutlined />,
+		label: "删除",
+	},
+]
 
 type Props = {
 	/**
 	 * 标题
-	 * @default 部门管理
+	 * @default 菜单管理
 	 */
 	title?: string
-	/**
-	 * 是否显示部门视图
-	 * @default true
-	 */
-	visibleDeptView?: boolean
 	/**
 	 * 是否显示导出按钮
 	 * @default true
 	 */
 	visibleExport?: boolean
+	/**
+	 * 是否开启多选
+	 * @default false
+	 */
+	treeCheckable?: boolean
 }
 
-const moreItems: MenuProps["items"] = [
-	{ key: "EDIT", icon: <FormOutlined />, label: "编辑" },
-	{ key: "DELETE", icon: <DeleteOutlined />, label: "删除" },
-]
-
-const DeptTreeCmp: React.FC<Props> = ({ title = "部门管理", visibleDeptView = true, visibleExport = true }) => {
-	const formRef = useRef<DeptFormCmpRef>(null)
+const MenuTreeCmp: React.FC<Props> = ({ title = "菜单管理", visibleExport = true, treeCheckable = false }) => {
+	const menuFormRef = useRef<MenuFormCmpRef>(null)
 
 	const [treeData, setTreeData] = useState<Array<TreeDataNode>>([])
 	const [expandedKeys, setExpandedKeys] = useState([])
@@ -60,55 +68,66 @@ const DeptTreeCmp: React.FC<Props> = ({ title = "部门管理", visibleDeptView 
 	const [searchText, setSearchText] = useState("")
 
 	useEffect(() => {
-		getDeptTree()
+		getMenuTree()
 	}, [])
 
-	// 获取部门dept树
-	const getDeptTree = async () => {
+	// 查询菜单树
+	const getMenuTree = async () => {
 		try {
 			const _params: any = {}
-			const { data } = await API.sys.sysDeptControllerTree(_params)
+			const { data } = await API.sys.sysMenuControllerTree(_params)
 			const convTreeData = TOOL.tree.map(data, (entity) => {
-				const isAdd = entity.deptType === "200"
+				const isAdd = entity.type === "200"
 				return {
-					title: entity.deptName,
-					key: entity.deptId,
+					title: entity.menuName,
+					key: entity.menuId,
 					isLeaf: !entity.children?.length,
 					icon: (tree: any) => {
 						// 有子节点时,显示文件夹
 						if (tree.data.children?.length || isAdd) {
 							return tree.expanded ? <FolderOpenOutlined /> : <FolderOutlined />
 						}
-						return <BaseSvgIcon className="inline" icon="clarity:organization-solid" />
+						return <FolderOutlined />
 					},
 					extra: {
 						isAdd: isAdd,
-						isCatalogueDpet: entity.isCatalogueDpet,
 					},
 				}
 			})
 			// 创建一个默认的expandedKeys
 			const defaultExpandedKeys = TOOL.tree
 				.flatten(data)
-				?.filter((node) => node.deptId === "-1" || node.deptParentId === "-1")
-				?.map((node) => node.deptId)
+				?.filter((node) => node.menuId === notExistRootMenuId || node.parentId === notExistRootMenuId)
+				?.map((node) => node.menuId)
+
 			setExpandedKeys((prev) => Array.from(new Set([...prev, ...defaultExpandedKeys])))
 			setTreeData(convTreeData)
 		} catch (error) {
-			console.error("|获取部门dept树|意外的错误,error:", error)
+			console.error("|查询菜单树|意外的错误,error:", error)
 		}
 	}
 
 	const moreItemsClick = (key: string, node: any) => {
+		console.log(node)
+
 		if (key === "ADD") {
-			formRef.current?.open(node.key, null)
+			menuFormRef.current?.open(node.key, null)
 			return
 		}
 		if (key === "EDIT") {
-			formRef.current?.open(null, node.key)
+			menuFormRef.current?.open(null, node.key)
 			return
 		}
 		if (key === "DELETE") {
+			window.$modal.confirm({
+				title: "警告",
+				content: `菜单:${node.title}(${node.key})确认删除吗?`,
+				onOk: async () => {
+					await API.sys.sysMenuControllerDelete([node.key])
+					getMenuTree()
+					window.$message.success("删除成功")
+				},
+			})
 			return
 		}
 	}
@@ -128,29 +147,17 @@ const DeptTreeCmp: React.FC<Props> = ({ title = "部门管理", visibleDeptView 
 			<Flex align="center" justify="space-between" className="p-x-2 p-y-2 m-b-2 gap-2">
 				<Input
 					allowClear
-					placeholder="搜索部门名称/拼音"
-					suffix={<SearchOutlined />}
+					placeholder="搜索菜单名称/路径"
 					value={searchText}
+					suffix={<SearchOutlined />}
 					onChange={(e) => setSearchText(e.target.value)}
 					className="flex-1"
 				/>
-				{visibleDeptView && (
-					<Flex className="gap-2">
-						<Button
-							type="primary"
-							size="middle"
-							icon={<BaseSvgIcon className="inline" icon="clarity:organization-solid" />}
-						>
-							部门视图
-						</Button>
-					</Flex>
-				)}
 			</Flex>
 			<Flex vertical flex={1}>
 				<Tree
-					key={"key"}
 					blockNode
-					checkable
+					checkable={treeCheckable}
 					showLine
 					showIcon={true}
 					treeData={treeData}
@@ -198,9 +205,9 @@ const DeptTreeCmp: React.FC<Props> = ({ title = "部门管理", visibleDeptView 
 					导出
 				</Button>
 			)}
-			<DeptFormCmp ref={formRef} onRefresh={getDeptTree} />
+			<MenuFormCmp ref={menuFormRef} onRefresh={getMenuTree} />
 		</Flex>
 	)
 }
 
-export default memo(DeptTreeCmp)
+export default memo(MenuTreeCmp)
