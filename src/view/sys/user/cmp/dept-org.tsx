@@ -1,9 +1,17 @@
 import { Card, Flex } from "antd"
-import { ReactFlow, applyNodeChanges, Background, Controls, MiniMap, BackgroundVariant } from "@xyflow/react"
+import { ReloadOutlined } from "@ant-design/icons"
+import {
+	ReactFlow,
+	applyNodeChanges,
+	Background,
+	Controls,
+	ControlButton,
+	MiniMap,
+	BackgroundVariant,
+} from "@xyflow/react"
 import type { ReactFlowProps } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
 import { useSetState } from "ahooks"
-import { useCallback, useEffect } from "react"
 
 import CMP from "@@/components"
 import type { DeptFormCmpRef } from "@@/components/sys-dept/dept-form"
@@ -35,24 +43,27 @@ const DeptOrgCmp: React.FC = () => {
 				pageSize: 999,
 			})
 			const nodes =
-				data.records?.map<ReactFlowProps["nodes"][0]>((item) => {
-					return {
-						id: item.deptId,
-						type: "deptNode",
-						position: {
-							x: 0,
-							y: 0,
-						},
-						data: {
-							label: item.deptName,
-							...item,
-							dropdownChange: onNodeContextMenuClick,
-						},
-					}
-				}) ?? []
+				data.records
+					?.sort((a, b) => b.sort - a.sort)
+					?.map<ReactFlowProps["nodes"][0]>((item) => {
+						return {
+							id: item.deptId,
+							type: "deptNode",
+							position: {
+								x: 0,
+								y: 0,
+							},
+							data: {
+								label: item.deptName,
+								...item,
+								dropdownChange: onNodeContextMenuClick,
+							},
+						}
+					}) ?? []
 			const edges =
 				data.records
 					?.filter((item) => item.deptParentId !== "-99")
+					?.sort((a, b) => b.sort - a.sort)
 					?.map<ReactFlowProps["edges"][0]>((item) => {
 						return {
 							id: `${item.deptParentId}-${item.deptId}`,
@@ -60,6 +71,7 @@ const DeptOrgCmp: React.FC = () => {
 							target: item.deptId,
 						}
 					}) ?? []
+
 			const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(nodes, edges)
 
 			setState({
@@ -101,8 +113,7 @@ const DeptOrgCmp: React.FC = () => {
 	}, [])
 
 	return (
-		<Flex className="flex-1" vertical gap={12}>
-			<Card></Card>
+		<Flex className="flex-1" vertical>
 			<Card className="flex-1 h-full" styles={{ body: { height: "100%" } }}>
 				<ReactFlow
 					className="dept-org-flow"
@@ -121,7 +132,11 @@ const DeptOrgCmp: React.FC = () => {
 					defaultViewport={{ x: 0, y: 0, zoom: 1 }}
 				>
 					<Background variant={BackgroundVariant.Dots} />
-					<Controls showInteractive={false} />
+					<Controls showInteractive={false}>
+						<ControlButton onClick={getDeptTree} title="刷新">
+							<ReloadOutlined />
+						</ControlButton>
+					</Controls>
 					<MiniMap nodeColor={"rgb(var(--primary-color))"} nodeStrokeWidth={3} zoomable pannable />
 				</ReactFlow>
 			</Card>

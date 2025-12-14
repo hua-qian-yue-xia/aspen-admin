@@ -139,7 +139,7 @@ const DeptTreeCmp: React.FC<Props> = ({
 				console.error("|获取部门dept树|意外的错误,error:", error)
 			}
 		},
-		{ throttleWait: 500 },
+		{ debounceWait: 500, manual: true },
 	)
 
 	const moreItemsClick = (key: string, node: any) => {

@@ -290,6 +290,8 @@ export interface SysUserQueryDto {
   enable?: boolean;
   /** 部门id列表 */
   deptIds?: string[];
+  /** 是否包含`deptIds`条件 */
+  includeDeptIds?: boolean;
   /** 角色id列表 */
   roleIds?: string[];
   [key: string]: any;
@@ -355,6 +357,12 @@ export interface FrameDictEntity {
   genType?: string;
   /** 排序 */
   sort?: number;
+  [key: string]: any;
+}
+
+export interface FrameDictQueryDto {
+  /** 字典编码/名称 */
+  quick?: string;
   [key: string]: any;
 }
 
@@ -808,7 +816,7 @@ export class Api<
      * @tags 菜单管理
      * @name SysMenuControllerSelect
      * @summary 下拉(没有权限控制)
-     * @request GET:/sys/menu/select
+     * @request POST:/sys/menu/select
      */
     sysMenuControllerSelect: (
       data: SysMenuQueryDto,
@@ -825,7 +833,7 @@ export class Api<
         any
       >({
         path: `/sys/menu/select`,
-        method: "GET",
+        method: "POST",
         body: data,
         type: ContentType.Json,
         format: "json",
@@ -1265,7 +1273,7 @@ export class Api<
      * @request POST:/frame/dict/page
      */
     frameDictControllerPage: (
-      data: FrameDictEntity,
+      data: FrameDictQueryDto,
       params: RequestParams = {},
     ) =>
       this.request<

@@ -1,4 +1,4 @@
-import type { ActionType, ProColumns } from "@ant-design/pro-components"
+import { type ActionType, type ProColumns } from "@ant-design/pro-components"
 
 import { Button, Card, Flex, Switch, Tag } from "antd"
 import { DeleteOutlined, FormOutlined } from "@ant-design/icons"
@@ -25,40 +25,57 @@ const UserPage: React.FC = () => {
 
 	const columns: Array<ProColumns<SysUserEntity>> = [
 		{
+			title: "聚合查询",
+			dataIndex: ["quick"],
+			fieldProps: {
+				placeholder: "请输入登录名、用户昵称、用户手机号",
+			},
+			hideInTable: true,
+		},
+		{
 			title: "排序",
 			key: "sort",
-			dataIndex: ["sort", "sort"],
+			dataIndex: ["sort"],
+			search: false,
 		},
 		{
 			title: "用户名",
 			key: "username",
 			dataIndex: "username",
 			copyable: true,
+			search: false,
 		},
 		{
 			title: "昵称",
 			dataIndex: "userNickname",
+			search: false,
 		},
 		{
 			title: "手机号",
 			dataIndex: "mobile",
+			search: false,
 		},
 		{
 			title: "部门",
 			dataIndex: "userDepts",
+			search: false,
 			render: (dom, entity) => {
 				return <Flex gap={4}>{entity.userDepts?.map((item) => <Tag key={item.deptId}>{item.deptName}</Tag>)}</Flex>
 			},
 		},
 		{
 			title: "角色",
-			dataIndex: "userRoles",
+			dataIndex: "roleIds",
 			render: (dom, entity) => {
 				return <Flex gap={4}>{entity.userRoles?.map((item) => <Tag key={item.roleId}>{item.roleName}</Tag>)}</Flex>
+			},
+			renderFormItem() {
+				return <CMP.sysRole.RoleSelect mode="multiple" />
 			},
 		},
 		{
 			title: "是否启用",
+			key: "enable",
 			dataIndex: "enable",
 			render: (dom, entity) => {
 				return (
@@ -70,12 +87,15 @@ const UserPage: React.FC = () => {
 					/>
 				)
 			},
+			renderFormItem() {
+				return <CMP.dict.select dictType="com_enable" />
+			},
 		},
 		{
 			title: "操作",
 			width: 120,
 			align: "center",
-			dataIndex: "operation",
+			valueType: "option",
 			fixed: true,
 			render: (dom, entity) => {
 				return (
@@ -118,12 +138,13 @@ const UserPage: React.FC = () => {
 	}
 
 	// 获取系统用户列表
-	const getList = async (page: number = 1, pageSize: number = 10) => {
+	const getList = async (current: number, pageSize: number, params: SysUserQueryDto) => {
 		try {
 			setLoadingObj({ table: true })
 			const _params = {
-				page: page,
-				pageSize: pageSize,
+				page: current || 1,
+				pageSize: pageSize || 10,
+				...params,
 				...searchParams,
 			}
 			const { data } = await API.sys.sysUserControllerPage(_params)
@@ -156,10 +177,11 @@ const UserPage: React.FC = () => {
 			</Card>
 			{viewType == "user" ? (
 				<Flex className="flex-1" vertical gap={12}>
-					<Card></Card>
 					<Card className="flex-1 h-full" styles={{ body: { height: "100%" } }}>
 						<CrudTable
-							search={false}
+							search={{
+								className: "p-x-0! p-y-2!",
+							}}
 							cardProps={false}
 							className="h-full"
 							actionRef={actionRef}
@@ -167,8 +189,8 @@ const UserPage: React.FC = () => {
 							headerTitle="系统用户"
 							columns={columns}
 							loading={loadingObj.table}
-							request={({ current, pageSize }) => {
-								return getList(current, pageSize)
+							request={({ current, pageSize, ...rest }) => {
+								return getList(current, pageSize, rest)
 							}}
 							toolBarRender={() => [<CrudTableOperation onAdd={() => formRef.current?.open(null)} />]}
 						/>

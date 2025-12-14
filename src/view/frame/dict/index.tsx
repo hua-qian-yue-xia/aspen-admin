@@ -5,7 +5,7 @@ import type { ActionType, ProColumns } from "@ant-design/pro-components"
 import { CrudTable, CrudTableOperation } from "@aspen/crud"
 
 import { API } from "@@/api/share/request-tool"
-import type { FrameDictItemEntity } from "@@/api/gen/gen-api"
+import type { FrameDictItemEntity, FrameDictItemQueryDto } from "@@/api/gen/gen-api"
 
 import DictKeyListCmp from "./cmp/dict-key-list"
 import DictValueFormCmp from "./cmp/dict-value-form"
@@ -22,13 +22,23 @@ const DictPage: React.FC = () => {
 
 	const columns: Array<ProColumns<FrameDictItemEntity>> = [
 		{
+			title: "聚合查询",
+			dataIndex: ["quick"],
+			fieldProps: {
+				placeholder: "请输入菜单名、路由地址",
+			},
+			hideInTable: true,
+		},
+		{
 			title: "排序",
 			key: "sort",
 			dataIndex: ["sort"],
+			hideInSearch: true,
 		},
 		{
 			title: "字典名称",
 			dataIndex: ["summary"],
+			hideInSearch: true,
 			render: (dom, entity) => {
 				return <Tag color={entity.hexColor}>{entity.summary}</Tag>
 			},
@@ -36,12 +46,13 @@ const DictPage: React.FC = () => {
 		{
 			title: "字典值",
 			dataIndex: ["code"],
+			hideInSearch: true,
 		},
 		{
 			title: "操作",
 			width: 120,
 			align: "center",
-			dataIndex: "operation",
+			valueType: "option",
 			render: (dom, entity) => {
 				return (
 					<div className="flex gap-1">
@@ -63,10 +74,11 @@ const DictPage: React.FC = () => {
 	]
 
 	// 获取字典项列表
-	const getList = async (page: number = 1, pageSize: number = 10) => {
+	const getList = async (page: number = 1, pageSize: number = 10, params: FrameDictItemQueryDto) => {
 		try {
 			setLoadingObj({ table: true })
 			const _params: any = {
+				...params,
 				page: page,
 				pageSize: pageSize,
 				dictId: queryForm.dictId,
@@ -115,10 +127,12 @@ const DictPage: React.FC = () => {
 					rowKey="id"
 					headerTitle="字典项"
 					columns={columns}
-					search={false}
+					search={{
+						className: "p-x-0! p-y-2!",
+					}}
 					loading={loadingObj.table}
-					request={({ current, pageSize }) => {
-						return getList(current, pageSize)
+					request={({ current, pageSize, ...rest }) => {
+						return getList(current, pageSize, rest)
 					}}
 					toolBarRender={() => [
 						<CrudTableOperation visibleImport={false} onAdd={() => dictValueFormRef.current?.open(null)} />,

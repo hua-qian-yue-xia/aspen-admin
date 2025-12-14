@@ -2,13 +2,14 @@ import dagre from "dagre"
 import { Position } from "@xyflow/react"
 import type { Node, Edge } from "@xyflow/react"
 
-const dagreGraph = new dagre.graphlib.Graph()
-dagreGraph.setDefaultEdgeLabel(() => ({}))
-
 const nodeWidth = 172
 const nodeHeight = 70
 
 export const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = "TB") => {
+	// 创建新的 dagre graph 实例，确保每次计算都是独立的
+	const dagreGraph = new dagre.graphlib.Graph()
+	dagreGraph.setDefaultEdgeLabel(() => ({}))
+
 	const isHorizontal = direction === "LR"
 	dagreGraph.setGraph({ rankdir: direction })
 

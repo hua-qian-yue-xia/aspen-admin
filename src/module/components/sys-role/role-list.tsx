@@ -71,7 +71,11 @@ const RoleListCmp: React.FC<Props> = ({ title = "角色管理", visibleExport = 
 	const { run: getRolePage } = useRequest(
 		async () => {
 			try {
-				const { data } = await API.sys.sysRoleControllerScopePage(searchParams)
+				const { data } = await API.sys.sysRoleControllerScopePage({
+					page: 1,
+					pageSize: 999,
+					searchParams,
+				})
 				setRoleList(data.records ?? [])
 				setTotal(data.totalPage ?? 0)
 				if (!activeDictId) {
@@ -83,7 +87,7 @@ const RoleListCmp: React.FC<Props> = ({ title = "角色管理", visibleExport = 
 				console.error("|查询角色分页|意外的错误,error:", error)
 			}
 		},
-		{ throttleWait: 500 },
+		{ debounceWait: 500, manual: true },
 	)
 
 	const moreItemsClick = (key: string, entity: SysRoleEntity) => {

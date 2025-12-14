@@ -5,7 +5,7 @@ import type { ActionType, ProColumns } from "@ant-design/pro-components"
 import { CrudTable, CrudTableOperation } from "@aspen/crud"
 
 import { API } from "@@/api/share/request-tool"
-import type { SysMenuEntity } from "@@/api/gen/gen-api"
+import type { SysMenuEntity, SysMenuQueryDto } from "@@/api/gen/gen-api"
 import CMP from "@@/components"
 import TOOL from "@@/tool"
 
@@ -23,13 +23,23 @@ const MenuTableCmp: React.FC<Props> = ({ reload }) => {
 
 	const columns: Array<ProColumns<SysMenuEntity>> = [
 		{
+			title: "聚合查询",
+			dataIndex: ["quick"],
+			fieldProps: {
+				placeholder: "请输入菜单名、路由地址",
+			},
+			hideInTable: true,
+		},
+		{
 			title: "排序",
 			key: "sort",
 			dataIndex: ["sort"],
+			hideInSearch: true,
 		},
 		{
 			title: "菜单名称",
 			dataIndex: "menuName",
+			hideInSearch: true,
 		},
 		{
 			title: "菜单类型",
@@ -37,10 +47,14 @@ const MenuTableCmp: React.FC<Props> = ({ reload }) => {
 			render: (dom, entity) => {
 				return <CMP.dict.tag dictType="sys_menu_type" dictItemCode={entity.type} />
 			},
+			renderFormItem: () => {
+				return <CMP.dict.select dictType="sys_menu_type" />
+			},
 		},
 		{
 			title: "菜单位置",
 			dataIndex: ["position"],
+			hideInSearch: true,
 			render: (dom, entity) => {
 				return <CMP.dict.tag dictType="sys_menu_position" dictItemCode={entity.position} />
 			},
@@ -48,12 +62,13 @@ const MenuTableCmp: React.FC<Props> = ({ reload }) => {
 		{
 			title: "路由地址",
 			dataIndex: "path",
+			hideInSearch: true,
 		},
 		{
 			title: "操作",
 			width: 120,
 			align: "center",
-			dataIndex: "operation",
+			valueType: "option",
 			render: (dom, entity) => {
 				return (
 					<div className="flex gap-1">
@@ -75,10 +90,11 @@ const MenuTableCmp: React.FC<Props> = ({ reload }) => {
 	]
 
 	// 获取系统菜单列表
-	const getList = async (page: number = 1, pageSize: number = 10) => {
+	const getList = async (page: number = 1, pageSize: number = 10, params: SysMenuQueryDto) => {
 		try {
 			setLoadingObj({ table: true })
 			const _params: any = {
+				...params,
 				page: page,
 				pageSize: pageSize,
 			}
@@ -125,10 +141,12 @@ const MenuTableCmp: React.FC<Props> = ({ reload }) => {
 				rowKey="menuId"
 				headerTitle="系统菜单"
 				columns={columns}
-				search={false}
+				search={{
+					className: "p-x-0! p-y-2!",
+				}}
 				loading={loadingObj.table}
-				request={({ current, pageSize }) => {
-					return getList(current, pageSize)
+				request={({ current, pageSize, ...rest }) => {
+					return getList(current, pageSize, rest)
 				}}
 				// expandable={{
 				// 	rowExpandable: (record) => Array.isArray(record.children) && record.children.length > 0 && false,

@@ -17,6 +17,8 @@ const dropdownItems: MenuProps["items"] = [
 ]
 
 const DeptNode: React.FC<Props> = ({ data }) => {
+	console.log(data)
+
 	const firstStr = data?.label?.slice(0, 1) || ""
 
 	const dropdownClick = useCallback(
@@ -57,7 +59,7 @@ const DeptNode: React.FC<Props> = ({ data }) => {
 								{data.label}
 							</Text>
 							<Text className="opacity-70 text-xs">
-								共{0}子部门,共{0}人
+								共{data?.countTotal?.dpetCount ?? 0}子部门,共{data?.countTotal?.personCount ?? 0}人
 							</Text>
 						</Flex>
 					</Flex>

@@ -2,7 +2,6 @@ import React from "react"
 
 import { Button, Dropdown, Flex, Input, Tree, Typography } from "antd"
 import type { TreeDataNode, TreeProps } from "antd"
-
 import {
 	DeleteOutlined,
 	ExportOutlined,
@@ -13,9 +12,11 @@ import {
 	PlusCircleOutlined,
 	SearchOutlined,
 } from "@ant-design/icons"
+import { useRequest, useSetState } from "ahooks"
 
 import TOOL from "@/module/tool"
 import { API } from "@@/api/share/request-tool"
+import { SysMenuQueryDto } from "@@/api/gen/gen-api"
 
 import type { MenuFormCmpRef } from "./menu-form"
 
@@ -61,55 +62,57 @@ type Props = {
 const MenuTreeCmp: React.FC<Props> = ({ title = "菜单管理", visibleExport = true, treeCheckable = false }) => {
 	const menuFormRef = useRef<MenuFormCmpRef>(null)
 
+	const [searchParams, setSearchParams] = useSetState<SysMenuQueryDto>({})
 	const [treeData, setTreeData] = useState<Array<TreeDataNode>>([])
 	const [expandedKeys, setExpandedKeys] = useState([])
 	const deferredExpandedKeys = useDeferredValue(expandedKeys)
-
-	const [searchText, setSearchText] = useState("")
 
 	useEffect(() => {
 		getMenuTree()
 	}, [])
 
 	// 查询菜单树
-	const getMenuTree = async () => {
-		try {
-			const _params: any = {}
-			const { data } = await API.sys.sysMenuControllerTree(_params)
-			const convTreeData = TOOL.tree.map(data, (entity) => {
-				const isAdd = entity.type === "200"
-				return {
-					title: entity.menuName,
-					key: entity.menuId,
-					isLeaf: !entity.children?.length,
-					icon: (tree: any) => {
-						// 有子节点时,显示文件夹
-						if (tree.data.children?.length || isAdd) {
-							return tree.expanded ? <FolderOpenOutlined /> : <FolderOutlined />
-						}
-						return <FolderOutlined />
-					},
-					extra: {
-						isAdd: isAdd,
-					},
-				}
-			})
-			// 创建一个默认的expandedKeys
-			const defaultExpandedKeys = TOOL.tree
-				.flatten(data)
-				?.filter((node) => node.menuId === notExistRootMenuId || node.parentId === notExistRootMenuId)
-				?.map((node) => node.menuId)
+	const { run: getMenuTree } = useRequest(
+		async () => {
+			try {
+				const { data } = await API.sys.sysMenuControllerTree(searchParams)
+				const convTreeData = TOOL.tree.map(data, (entity) => {
+					const isAdd = entity.type === "200"
+					return {
+						title: entity.menuName,
+						key: entity.menuId,
+						isLeaf: !entity.children?.length,
+						icon: (tree: any) => {
+							// 有子节点时,显示文件夹
+							if (tree.data.children?.length || isAdd) {
+								return tree.expanded ? <FolderOpenOutlined /> : <FolderOutlined />
+							}
+							return <FolderOutlined />
+						},
+						extra: {
+							isAdd: isAdd,
+						},
+					}
+				})
+				// 创建一个默认的expandedKeys
+				const defaultExpandedKeys = TOOL.tree
+					.flatten(data)
+					?.filter((node) => node.menuId === notExistRootMenuId || node.parentId === notExistRootMenuId)
+					?.map((node) => node.menuId)
 
-			setExpandedKeys((prev) => Array.from(new Set([...prev, ...defaultExpandedKeys])))
-			setTreeData(convTreeData)
-		} catch (error) {
-			console.error("|查询菜单树|意外的错误,error:", error)
-		}
-	}
+				setExpandedKeys((prev) => Array.from(new Set([...prev, ...defaultExpandedKeys])))
+				setTreeData(convTreeData)
+			} catch (error) {
+				console.error("|查询菜单树|意外的错误,error:", error)
+			}
+		},
+		{
+			debounceWait: 500,
+			manual: true,
+		},
+	)
 
 	const moreItemsClick = (key: string, node: any) => {
-		console.log(node)
-
 		if (key === "ADD") {
 			menuFormRef.current?.open(node.key, null)
 			return
@@ -148,9 +151,12 @@ const MenuTreeCmp: React.FC<Props> = ({ title = "菜单管理", visibleExport = 
 				<Input
 					allowClear
 					placeholder="搜索菜单名称/路径"
-					value={searchText}
+					value={searchParams.quick || ""}
 					suffix={<SearchOutlined />}
-					onChange={(e) => setSearchText(e.target.value)}
+					onChange={(e) => {
+						setSearchParams({ quick: e.target.value ?? "" })
+						getMenuTree()
+					}}
 					className="flex-1"
 				/>
 			</Flex>

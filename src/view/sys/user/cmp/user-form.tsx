@@ -55,8 +55,6 @@ const columns: Array<ProFormColumnsType> = [
 			rules: [{ required: true, message: "请选择部门" }],
 		},
 		renderFormItem: () => {
-			console.log("|部门选择|")
-
 			return <CMP.sysDept.DeptTreeSelect />
 		},
 		transform: (value: string | Array<string>) => {

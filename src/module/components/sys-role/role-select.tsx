@@ -9,6 +9,8 @@ import BaseSelect from "../select/base-select"
 import type { BaseSelectProps, BaseSelectOption } from "../select/base-select"
 
 const RoleSelectCmp: React.FC<BaseSelectProps> = (props) => {
+	const { placeholder = "请选择角色", ...rest } = props
+
 	const [searchParams] = useSetState<SysRoleQueryDto>({} as any)
 
 	// 查询角色分页
@@ -26,7 +28,7 @@ const RoleSelectCmp: React.FC<BaseSelectProps> = (props) => {
 		}
 	}
 
-	return <BaseSelect getOptions={getRolePage} {...props} />
+	return <BaseSelect getOptions={getRolePage} placeholder={placeholder} {...rest} />
 }
 
 export default RoleSelectCmp
